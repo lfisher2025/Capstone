@@ -1,0 +1,12 @@
+-- AUTH DB CREATE TABLE
+
+CREATE TABLE HashedCredentials (
+UserID int PRIMARY KEY,
+Username nvarchar(50),
+Password nvarchar(MAX),
+);
+
+
+-- Insert Statement for users (all user passwords are "password")
+INSERT INTO HashedCredentials (UserID, Username, Password) VALUES (2, 'admin', '1000:Y7kDp4JdZM3GE6Kw4dFzahnQWcL7VpLp:x7pv8+QiM3x2Jprsi+upefKj8fs=');
+INSERT INTO HashedCredentials (UserID, Username, Password) VALUES (1, 'faculty', '1000:Y7kDp4JdZM3GE6Kw4dFzahnQWcL7VpLp:x7pv8+QiM3x2Jprsi+upefKj8fs=');

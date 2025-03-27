@@ -1,0 +1,142 @@
+-- Create User Type Table
+CREATE TABLE UserType (
+    typeID INT PRIMARY KEY,
+    name NVARCHAR(60) NOT NULL
+);
+
+-- Create User Table 
+CREATE TABLE Users (
+    userID INT PRIMARY KEY IDENTITY(1,1),
+    firstName NVARCHAR(60) NOT NULL,
+    lastName NVARCHAR(60) NOT NULL,
+    middleInitial NVARCHAR(1) NOT NULL,
+    userTypeID INT NOT NULL,
+    phoneNumber NVARCHAR(15) NOT NULL,
+    email NVARCHAR(60) NOT NULL,
+
+    FOREIGN KEY (userTypeID) REFERENCES UserType(typeID)
+);
+
+
+-- Create Message Table 
+CREATE TABLE Message (
+    messageID INT PRIMARY KEY IDENTITY(1,1),
+    senderID INT NOT NULL,
+    recipientID INT NOT NULL,
+    title NVARCHAR(100) NOT NULL,
+    content NVARCHAR(255) NOT NULL,
+    readStatus BIT NOT NULL DEFAULT 0,
+    timestamp DATETIME NOT NULL, -- Changed TIME to DATETIME
+    FOREIGN KEY (senderID) REFERENCES Users(userID),
+    FOREIGN KEY (recipientID) REFERENCES Users(userID)
+);
+
+-- Create Admin Table
+CREATE TABLE Admin (
+    adminID INT NOT NULL PRIMARY KEY,
+    FOREIGN KEY (adminID) REFERENCES Users(userID)
+);
+
+-- Create Employee Table
+CREATE TABLE Employee (
+    employeeID INT NOT NULL PRIMARY KEY,
+    adminID INT NOT NULL,
+    FOREIGN KEY (employeeID) REFERENCES Users(userID),
+    FOREIGN KEY (adminID) REFERENCES Users(userID)
+);
+
+-- Create Representative Table
+CREATE TABLE Representative (
+    representativeID INT NOT NULL PRIMARY KEY,
+    FOREIGN KEY (representativeID) REFERENCES Users(userID)
+);
+
+-- Create Faculty Table (Fixed missing comma)
+CREATE TABLE Faculty (
+    facultyID INT NOT NULL PRIMARY KEY, -- Fixed missing comma
+    schoolName NVARCHAR(150),
+    department NVARCHAR(150),
+    FOREIGN KEY (facultyID) REFERENCES Users(userID)
+);
+
+-- Create BusinessPartner Table
+CREATE TABLE BusinessPartner (
+    businessID INT PRIMARY KEY IDENTITY(1,1),
+    name NVARCHAR(50) NOT NULL,
+    representativeID INT NOT NULL,
+    status VARCHAR(50) NOT NULL CHECK (status IN ('Prospect', 'Initial Contact', 'In Negotiation', 'Memo Signed', 'Active Partner')),
+    FOREIGN KEY (representativeID) REFERENCES Representative(representativeID)
+);
+
+-- Create Grant Table
+CREATE TABLE Grants (
+    grantID INT PRIMARY KEY IDENTITY(1,1),
+    name NVARCHAR(255),
+    category NVARCHAR(20) NOT NULL CHECK (category IN ('Federal', 'State', 'University', 'Business-funded')),
+    amount DECIMAL(10,2) NOT NULL,
+    businessID INT,
+    grantStatus NVARCHAR(255),
+    FOREIGN KEY (businessID) REFERENCES BusinessPartner(businessID)
+);
+
+-- Create FacultyGrant Table
+CREATE TABLE FacultyGrant (
+    grantID INT NOT NULL,
+    facultyID INT NOT NULL,
+    PRIMARY KEY (grantID, facultyID),
+    FOREIGN KEY (grantID) REFERENCES Grants(grantID),
+    FOREIGN KEY (facultyID) REFERENCES Faculty(facultyID)
+);
+
+-- Create Project Table
+CREATE TABLE Project (
+    projectID INT PRIMARY KEY IDENTITY(1,1),
+    grantID INT NOT NULL,
+    employeeID INT NOT NULL,
+    adminID INT NOT NULL,
+    facultyID INT NOT NULL,
+    name NVARCHAR(100) NOT NULL,
+    dueDate DATE,
+    submissionDate DATE,
+    completeStatus BIT NOT NULL DEFAULT 0,
+    FOREIGN KEY (grantID) REFERENCES Grants(grantID),
+    FOREIGN KEY (employeeID) REFERENCES Users(userID),
+    FOREIGN KEY (adminID) REFERENCES Admin(adminID),
+    FOREIGN KEY (facultyID) REFERENCES Faculty(facultyID) 
+);
+
+-- Create Note Table
+CREATE TABLE Note (
+    noteID INT PRIMARY KEY IDENTITY(1,1),
+    projectID INT NOT NULL,
+    note NVARCHAR(255) NOT NULL,
+    FOREIGN KEY (projectID) REFERENCES Project(projectID)
+);
+
+-- Create Task Table 
+CREATE TABLE Task (
+    taskID INT PRIMARY KEY IDENTITY(1,1),
+    projectID INT NOT NULL,
+    title NVARCHAR(255),
+    dueDate DATE,
+    assignDate DATE NOT NULL,
+    employeeID INT NOT NULL,
+    adminID INT NOT NULL,
+    FOREIGN KEY (projectID) REFERENCES Project(projectID),
+    FOREIGN KEY (employeeID) REFERENCES Users(userID),
+    FOREIGN KEY (adminID) REFERENCES Users(userID) 
+);
+
+-- Create Meeting Table
+CREATE TABLE Meeting (
+    meetingID INT PRIMARY KEY IDENTITY(1,1),
+    adminID INT,
+    representativeID INT,
+    title NVARCHAR(100),
+    minutes NVARCHAR(255),
+    FOREIGN KEY (adminID) REFERENCES Admin(adminID),
+    FOREIGN KEY (representativeID) REFERENCES Representative(representativeID)
+);
+
+
+

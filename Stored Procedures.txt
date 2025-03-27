@@ -1,0 +1,46 @@
+-- Create Procedure to insert new user and capture the generated ID for insertion into AUTH
+-- This procedure is for the "LAB3" database
+CREATE PROCEDURE InsertUserAndGetID
+    @FirstName VARCHAR(50),
+    @LastName VARCHAR(50),
+    @MiddleInitial CHAR(1) NULL,
+    @Role VARCHAR(50),
+    @PhoneNumber VARCHAR(20),
+    @Email VARCHAR(100),
+    @NewUserID INT OUTPUT  -- Output parameter for UserID
+AS
+BEGIN
+    SET NOCOUNT OFF;
+
+    INSERT INTO Users (FirstName, LastName, MiddleInitial, userTypeID, PhoneNumber, Email)
+    VALUES (@FirstName, @LastName, @MiddleInitial, @Role, @PhoneNumber, @Email);
+
+    SET @NewUserID = SCOPE_IDENTITY(); -- Get the newly inserted UserID
+END
+
+
+--This procedure is for the "AUTH" database
+CREATE PROCEDURE sp_Lab3Login
+    @Username NVARCHAR(50)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @StoredPassword NVARCHAR(MAX);
+
+    -- Retrieve the stored password for the given username
+    SELECT @StoredPassword = Password
+    FROM HashedCredentials
+    WHERE Username = @Username;
+
+    -- Check if the user exists
+    IF @StoredPassword IS NULL
+    BEGIN
+        PRINT 'User does not exist';
+        RETURN -1;  -- User not found
+    END
+
+    -- Return the stored hashed password for verification in C#
+    PRINT 'User found, returning password for verification';
+    SELECT @StoredPassword AS Password;
+END;

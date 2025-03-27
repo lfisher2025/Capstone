@@ -1,0 +1,7 @@
+Admin Login:
+Username: admin
+Password: password
+
+Faculty Login:
+Username: faculty
+Password: password
