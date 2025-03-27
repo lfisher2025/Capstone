@@ -25,6 +25,12 @@
 			<option value="5">Active Partner</option>
 		</select>
 	</div>
+	<div>
+		<select asp-for="SelectedOption" asp-items="@(new SelectList(Model.Options, "RepresentitiveID", "Name"))">
+			<option value="">SelectAn option</option>
+		</select>
+		<button type="submit">Submit</button>
+	</div>
 
 	<button type="submit" class="btn btn-primary">Submit</button>
 	<button asp-page="AddBusinessPartner" asp-page-handler="PopulateHandler" formnovalidate>Populate</button>

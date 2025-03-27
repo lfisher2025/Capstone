@@ -11,10 +11,15 @@ namespace Lab1.Pages.Admin
         public String CompanyName { get; set; }
 
         [BindProperty]
-        public String RepresentativeName { get; set; }
+        public int RepresentativeID { get; set; }
 
         [BindProperty]
         public int StatusSelect {  get; set; }
+       
+        [BindProperty]
+        public String Name {  get; set; }
+
+        public IList<Option> Representitives { get; set; }
 
         public String Status;
 
@@ -61,7 +66,7 @@ namespace Lab1.Pages.Admin
             BusinessPartner NewPartner = new BusinessPartner();
             NewPartner.name = CompanyName;
             NewPartner.status = Status;
-            NewPartner.representativeID = RepresentativeName;
+            NewPartner.representativeID = RepresentativeID;
 
             DBClass.AddBusinessPartner(NewPartner);
 
