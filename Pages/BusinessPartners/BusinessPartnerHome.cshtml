@@ -1,0 +1,35 @@
+﻿@page
+@model Lab1.Pages.BusinessPartners.BusinessPartnerHomeModel
+
+<h2>Search Business Partners</h2>
+
+<form method="get">
+    <label for="SearchTerm">Search Business Partner:</label>
+    <input type="text" id="SearchTerm" asp-for="SearchTerm" placeholder="Enter business name..." />
+    <button type="submit">Search</button>
+</form>
+
+@if (Model.PartnerProjects.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Partner Name</th>
+                <th>Project</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PartnerProjects)
+            {
+                <tr>
+                    <td>@item.BusinessName</td>
+                    <td>@item.ProjectName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No business partners found.</p>
+}

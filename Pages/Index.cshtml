@@ -1,0 +1,17 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to The GrantOrg Landing Page</h1>
+    <p>Created by Luke Fisher, Cody Bridge, Jeremy Cohen, and Lloyd Davis.</p>
+    <p>Please log in then select a menu choice above to begin.</p>
+    <div class="text-center">
+        <a asp-page="/HashedLogin/HashedLogin" class="btn btn-primary">Login</a>
+        <br/>
+        <br/>
+        <a asp-page="/Admin/AddUser" class="btn btn-primary">Create Account</a>
+    </div>
+</div>

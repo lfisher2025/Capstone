@@ -1,0 +1,39 @@
+﻿@page
+@model Lab1.Pages.Messaging.NewMessageModel
+@{
+}
+<h2>Compose New Message</h2>
+
+@if (!string.IsNullOrEmpty(ViewData["MessageStatus"] as string))
+{
+    <p class="alert alert-info">@ViewData["MessageStatus"]</p>
+}
+
+<form method="post">
+    <div>
+        <label for="RecipientID">Recipient:</label>
+        <select asp-for="RecipientID" class="form-control" required>
+            <option value="">Select a recipient</option>
+            @foreach (var user in Model.Users)
+            {
+                <option value="@user.UserID">@user.FirstName @user.LastName</option>
+            }
+        </select>
+    </div>
+    <br />
+
+    <div>
+        <label for="Title">Title:</label>
+        <input asp-for="Title" class="form-control" />
+    </div>
+    <br />
+
+    <div>
+        <label for="Content">Message:</label>
+        <textarea asp-for="Content" class="form-control" rows="4" required></textarea>
+    </div>
+    <br />
+
+    <button type="submit" class="btn btn-primary">Send Message</button>
+    <button asp-page="NewMessage" asp-page-handler="PopulateHandler" formnovalidate>Populate</button>
+</form>

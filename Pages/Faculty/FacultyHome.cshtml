@@ -1,0 +1,17 @@
+﻿@page
+@model Lab1.Pages.Faculty.FacultyHomeModel
+@{
+}
+
+
+<h2>Welcome [Faculty Name]</h2>
+
+<a asp-page="/Faculty/AddGrant" class="btn btn-info">Add Grant</a>
+<br/>
+<p>View your Projects:</p>
+<form asp-page-handler="FacultyHome" method="post">
+    <label for="projectDropdown">Select a Project: </label>
+    <select class="form-select" asp-for="SelectedProject" asp-items="Model.Projects" class="form-control">
+    </select>
+    <br />
+</form>

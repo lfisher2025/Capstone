@@ -1,0 +1,28 @@
+﻿@page
+@model Lab1.Pages.Faculty.EditGrantModel
+@{
+    ViewData["Title"] = "Edit Grant"; 
+}
+
+<form asp-asp-page="EditGrant">
+    <input type="hidden" asp-for="@Model.GrantToUpdate.GrantID"/>
+    <label asp-for="@Model.GrantToUpdate.Name"></label>
+    <input type="text" asp-for="@Model.GrantToUpdate.Name" />
+    <br /><br />
+    <label asp-for="@Model.GrantToUpdate.Category"></label>
+    <input type="text" asp-for="@Model.GrantToUpdate.Category" />
+    <br /><br />
+    <label asp-for="@Model.GrantToUpdate.GrantStatus"></label>
+    <select asp-for="@Model.GrantToUpdate.GrantStatus">
+        <option value="1">In Progress</option>
+        <option value="2">Awarded</option>
+        <option value="3">Applied</option>
+        <option value="4">Rejected</option>
+    </select>
+    <br /><br />
+    <label asp-for="@Model.GrantToUpdate.Amount"></label>
+    <input type="number" asp-for="@Model.GrantToUpdate.Amount" />
+    <br /><br />
+    <input type="submit" class="btn btn-success" asp-page="EditGrant"/>
+    <a asp-page="/Faculty/ViewGrant" class="btn btn-secondary">Cancel</a>
+</form>

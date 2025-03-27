@@ -1,0 +1,23 @@
+﻿@page
+@model Lab1.Pages.Admin.ManageBusinessPartnersModel
+@{
+}
+
+<h2>Business Partners</h2>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in Model.PartnerInfo)
+        {
+            <tr>
+                <td>@row.name</td>
+                <td>@row.status</td>
+            </tr>
+        }
+    </tbody>
+</table>

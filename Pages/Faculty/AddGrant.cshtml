@@ -1,0 +1,52 @@
+﻿@page
+@model Lab1.Pages.Faculty.AddGrantModel
+@{
+}
+
+<!--This page and its model are essentially done, except for where i comment for additional needs. -->
+
+<h2>Add Grant</h2>
+
+<!--Form to collect information to add a new grant to the database-->
+<form method="post">
+	<div>
+		<label for="GrantName">Grant Name:</label>
+		<input asp-for="GrantName"  class="form-control" />
+	</div>
+	<div>
+		<label for="Amount">Amount:</label>
+		<input asp-for="Amount" type="number" step="any" class="form-control" />
+	</div>
+	<div>
+		<label for="AwardDate">Award Date:</label>
+		<input asp-for="AwardDate" type="date" class="form-control" />
+	</div>
+	<div>
+		<label for="GrantNotes">Notes:</label>
+		<input asp-for="GrantNotes" class="form-control" />
+	</div>
+
+	<!--These next 2 are supposed to be drop down selects showing options to select faculty and business partner, requires a query that will be added later-->
+
+	<div>
+		<label for="FacultyID">Other Faculty:</label>
+		<input asp-for="FacultyID" type="number" class="form-control" />
+	</div>
+	<div>
+		<label for=BusinessID>Business Partner:</label>
+		<input asp-for="FacultyID" type="number" class="form-control" />
+	</div>
+
+	<div>
+		<label for="Status">Status:</label>
+		<select asp-for="StatusSelect" class="form-control">
+			<option value="1">In-Progress</option>
+			<option value="2">Awarded</option>
+			<option value="3">Rejected</option>
+		</select>
+	</div>
+
+	<button type="submit" class="btn btn-primary">Submit</button>
+	<button asp-page="AddGrant" asp-page-handler="PopulateHandler" formnovalidate>Populate</button>
+	<button asp-page="AddGrant" asp-page-handler="ClearHandler" formnovalidate>Clear</button>
+</form>

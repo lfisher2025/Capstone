@@ -1,0 +1,23 @@
+﻿@page
+@model Lab1.Pages.Employee.EmployeeViewProjectModel
+@{
+}
+
+<h2>View Projects</h2>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in Model.Projects)
+        {
+            <tr>
+                <td>@row.name</td>
+                <td>@row.CompleteStatus</td>
+            </tr>
+        }
+    </tbody>
+</table>

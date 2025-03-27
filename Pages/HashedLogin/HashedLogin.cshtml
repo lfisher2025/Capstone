@@ -1,0 +1,39 @@
+﻿@page
+@model Lab1.Pages.Practice.HashedLoginModel
+@{
+}
+
+
+
+@if (HttpContext.Session.GetString("username") != null)
+{
+    <!-- User is logged in -->
+    <p class="text-success">You are logged in as <strong>@HttpContext.Session.GetString("username")</strong>.</p>
+
+    <a asp-page="/HashedLogin/Logout" class="btn btn-danger">Logout</a> 
+}
+else
+{
+    <!-- User is not logged in-->
+
+
+    <form asp-page="HashedLogin">
+        <input asp-for="Username" class="form-control" placeholder="Enter Username" />
+        <br />
+        <label>Enter Password:</label>
+        <input asp-for="Password" class="form-control" type="password" />
+        <br />
+        <input type="submit" class="btn btn-primary" />
+    </form>
+    <br />
+    
+        if (HttpContext.Session.GetString("username") != null)
+         {
+             <p class="text-success">@ViewData["LoginMessage"]</p>
+         }
+        else
+        {
+            <p class="text-danger">@ViewData["LoginMessage"]</p>
+        }
+    
+}

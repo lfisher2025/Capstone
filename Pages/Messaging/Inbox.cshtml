@@ -1,0 +1,44 @@
+﻿@page
+@model Lab1.Pages.Messaging.InboxModel
+@{
+}
+
+<h2>Inbox</h2>
+
+<a asp-page="/Messaging/NewMessage" class="btn btn-primary">New Message</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Sender ID</th>
+            <th>Recipient ID</th>
+            <th>Timestamp</th>
+            <th>Read Status</th>
+            <th>Preview</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Messages != null && Model.Messages.Count > 0)
+        {
+            @foreach (var message in Model.Messages)
+            {
+                <tr>
+                    <td>@message.title</td>
+                    <td>@message.sender</td>
+                    <td>@message.recipient</td>
+                    <td>@message.timestamp.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@(message.readStatus ? "Read" : "Unread")</td>
+                    <td>@message.content</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td  style="text-align:center;">No messages found.</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,109 @@
+﻿@page
+@model Lab1.Pages.Admin.AdminHomeModel
+@{
+}
+
+<h1>Welcome @HttpContext.Session.GetString("username")!</h1>
+
+
+<nav class="sub-menu">
+    <ul>
+        <li><a asp-page="/Admin/NewProject">Add Project</a></li>
+        <li><a asp-page="/Admin/AddUser">Add New User</a></li>
+        <li><a asp-page="/Admin/AddBusinessPartner">Add Business Partner</a></li>
+        <li><a asp-page="/Admin/ManageBusinessPartners">Manage Business Partner</a></li>
+        <li><a asp-page="/Admin/Meetings">Meetings</a></li>
+    </ul>
+</nav>
+
+<h2>Current Projects</h2>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Due Date</th>
+            <th>View</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in Model.TableData)
+        {
+            <tr>
+                @foreach (var cell in row.Values)
+                {
+                    <td>@cell</td>
+                }
+                <td>
+                    <div class="btn">
+                        <a asp-page="/Admin/AdminViewProject" class="btn btn-primary">View</a>
+                    </div>
+                </td>
+            </tr>
+        }
+        <tr>
+
+        </tr>
+
+    </tbody>
+
+
+
+
+
+</table>
+
+<h2>Current Grants</h2>
+<table class="table table-bordered table-responsive table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>View</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach(var grant in Model.GrantInfo)
+            {
+                <tr>
+                <td>@grant.Name</td>
+                <td><a asp-page="/Faculty/ViewGrant" class="btn btn-primary">View</a></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<style>
+    .sub-menu {
+        background-color: #333;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .sub-menu ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        gap: 10px; /* Space between items */
+    }
+
+    .sub-menu li {
+        display: inline;
+    }
+
+    .sub-menu a {
+        text-decoration: none;
+        color: white;
+        padding: 5px 10px;
+        background-color: #444;
+        border-radius: 3px;
+        font-size: 14px;
+    }
+
+    .sub-menu a:hover {
+        background-color: #666;
+    }
+</style>
+

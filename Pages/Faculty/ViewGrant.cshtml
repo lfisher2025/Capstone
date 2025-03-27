@@ -1,0 +1,65 @@
+﻿@page
+@model Lab1.Pages.Faculty.ViewGrantModel
+@{
+    ViewData["Title"] = "View Grants";
+}
+
+<h2>Grants</h2>
+
+<form method="get">
+    <div class="form-group">
+        <label for="searchName">Grant Name:</label>
+        <input type="text" id="searchName" name="SearchName" class="form-control" value="@Model.SearchName" />
+    </div>
+
+    <div class="form-group">
+        <label for="searchCategory">Category:</label>
+        <input type="text" id="searchCategory" name="SearchCategory" class="form-control" value="@Model.SearchCategory" />
+    </div>
+
+    <div class="form-group">
+        <label for="searchAmount">Amount:</label>
+        <input type="number" id="searchAmount" name="SearchAmount" class="form-control" value="@Model.SearchAmount" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Search</button>
+</form>
+@{ //Used ChatGPT to troubleshoot my switch case (Lines 30-37)
+    string GetStatusClass(string status)
+    {
+        return status switch
+        {
+            "Applied" => "text-primary",
+            "Pending" => "text-warning",
+            "Approved" => "text-success",
+            "Rejected" => "text-danger",
+            _ => "text-dark"
+        };
+    }
+}
+
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th>Grant ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Amount</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var grant in Model.GrantInfo)
+        {
+            <tr>
+                <td>@grant.GrantID</td>
+                <td>@grant.Name</td>
+                <td>@grant.Category</td>
+                <td class="@GetStatusClass(grant.GrantStatus)">@grant.GrantStatus</td>
+                <td>@grant.Amount</td>
+                <td><a asp-page="/Faculty/EditGrant" class="btn btn-primary">Edit Grant</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

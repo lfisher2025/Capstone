@@ -1,0 +1,66 @@
+﻿@page
+@model Lab1.Pages.Admin.ViewProjectModel
+@{
+    ViewData["Title"] = "Search Projects";
+}
+
+<h2>Search Projects</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label for="projectName">Project Name</label>
+        <input type="text" class="form-control" id="projectName" name="projectName" placeholder="Enter Project Name" value="@Model.ProjectName" />
+    </div>
+
+    <div class="form-group">
+        <label for="dueDate">Due Date</label>
+        <input type="date" class="form-control" id="dueDate" name="dueDate" value="@Model.DueDate" />
+    </div>
+
+    <div class="form-group">
+        <label for="submissionDate">Submission Date</label>
+        <input type="date" class="form-control" id="submissionDate" name="submissionDate" value="@Model.SubmissionDate" />
+    </div>
+
+    <div class="form-group">
+        <label for="completeStatus">Complete Status</label>
+        <select class="form-control" id="completeStatus" name="completeStatus">
+            <option value="">All Status</option>
+            <option value="0">Incomplete</option>
+            <option value="1">Complete</option>
+        </select>
+    </div>
+
+    
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+@if (Model.Projects != null && Model.Projects.Count > 0)
+{
+    <h3>Search Results</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Project Name</th>
+                <th>Due Date</th>
+                <th>Submission Date</th>
+                <th>Complete Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var project in Model.Projects)
+            {
+                <tr>
+                    <td>@project.name</td>
+                    <td>@project.DueDate?.ToString("yyyy-MM-dd" ?? "N/A")</td>
+                    <td>@project.submissionDate?.ToString("yyyy-MM-dd" ?? "N/A")</td>
+                    <td>@(project.CompleteStatus.GetValueOrDefault() ? "Complete" : "Incomplete")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No projects found matching your criteria.</p>
+}

@@ -1,0 +1,45 @@
+﻿@page
+@model Lab1.Pages.Admin.NewProjectModel
+@{
+}
+
+<h1>Add New Project</h1>
+
+<form method="post">
+	<div>
+		<label for="ProjectName" class="form-label">Project Name:</label>
+		<input type="text" id="ProjectName" name="ProjectName" class="form-control" />
+	</div>
+
+	<!--Dynamic dropdown to display grants -->
+	<div>
+		<label for="dropdown">Select Grant:</label>
+		<select id="dropdown" asp-for="GrantID" class="form-control">
+			<option value="">-- Select --</option>
+			@foreach (var item in Model.GrantDropdown)
+			{
+				<option value="@item.GrantID">@item.Name</option>
+			}
+		</select>
+	</div>
+
+	<!--enter employee ID, eventually will become a dropdown select-->
+
+	<div>
+		<label for="Due-Date">Due Date:</label>
+		<input asp-for="DueDate" type="date" class="form-control" />
+	</div>
+	
+	<div>
+		<label for="ProjectNotes">Notes:</label>
+		<input asp-for="ProjectNotes" class="form-control"/>
+	</div>
+
+	<!--The form should have a button here to add a task at the time of creation, functionality added later-->
+
+	<button type="submit" class="btn btn-primary">Submit</button>
+
+	<!--Populate button to  autofill values during a presentation.-->
+	<button asp-page="NewProject" asp-page-handler="PopulateHandler" formnovalidate>Populate</button>
+	<button asp-page="NewProject" asp-page-handler="ClearHandler" formnovalidate>Clear</button>
+</form>
