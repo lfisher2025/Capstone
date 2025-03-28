@@ -597,6 +597,33 @@ namespace Lab1.Pages.DB
 
             return tempreader;
         }
+
+        public static SqlDataReader GrantSearch(Grant Grant)
+        {
+            string GrantSearchString = @"
+                SELECT *
+                FROM Grants
+                WHERE (@SearchName IS NULL OR Name LIKE '%' + @SearchName + '%')
+                AND (@SearchCategory IS NULL OR Category LIKE '%' + @SearchCategory + '%')
+                AND (@SearchAmount IS NULL OR Amount = @SearchAmount)";
+
+            SqlCommand cmdGrantSearch = new SqlCommand();
+            cmdGrantSearch.Connection = Lab1DBConnection;
+            cmdGrantSearch.Connection.ConnectionString = Lab1DBConnString;
+            cmdGrantSearch.CommandText = GrantSearchString;
+
+            cmdGrantSearch.Parameters.AddWithValue("@SearchName", string.IsNullOrEmpty(Grant.Name) ? (object)DBNull.Value : Grant.Name);
+            cmdGrantSearch.Parameters.AddWithValue("@SearchCategory", string.IsNullOrEmpty(Grant.Category) ? (object)DBNull.Value : Grant.Category);
+            cmdGrantSearch.Parameters.AddWithValue("@SearchAmount", Grant.Amount ?? (object)DBNull.Value);
+
+            cmdGrantSearch.Connection.Open();
+
+            SqlDataReader tempreader = cmdGrantSearch.ExecuteReader();
+
+            return tempreader;
+
+
+        }
     }
 
 }

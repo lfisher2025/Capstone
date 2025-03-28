@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Reflection.PortableExecutable;
 using Lab1.Pages.Data_Classes;
 using Lab1.Pages.DB;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ namespace Lab1.Pages.Faculty
 {
     public class ViewGrantModel : PageModel
     {
-        private readonly string connectionString = "Server=localhost;Database=Lab3;Trusted_Connection=True";
+      
 
         [BindProperty(SupportsGet = true)]
         public string SearchName { get; set; }
@@ -21,7 +22,7 @@ namespace Lab1.Pages.Faculty
         [BindProperty(SupportsGet = true)]
         public double? SearchAmount { get; set; }
 
-        public List<GrantData> Grants { get; set; } = new();
+        public List<Grant> GrantSearch { get; set; } = new();
         public List<Grant> GrantInfo { get; set; }
         public ViewGrantModel()
         {
@@ -54,45 +55,39 @@ namespace Lab1.Pages.Faculty
                 });
             }
             DBClass.Lab1DBConnection.Close();
-            using (SqlConnection conn = new(connectionString))
+
+            return Page();
+
+        }
+
+
+        public IActionResult OnPost()
+        {
+            Grant searchGrant = new Grant();
+            searchGrant.Name = SearchName;
+            searchGrant.Category = SearchCategory;
+            searchGrant.Amount = SearchAmount;
+
+            GrantInfo.Clear();
+            SqlDataReader SearchRead = DBClass.GrantSearch(searchGrant);
+
+
+            while (SearchRead.Read())
             {
-                conn.Open();
-
-                string query = @"
-                SELECT Name, Category, Amount
-                FROM Grants
-                WHERE (@SearchName IS NULL OR Name LIKE '%' + @SearchName + '%')
-                AND (@SearchCategory IS NULL OR Category LIKE '%' + @SearchCategory + '%')
-                AND (@SearchAmount IS NULL OR Amount = @SearchAmount)";
-
-                using (SqlCommand cmd = new(query, conn))
+                GrantInfo.Add(new Grant
                 {
-                    cmd.Parameters.AddWithValue("@SearchName", string.IsNullOrEmpty(SearchName) ? (object)DBNull.Value : SearchName);
-                    cmd.Parameters.AddWithValue("@SearchCategory", string.IsNullOrEmpty(SearchCategory) ? (object)DBNull.Value : SearchCategory);
-                    cmd.Parameters.AddWithValue("@SearchAmount", SearchAmount ?? (object)DBNull.Value);
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Grants.Add(new GrantData
-                            {
-                                Name = reader["Name"].ToString(),
-                                Category = reader["Category"].ToString(),
-                                Amount = Convert.ToDouble(reader["Amount"])
-                            });
-                        }
-                    }
-                }
+                    GrantID = Int32.Parse(SearchRead["GrantID"].ToString()),
+                    Name = SearchRead["Name"].ToString(),
+                    Category = SearchRead["Category"].ToString(),
+                    GrantStatus = SearchRead["GrantStatus"].ToString(),
+                    Amount = Convert.ToDouble(SearchRead["Amount"])
+                });
             }
+            DBClass.Lab1DBConnection.Close();
             return Page();
         }
 
-        public class GrantData
-        {
-            public string Name { get; set; }
-            public string Category { get; set; }
-            public double Amount { get; set; }
-        }
+    
+        
     }
 }
