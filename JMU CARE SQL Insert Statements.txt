@@ -1,0 +1,101 @@
+--Insert UserTypes
+INSERT INTO UserType (typeID, name) VALUES 
+(1, 'Admin'),
+(2, 'Faculty'),
+(3, 'Employee'),
+(4, 'Representative');
+
+
+
+-- Insert Users
+INSERT INTO Users (firstName, lastName, middleInitial, userTypeID, phoneNumber, email) VALUES
+('Cody', 'Bridge', 'M', 2, '540-555-5964', 'bridg2cm@dukes.jmu.edu'),
+('Luke', 'Fisher', 'J', 1, '540-555-8901', 'fishe4lj@dukes.jmu.edu'),
+('Jeremy', 'Ezell', 'D', 3, '540-568-3222', 'ezelljd@jmu.edu'),
+('Carey', 'Cole', 'B', 4, '540-568-3439', 'colecb@jme.edu');
+
+-- Insert Admin
+INSERT INTO Admin (adminID) 
+SELECT userID FROM Users WHERE userTypeID = 1;
+
+-- Insert Employee
+INSERT INTO Employee (employeeID, adminID) 
+SELECT userID, adminID 
+FROM Users 
+JOIN Admin ON adminID = adminID
+WHERE userTypeID = 3;
+
+-- Insert Representative
+INSERT INTO Representative (representativeID) 
+SELECT userID FROM Users WHERE userTypeID = 4;
+
+-- Insert Faculty
+INSERT INTO Faculty (facultyID, schoolName, department) 
+SELECT userID, 'Engineering College', 'Computer Science' 
+FROM Users WHERE userTypeID = 2;
+
+-- Insert Business Partners
+INSERT INTO BusinessPartner (name, representativeID, status) 
+SELECT 'TechCorp', representativeID, 'Active Partner' FROM Representative
+UNION ALL
+SELECT 'EduGrant Inc.', representativeID, 'Memo Signed' FROM Representative;
+
+-- Insert Grants
+INSERT INTO Grants (name, category, amount, businessID, grantStatus) VALUES
+('Tech Innovation Grant', 'Business-funded', 50000.00, (SELECT TOP 1 businessID FROM BusinessPartner WHERE name = 'TechCorp'), 'Applied'),
+('STEM Education Grant', 'Federal', 100000.00, NULL, 'Pending');
+
+-- Insert FacultyGrant
+INSERT INTO FacultyGrant (grantID, facultyID)
+SELECT grantID, facultyID FROM Grants, Faculty;
+
+-- Insert Projects
+INSERT INTO Project (grantID, employeeID, adminID, facultyID, name, dueDate, submissionDate, completeStatus) 
+VALUES
+((SELECT TOP 1 grantID FROM Grants WHERE name = 'Tech Innovation Grant'),
+ (SELECT TOP 1 employeeID FROM Employee),
+ (SELECT TOP 1 adminID FROM Admin),
+ (SELECT TOP 1 facultyID FROM Faculty),
+ 'AI Research', '2025-06-30', NULL, 0),
+
+((SELECT TOP 1 grantID FROM Grants WHERE name = 'STEM Education Grant'),
+ (SELECT TOP 1 employeeID FROM Employee),
+ (SELECT TOP 1 adminID FROM Admin),
+ (SELECT TOP 1 facultyID FROM Faculty),
+ 'Robotics Program', '2025-12-15', NULL, 0);
+
+-- Insert Notes
+INSERT INTO Note (projectID, note) 
+SELECT TOP 1 projectID, 'Initial research phase started.' FROM Project
+UNION ALL
+SELECT TOP 1 projectID, 'Awaiting funding approval.' FROM Project ORDER BY projectID DESC;
+
+-- Insert Tasks
+INSERT INTO Task (projectID, title, dueDate, assignDate, employeeID, adminID)
+SELECT TOP 1 projectID, 'Develop Database', '2025-04-01', '2025-02-15', Project.employeeID, Project.adminID 
+FROM Project
+CROSS JOIN Employee
+CROSS JOIN Admin
+ORDER BY projectID;
+
+INSERT INTO Task (projectID, title, dueDate, assignDate, employeeID, adminID)
+SELECT TOP 1 projectID, 'Set up Networking Lab', '2025-10-01', '2025-03-10', Project.employeeID, Project.adminID 
+FROM Project
+CROSS JOIN Employee
+CROSS JOIN Admin
+ORDER BY projectID DESC;
+
+-- Insert Meeting
+INSERT INTO Meeting (adminID, representativeID, title, minutes)
+SELECT TOP 1 adminID, 4, 'Partnership Kickoff', 'Discussed project scope and expectations'
+FROM Admin
+
+--Insert Messages
+INSERT INTO Message (senderID, recipientID, title, content, readStatus, timestamp)
+VALUES (1, 2, 'Project Update', 'The project meeting is scheduled for tomorrow at 10 AM.', 0, GETDATE());
+
+INSERT INTO Message (senderID, recipientID, title, content, readStatus, timestamp)
+VALUES (2, 1, 'Re: Project Update', 'Thanks for the update! I will be there.', 0, GETDATE());
+
+
+

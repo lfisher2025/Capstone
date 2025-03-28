@@ -208,7 +208,7 @@ namespace Lab1.Pages.DB
 
         public static void AddBusinessPartner(BusinessPartner NewBusinessPartner)
         {
-            string AddPartnerString = "INSERT INTO BusinessPartner (name, representativeID, status) VALUES ('@name',@repID,'@status');";
+            string AddPartnerString = "INSERT INTO BusinessPartner (name, representativeID, status) VALUES (@name,@repID,@status);";
 
             SqlCommand cmdAddPartner = new SqlCommand();
             cmdAddPartner.Connection = Lab1DBConnection;
@@ -237,7 +237,7 @@ namespace Lab1.Pages.DB
 
 
 
-
+            
         }
 
         public static SqlDataReader ViewAdminProjects()
@@ -581,6 +581,21 @@ namespace Lab1.Pages.DB
             int userType = (int)cmdGetType.ExecuteScalar();
 
             return userType;
+        }
+
+
+
+        public static SqlDataReader ViewAllRepresenatives()
+        {
+            SqlCommand cmdViewReps = new SqlCommand();
+            cmdViewReps.Connection = Lab1DBConnection;
+            cmdViewReps.Connection.ConnectionString = Lab1DBConnString;
+            cmdViewReps.CommandText = "SELECT userID, firstName, lastName FROM Users WHERE userTypeID = 4";
+            cmdViewReps.Connection.Open();
+
+            SqlDataReader tempreader = cmdViewReps.ExecuteReader();
+
+            return tempreader;
         }
     }
 

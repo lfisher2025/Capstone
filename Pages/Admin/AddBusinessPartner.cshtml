@@ -16,7 +16,7 @@
 	<!--This is supposed to be a drop down select to choose the representative in the future, additionally should tell users to add representative as a user first-->
 
 	<div>
-		<label for="Status">Status:</label>
+		<label asp-for="StatusSelect">Status:</label>
 		<select asp-for="StatusSelect" class="form-control">
 			<option value="1">Prospect</option>
 			<option value="2">Initial Contact</option>
@@ -25,11 +25,15 @@
 			<option value="5">Active Partner</option>
 		</select>
 	</div>
+	<br/>
 	<div>
-		<select asp-for="SelectedOption" asp-items="@(new SelectList(Model.Options, "RepresentitiveID", "Name"))">
-			<option value="">SelectAn option</option>
+		<select asp-for="RepresentativeID" class="form-control"> 
+			<option value="">Select a Representative</option>
+			@foreach (var item in Model.Representitives)
+			{
+				<option value="@item.UserID">@item.FirstName @item.LastName</option>
+			}
 		</select>
-		<button type="submit">Submit</button>
 	</div>
 
 	<button type="submit" class="btn btn-primary">Submit</button>

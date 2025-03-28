@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Lab1.Pages.Data_Classes;
 using Lab1.Pages.DB;
+using System.Data.SqlClient;
 
 namespace Lab1.Pages.Admin
 {
@@ -13,15 +14,17 @@ namespace Lab1.Pages.Admin
         [BindProperty]
         public int RepresentativeID { get; set; }
 
+       
+
         [BindProperty]
         public int StatusSelect {  get; set; }
        
         [BindProperty]
         public String Name {  get; set; }
 
-        public IList<Option> Representitives { get; set; }
+        public IList<User> Representitives { get; set; } = new List<User>();
 
-        public String Status;
+        public String Status { get; set; }
 
         //Eventually, the OnGet method will need to select the representatives from the database for a user to select one to attach to the business
         public IActionResult OnGet()
@@ -36,7 +39,22 @@ namespace Lab1.Pages.Admin
             if (UserType != "1")
             { return RedirectToPage("/Shared/UnauthorizedResource"); }
 
-            else { return Page(); }
+            else {
+                SqlDataReader RepReader = DBClass.ViewAllRepresenatives();
+
+                while (RepReader.Read())
+                {
+                    Representitives.Add(new Data_Classes.User
+                    {
+                        UserID = int.Parse(RepReader["userID"].ToString()),
+                        FirstName = RepReader["firstName"].ToString(),
+                        LastName = RepReader["lastName"].ToString()
+                    });
+                }
+                DBClass.Lab1DBConnection.Close();
+                
+                return Page(); 
+            }
         }
 
         public void OnPost()
@@ -48,19 +66,19 @@ namespace Lab1.Pages.Admin
             }
             else if (StatusSelect == 2)
             {
-                Status = "Initial-Contact";
+                Status = "Initial Contact";
             }
             else if (StatusSelect == 3)
             {
-                Status = "In-Negotiaion";
+                Status = "In Negotiaion";
             }
             else if (StatusSelect == 4)
             {
-                Status = "Memo-Signed";
+                Status = "Memo Signed";
             }
             else if (StatusSelect == 5)
             {
-                Status = "Active-Partner";
+                Status = "Active Partner";
             }
             
             BusinessPartner NewPartner = new BusinessPartner();
