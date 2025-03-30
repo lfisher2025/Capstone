@@ -1,0 +1,189 @@
+CREATE TABLE UserType (
+    typeID INT PRIMARY KEY,
+    name NVARCHAR(60) NOT NULL
+);
+
+CREATE TABLE [Users](
+    UserID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Email VARCHAR(100),
+    UserTypeID INT,
+    Department VARCHAR(100),
+    DateJoined DATE,
+    AccessLevel INT,
+    FOREIGN KEY (UserTypeID) REFERENCES UserType(typeID)
+);
+
+CREATE TABLE FileMetadata(
+	FileID INT PRIMARY KEY IDENTITY,
+	FileName VARCHAR(255),
+	FilePath VARCHAR(500),
+	ContentType VARCHAR(100),
+	UploadDate DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE Grants(
+    GrantID INT PRIMARY KEY,
+    GrantName VARCHAR(100),
+    FundingAgency VARCHAR(100),
+    SubmissionDate DATE,
+    Deadline DATE,
+    ProposalID INT,
+    FundingAmount DECIMAL(18, 2),
+    Type VARCHAR(50),
+    GrantDescription VARCHAR(MAX),
+    UserID INT,
+    FOREIGN KEY (UserID) REFERENCES [Users](UserID)
+);
+
+CREATE TABLE Project(
+    ProjectID INT PRIMARY KEY,
+    ProjectName VARCHAR(100),
+    StartDate DATE,
+    EndDate DATE,
+    ProjectStatus VARCHAR(50),
+    ProgressStatus VARCHAR(50),
+    ProjectLead INT,
+    UserID INT,
+    GrantID INT,
+    FOREIGN KEY (ProjectLead) REFERENCES [Users](UserID),
+    FOREIGN KEY (GrantID) REFERENCES Grants(GrantID)
+);
+
+CREATE TABLE Task(
+    TaskID INT PRIMARY KEY,
+    TaskName VARCHAR(100),
+    TaskDescription VARCHAR(MAX),
+    Deadline DATE,
+    Status VARCHAR(50),
+    AssignedTo INT,
+    ProjectID INT,
+    FOREIGN KEY (AssignedTo) REFERENCES [Users](UserID),
+    FOREIGN KEY (ProjectID) REFERENCES Project(ProjectID)
+);
+
+CREATE TABLE ResearchData(
+    DataID INT PRIMARY KEY,
+    DataType VARCHAR(50),
+    Version VARCHAR(20),
+    AccessLevel INT,
+    DataDescription VARCHAR(MAX),
+    UploadDate DATE,
+    ProjectID INT,
+    FOREIGN KEY (ProjectID) REFERENCES Project(ProjectID)
+);
+
+CREATE TABLE Report(
+    ReportID INT PRIMARY KEY,
+    ReportType VARCHAR(50),
+    DateGenerated DATE,
+    Description VARCHAR(MAX),
+    ExportFormat VARCHAR(20),
+    GeneratedBy INT,
+    DataID INT,
+    FOREIGN KEY (GeneratedBy) REFERENCES [Users](UserID),
+    FOREIGN KEY (DataID) REFERENCES ResearchData(DataID)
+);
+
+CREATE TABLE FacultyAffiliateApplication(
+    ApplicationID INT PRIMARY KEY,
+    ApplicationDate DATE,
+    ApplicationStatus VARCHAR(50),
+    UserID INT,
+    FOREIGN KEY (UserID) REFERENCES [Users](UserID)
+);
+
+CREATE TABLE SeedFund(
+    FundID INT PRIMARY KEY,
+    FundAmount DECIMAL(18, 2),
+    Status VARCHAR(50),
+    Outcome VARCHAR(MAX),
+    ApplicationID INT,
+    FOREIGN KEY (ApplicationID) REFERENCES FacultyAffiliateApplication(ApplicationID)
+);
+
+CREATE TABLE Partnership(
+    PartnerID INT PRIMARY KEY,
+    PartnerName VARCHAR(100),
+    PartnerOrg VARCHAR(100),
+    PartnerContact VARCHAR(100),
+    PartnerType VARCHAR(50),
+    Sector VARCHAR(50),
+    Status VARCHAR(50),
+    LastInteractionDate DATE,
+    GrantID INT,
+    RepresentativeID INT,
+    FOREIGN KEY (GrantID) REFERENCES Grants(GrantID),
+    FOREIGN KEY (RepresentativeID) REFERENCES Users(UserID)
+);
+
+CREATE TABLE MemoOfUnderstanding(
+    MouID INT PRIMARY KEY,
+    MouStartDate DATE,
+    MouEndDate DATE,
+    FileID INT,
+    PartnerID INT,
+    FOREIGN KEY (FileID) REFERENCES FileMetadata(FileID),
+    FOREIGN KEY (PartnerID) REFERENCES Partnership(PartnerID)
+);
+
+--Composite table linking files to a faculty Affiliate application 
+CREATE TABLE ApplicationFiles (
+    ApplicationID INT NOT NULL,
+    FileID INT NOT NULL,
+    PRIMARY KEY (ApplicationID, FileID),
+
+    FOREIGN KEY (ApplicationID) 
+        REFERENCES FacultyAffiliateApplication(ApplicationID)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (FileID) 
+        REFERENCES FileMetadata(FileID)
+        ON DELETE CASCADE
+);
+
+-- Composite table linking multiple files to a grant
+CREATE TABLE GrantFiles (
+    GrantID INT NOT NULL,
+    FileID INT NOT NULL,
+    PRIMARY KEY (GrantID, FileID),
+
+    FOREIGN KEY (GrantID)
+        REFERENCES Grants(GrantID)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (FileID)
+        REFERENCES FileMetadata(FileID)
+        ON DELETE CASCADE
+);
+
+-- Composite table linking multiple files to a project
+CREATE TABLE ProjectFiles (
+    ProjectID INT NOT NULL,
+    FileID INT NOT NULL,
+    PRIMARY KEY (ProjectID, FileID),
+
+    FOREIGN KEY (ProjectID)
+        REFERENCES Project(ProjectID)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (FileID)
+        REFERENCES FileMetadata(FileID)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE ProjectUsers (
+    ProjectID INT NOT NULL,
+    UserID INT NOT NULL,
+    PRIMARY KEY (ProjectID, UserID),
+
+    FOREIGN KEY (ProjectID)
+        REFERENCES Project(ProjectID)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (UserID)
+        REFERENCES [Users](UserID)
+        ON DELETE CASCADE
+);
+

@@ -22,7 +22,8 @@ namespace Lab1.Pages.Faculty
         [BindProperty(SupportsGet = true)]
         public double? SearchAmount { get; set; }
 
-        public List<Grant> GrantSearch { get; set; } = new();
+        [BindProperty]
+        public Grant tempGrant { get; set; } = new Grant();
         public List<Grant> GrantInfo { get; set; }
         public ViewGrantModel()
         {
@@ -47,11 +48,16 @@ namespace Lab1.Pages.Faculty
             {
                 GrantInfo.Add(new Grant
                 {
-                    GrantID = Int32.Parse(ViewGrants["GrantID"].ToString()),
-                    Name = ViewGrants["Name"].ToString(),
-                    Category = ViewGrants["Category"].ToString(),
-                    GrantStatus = ViewGrants["GrantStatus"].ToString(),
-                    Amount = Convert.ToDouble(ViewGrants["Amount"].ToString())
+                    GrantID = ViewGrants["GrantID"] != DBNull.Value ? Convert.ToInt32(ViewGrants["GrantID"]) : 0,
+                    GrantName = ViewGrants["GrantName"] != DBNull.Value ? ViewGrants["GrantName"].ToString() : string.Empty,
+                    FundingAgency = ViewGrants["FundingAgency"] != DBNull.Value ? ViewGrants["FundingAgency"].ToString() : string.Empty,
+                    SubmissionDate = ViewGrants["SubmissionDate"] != DBNull.Value ? Convert.ToDateTime(ViewGrants["SubmissionDate"]) : DateTime.MinValue,
+                    Deadline = ViewGrants["Deadline"] != DBNull.Value ? Convert.ToDateTime(ViewGrants["Deadline"]) : DateTime.MinValue,
+                    ProposalID = ViewGrants["ProposalID"] != DBNull.Value ? Convert.ToInt32(ViewGrants["ProposalID"]) : 0,
+                    FundingAmount = ViewGrants["FundingAmount"] != DBNull.Value ? Convert.ToDecimal(ViewGrants["FundingAmount"]) : 0,
+                    Type = ViewGrants["Type"] != DBNull.Value ? ViewGrants["Type"].ToString() : string.Empty,
+                    GrantDescription = ViewGrants["GrantDescription"] != DBNull.Value ? ViewGrants["GrantDescription"].ToString() : string.Empty,
+                    UserID = ViewGrants["UserID"] != DBNull.Value ? Convert.ToInt32(ViewGrants["UserID"]) : 0
                 });
             }
             DBClass.Lab1DBConnection.Close();
@@ -63,24 +69,27 @@ namespace Lab1.Pages.Faculty
 
         public IActionResult OnPost()
         {
-            Grant searchGrant = new Grant();
-            searchGrant.Name = SearchName;
-            searchGrant.Category = SearchCategory;
-            searchGrant.Amount = SearchAmount;
+            
 
             GrantInfo.Clear();
-            SqlDataReader SearchRead = DBClass.GrantSearch(searchGrant);
+            SqlDataReader SearchRead = DBClass.GrantSearch(tempGrant);
 
 
             while (SearchRead.Read())
             {
                 GrantInfo.Add(new Grant
                 {
-                    GrantID = Int32.Parse(SearchRead["GrantID"].ToString()),
-                    Name = SearchRead["Name"].ToString(),
-                    Category = SearchRead["Category"].ToString(),
-                    GrantStatus = SearchRead["GrantStatus"].ToString(),
-                    Amount = Convert.ToDouble(SearchRead["Amount"])
+                    GrantID = SearchRead["GrantID"] != DBNull.Value ? Convert.ToInt32(SearchRead["GrantID"]) : 0,
+                    GrantName = SearchRead["GrantName"] != DBNull.Value ? SearchRead["GrantName"].ToString() : string.Empty,
+                    FundingAgency = SearchRead["FundingAgency"] != DBNull.Value ? SearchRead["FundingAgency"].ToString() : string.Empty,
+                    SubmissionDate = SearchRead["SubmissionDate"] != DBNull.Value ? Convert.ToDateTime(SearchRead["SubmissionDate"]) : DateTime.MinValue,
+                    Deadline = SearchRead["Deadline"] != DBNull.Value ? Convert.ToDateTime(SearchRead["Deadline"]) : DateTime.MinValue,
+                    ProposalID = SearchRead["ProposalID"] != DBNull.Value ? Convert.ToInt32(SearchRead["ProposalID"]) : 0,
+                    FundingAmount = SearchRead["FundingAmount"] != DBNull.Value ? Convert.ToDecimal(SearchRead["FundingAmount"]) : 0,
+                    Type = SearchRead["Type"] != DBNull.Value ? SearchRead["Type"].ToString() : string.Empty,
+                    GrantDescription = SearchRead["GrantDescription"] != DBNull.Value ? SearchRead["GrantDescription"].ToString() : string.Empty,
+                    UserID = SearchRead["UserID"] != DBNull.Value ? Convert.ToInt32(SearchRead["UserID"]) : 0
+
                 });
             }
             DBClass.Lab1DBConnection.Close();

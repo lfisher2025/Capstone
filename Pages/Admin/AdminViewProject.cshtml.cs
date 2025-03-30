@@ -8,19 +8,10 @@ namespace Lab1.Pages.Admin
 {
     public class ViewProjectModel : PageModel
     {
-      
+
 
         [BindProperty(SupportsGet = true)]
-        public string ProjectName { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public DateTime DueDate { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public DateTime SubmissionDate { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public bool CompleteStatus { get; set; }
+        public Project tempProject { get; set; } = new Project();
 
         public List<Project> Projects { get; set; } = new();
 
@@ -41,11 +32,8 @@ namespace Lab1.Pages.Admin
         }
        public IActionResult OnPost()
         {
-        Project tempProject = new Project();
-            tempProject.name = ProjectName;
-            tempProject.DueDate = DueDate;
-            tempProject.submissionDate = SubmissionDate;
-            tempProject.CompleteStatus = CompleteStatus;
+        
+            
 
 
             SqlDataReader projectReader = DBClass.ViewProject(tempProject);
@@ -54,11 +42,12 @@ namespace Lab1.Pages.Admin
             {
                 Projects.Add(new Project
                 {
-                    name = projectReader["ProjectName"].ToString(),
-                    DueDate = projectReader["dueDate"] is DBNull ? (DateTime?)null : (DateTime)projectReader["dueDate"],
-                    submissionDate = projectReader["submissionDate"] is DBNull ? (DateTime?)null : (DateTime)projectReader["submissionDate"],
-                    CompleteStatus = projectReader["completeStatus"] is DBNull ? (bool?)null : (bool)projectReader["completeStatus"]
-
+                    ProjectName = projectReader["ProjectName"] != DBNull.Value ? projectReader["ProjectName"].ToString() : string.Empty,
+                    StartDate = projectReader["StartDate"] != DBNull.Value ? Convert.ToDateTime(projectReader["StartDate"]) : DateTime.MinValue,
+                    EndDate = projectReader["EndDate"] != DBNull.Value ? Convert.ToDateTime(projectReader["EndDate"]) : DateTime.MinValue,
+                    ProjectStatus = projectReader["ProjectStatus"] != DBNull.Value ? projectReader["ProjectStatus"].ToString() : string.Empty,
+                    ProgressStatus = projectReader["ProgressStatus"] != DBNull.Value ? projectReader["ProgressStatus"].ToString() : string.Empty,
+                    ProjectLead = projectReader["ProjectLead"] != DBNull.Value ? Convert.ToInt32(projectReader["ProjectLead"]) : 0,
                 }
                 );
             }

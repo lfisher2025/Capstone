@@ -2,32 +2,15 @@
 @model Lab1.Pages.Admin.AddBusinessPartnerModel
 @{
 }
-<!--This page is mostly done, besides functionality described below-->
+
 <h2>Add New Business Partner</h2>
 
 <!--This form collects information to add a new business partner to a database-->
 
+
 <form method="post">
 	<div>
-		<label for="Company Name">Company Name:</label>
-		<input asp-for="CompanyName" class="form-control" />
-	</div>
-
-	<!--This is supposed to be a drop down select to choose the representative in the future, additionally should tell users to add representative as a user first-->
-
-	<div>
-		<label asp-for="StatusSelect">Status:</label>
-		<select asp-for="StatusSelect" class="form-control">
-			<option value="1">Prospect</option>
-			<option value="2">Initial Contact</option>
-			<option value="3">In Negotiation</option>
-			<option value="4">Memo Signed</option>
-			<option value="5">Active Partner</option>
-		</select>
-	</div>
-	<br/>
-	<div>
-		<select asp-for="RepresentativeID" class="form-control"> 
+		<select asp-for="RepresentativeID" class="form-control">
 			<option value="">Select a Representative</option>
 			@foreach (var item in Model.Representitives)
 			{
@@ -36,9 +19,55 @@
 		</select>
 	</div>
 
-	<button type="submit" class="btn btn-primary">Submit</button>
+    <div class="form-group">
+        <label asp-for="NewPartner.PartnerName"></label>
+        <input asp-for="NewPartner.PartnerName" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NewPartner.PartnerOrg"></label>
+        <input asp-for="NewPartner.PartnerOrg" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NewPartner.PartnerContact"></label>
+        <input asp-for="NewPartner.PartnerContact" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NewPartner.PartnerType"></label>
+        <input asp-for="NewPartner.PartnerType" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NewPartner.Sector"></label>
+        <input asp-for="NewPartner.Sector" class="form-control" />
+    </div>
+
+	<div class="form-group">
+		<label asp-for="StatusSelect">Status:</label>
+		<select asp-for="StatusSelect" class="form-control">
+			<option value="1">Prospect</option>
+			<option value="2">Initial Contact</option>
+			<option value="3">In Negotiation</option>
+			<option value="4">Memo Signed</option>
+			<option value="5">Active Partner</option>
+			<option value="6">Completed</option>
+			<option value="7">On Hold</option>
+		</select>
+	</div>
+
+    <div class="form-group">
+        <label asp-for="NewPartner.LastInteractionDate"></label>
+        <input asp-for="NewPartner.LastInteractionDate" type="date" class="form-control" />
+    </div>
+
+    <div class="form-group"> <!--Needs to be a dropdown to select from a list of grants-->
+        <label asp-for="NewPartner.GrantID"></label>
+        <input asp-for="NewPartner.GrantID" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Partner</button>
 	<button asp-page="AddBusinessPartner" asp-page-handler="PopulateHandler" formnovalidate>Populate</button>
 	<button asp-page="AddBusinessPartner" asp-page-handler="ClearHandler" formnovalidate>Clear</button>
-
-
 </form>

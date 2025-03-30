@@ -3,10 +3,14 @@
     public class Grant
     {
         public int GrantID { get; set; }
-        public String Name { get; set; }
-         public String Category { get; set; }
-       public double? Amount { get; set; }
-        public int BusinessID { get; set; }
-        public String GrantStatus { get; set; }
+        public string GrantName { get; set; }
+        public string FundingAgency { get; set; }
+        public DateTime SubmissionDate { get; set; }
+        public DateTime Deadline { get; set; }
+        public int ProposalID { get; set; }
+        public decimal FundingAmount { get; set; }
+        public string Type { get; set; }
+        public string GrantDescription { get; set; }
+        public int UserID { get; set; }
     }
 }

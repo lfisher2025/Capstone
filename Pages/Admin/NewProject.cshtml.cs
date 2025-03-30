@@ -9,16 +9,7 @@ namespace Lab1.Pages.Admin
     public class NewProjectModel : PageModel
     {
         [BindProperty]
-        public String ProjectName { get; set; }
-
-        [BindProperty]
-        public int GrantID { get; set; }
-
-        [BindProperty]
-        public int EmployeeID { get; set; }
-
-        [BindProperty]
-        public DateTime DueDate { get; set; }
+        public Project TempProject { get; set; }
         [BindProperty]
         public string ProjectNotes { get; set; }
 
@@ -51,8 +42,8 @@ namespace Lab1.Pages.Admin
                 {
                     GrantDropdown.Add(new Grant
                     {
-                        GrantID = int.Parse(grantResult["grantID"].ToString()),
-                        Name = grantResult["name"].ToString()
+                        GrantID = int.Parse(grantResult["GrantID"].ToString()),
+                        GrantName = grantResult["GrantName"].ToString()
 
                     });
                 }
@@ -64,30 +55,23 @@ namespace Lab1.Pages.Admin
 
         public void OnPost()
         {
-            Project newProject = new Project();
-            newProject.grantID = GrantID;
-            newProject.employeeID = EmployeeID;
-            newProject.name = ProjectName;
-            newProject.DueDate = DueDate;
-            newProject.note = ProjectNotes;
-            
-           
+
             CurrentUserID = HttpContext.Session.GetString("UserID");
             int UserID = Convert.ToInt32(CurrentUserID);
 
-            DBClass.AddNewProject(newProject, UserID);
+            DBClass.AddNewProject(TempProject, UserID);
             DBClass.Lab1DBConnection.Close();
         }
 
-        public IActionResult OnPostPopulateHandler()
+        public IActionResult OnPostPopulateHandler() //Needs to be updated to reflect JMU Care structure
         {
-            ModelState.Clear();
+            //ModelState.Clear();
 
-            GrantID = 1;
-            EmployeeID = 6;
-            ProjectName = "JMU Project";
-            DueDate = DateTime.Now;
-            ProjectNotes = "These are some notes.";
+            //GrantID = 1;
+            //EmployeeID = 6;
+            //ProjectName = "JMU Project";
+            //DueDate = DateTime.Now;
+            //ProjectNotes = "These are some notes.";
             return Page();
 
         }

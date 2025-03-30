@@ -6,36 +6,58 @@
 
 <h2>Search Projects</h2>
 
+
+
 <form method="post">
     <div class="form-group">
-        <label for="projectName">Project Name</label>
-        <input type="text" class="form-control" id="projectName" name="projectName" placeholder="Enter Project Name" value="@Model.ProjectName" />
+        <label asp-for="tempProject.ProjectName"></label>
+        <input type="text" class="form-control" asp-for="tempProject.ProjectName" placeholder="Enter Project Name" />
     </div>
 
     <div class="form-group">
-        <label for="dueDate">Due Date</label>
-        <input type="date" class="form-control" id="dueDate" name="dueDate" value="@Model.DueDate" />
+        <label asp-for="tempProject.StartDate"></label>
+        <input type="date" class="form-control" asp-for="tempProject.StartDate" />
     </div>
 
     <div class="form-group">
-        <label for="submissionDate">Submission Date</label>
-        <input type="date" class="form-control" id="submissionDate" name="submissionDate" value="@Model.SubmissionDate" />
+        <label asp-for="tempProject.EndDate"></label>
+        <input type="date" class="form-control" asp-for="tempProject.EndDate" />
     </div>
 
     <div class="form-group">
-        <label for="completeStatus">Complete Status</label>
-        <select class="form-control" id="completeStatus" name="completeStatus">
+        <label asp-for="tempProject.ProjectStatus"></label>
+        <select class="form-control" asp-for="tempProject.ProjectStatus" >
             <option value="">All Status</option>
             <option value="0">Incomplete</option>
             <option value="1">Complete</option>
         </select>
     </div>
 
-    
+    <div class="form-group">
+        <label asp-for="tempProject.ProgressStatus"></label>
+        <input type="text" class="form-control" asp-for="tempProject.ProgressStatus" placeholder="Enter Progress Status" />
+    </div>
+
+    <div class="form-group"> <!--Probably a dropdown, need to ask who will be project leads-->
+        <label asp-for="tempProject.ProjectLead"></label>
+        <input type="number" class="form-control" asp-for="tempProject.ProjectLead" />
+    </div>
+
+    <div class="form-group"> <!--Needs to become a dropdown-->
+        <label asp-for="tempProject.UserID"></label>
+        <input type="number" class="form-control" asp-for="tempProject.UserID" />
+    </div>
+
+    <div class="form-group"> <!--Needs to become a dropdown-->
+        <label asp-for="tempProject.GrantID"></label>
+        <input type="number" class="form-control" asp-for="tempProject.GrantID" />
+    </div>
+
     <button type="submit" class="btn btn-primary">Search</button>
 </form>
 
-@if (Model.Projects != null && Model.Projects.Count > 0)
+@{
+    if (Model.Projects != null && Model.Projects.Count > 0)
 {
     <h3>Search Results</h3>
     <table class="table table-bordered">
@@ -51,16 +73,21 @@
             @foreach (var project in Model.Projects)
             {
                 <tr>
-                    <td>@project.name</td>
-                    <td>@project.DueDate?.ToString("yyyy-MM-dd" ?? "N/A")</td>
-                    <td>@project.submissionDate?.ToString("yyyy-MM-dd" ?? "N/A")</td>
-                    <td>@(project.CompleteStatus.GetValueOrDefault() ? "Complete" : "Incomplete")</td>
+                    <td>@project.ProjectName</td>
+                    <td>@project.StartDate.ToString("yyyy-MM-dd")</td>
+                    <td>@project.EndDate.ToString("yyyy-MM-dd")</td>
+                    <td>@project.ProjectStatus</td>
+                    <td>@project.ProgressStatus</td>
+                    <td>@project.ProjectLead</td>
                 </tr>
             }
-        </tbody>
-    </table>
-}
-else
+
+
+         </tbody>
+                </table>
+}          
+    else
 {
     <p>No projects found matching your criteria.</p>
+}
 }

@@ -8,10 +8,34 @@
 
 <a asp-page="/Faculty/AddGrant" class="btn btn-info">Add Grant</a>
 <br/>
-<p>View your Projects:</p>
-<form asp-page-handler="FacultyHome" method="post">
-    <label for="projectDropdown">Select a Project: </label>
-    <select class="form-select" asp-for="SelectedProject" asp-items="Model.Projects" class="form-control">
-    </select>
-    <br />
-</form>
+<h2>Project List</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Project Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+            <th>Progress</th>
+            <th>Lead</th>
+            <th>User ID</th>
+            <th>Grant ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var project in Model.Projects)
+        {
+            <tr>
+                <td>@project.ProjectName</td>
+                <td>@project.StartDate.ToString("yyyy-MM-dd")</td>
+                <td>@project.EndDate.ToString("yyyy-MM-dd")</td>
+                <td>@project.ProjectStatus</td>
+                <td>@project.ProgressStatus</td>
+                <td>@project.ProjectLead</td>
+                <td>@project.UserID</td>
+                <td>@project.GrantID</td>
+            </tr>
+        }
+    </tbody>
+</table>

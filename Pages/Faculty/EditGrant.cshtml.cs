@@ -32,11 +32,18 @@ namespace Lab1.Pages.Faculty
 
             while (singleGrant.Read())
             {
-                GrantToUpdate.GrantID = Int32.Parse(singleGrant["GrantID"].ToString());
-                GrantToUpdate.Name = singleGrant["Name"].ToString();
-                GrantToUpdate.Category = singleGrant["Category"].ToString();
-                GrantToUpdate.GrantStatus = singleGrant["GrantStatus"].ToString();
-                GrantToUpdate.Amount = Convert.ToDouble(singleGrant["Amount"].ToString());
+                GrantToUpdate = new Grant
+                {
+                    GrantName = singleGrant["GrantName"] != DBNull.Value ? singleGrant["GrantName"].ToString() : string.Empty,
+                    FundingAgency = singleGrant["FundingAgency"] != DBNull.Value ? singleGrant["FundingAgency"].ToString() : string.Empty,
+                    SubmissionDate = singleGrant["SubmissionDate"] != DBNull.Value ? Convert.ToDateTime(singleGrant["SubmissionDate"]) : DateTime.MinValue,
+                    Deadline = singleGrant["Deadline"] != DBNull.Value ? Convert.ToDateTime(singleGrant["Deadline"]) : DateTime.MinValue,
+                    ProposalID = singleGrant["ProposalID"] != DBNull.Value ? Convert.ToInt32(singleGrant["ProposalID"]) : 0,
+                    FundingAmount = singleGrant["FundingAmount"] != DBNull.Value ? Convert.ToDecimal(singleGrant["FundingAmount"]) : 0,
+                    Type = singleGrant["Type"] != DBNull.Value ? singleGrant["Type"].ToString() : string.Empty,
+                    GrantDescription = singleGrant["GrantDescription"] != DBNull.Value ? singleGrant["GrantDescription"].ToString() : string.Empty,
+                    UserID = singleGrant["UserID"] != DBNull.Value ? Convert.ToInt32(singleGrant["UserID"]) : 0
+                };
             }
             DBClass.Lab1DBConnection.Close();
 

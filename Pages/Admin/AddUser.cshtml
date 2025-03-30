@@ -5,35 +5,41 @@
 
 <h1>Add New User:</h1>
 
-<form asp-page-handler="AddUser" method="post">
-    <select asp-for="UserType" class="form-select">
-        <option selected>Select A Type</option>
-        <option value=4>Representative</option>
-        <option value=2>Faculty</option>
-        <option value=3>Employee</option>
-        
-    </select>
-    <br />
+<form method="post">
+    <div class="form-group">
+        <label asp-for="TempUser.FirstName"></label>
+        <input asp-for="TempUser.FirstName" class="form-control" placeholder="Enter First Name" />
+    </div>
 
-    <div>
-        <label asp-for="FirstName">First Name:</label>
-        <input asp-for="FirstName" class="form-control"/>
+    <div class="form-group">
+        <label asp-for="TempUser.LastName"></label>
+        <input asp-for="TempUser.LastName" class="form-control" placeholder="Enter Last Name" />
     </div>
-    <div>
-        <label asp-for="LastName">Last Name:</label>
-        <input asp-for="LastName" class="form-control" />
+
+    <div class="form-group">
+        <label asp-for="TempUser.Email"></label>
+        <input asp-for="TempUser.Email" type="email" class="form-control" placeholder="Enter Email" />
     </div>
-    <div>
-        <label asp-for="MiddleInitial">Middle Initial:</label>
-        <input asp-for="MiddleInitial" class="form-control" />
+
+    <div class="form-group">
+        <select asp-for="TempUser.UserTypeID" class="form-select">
+            <option selected>Select A Type</option>
+            <option value=4>Representative</option>
+            <option value=2>Faculty</option>
+            <option value=3>Employee</option>
+
+        </select>
+        <br />
     </div>
-    <div>
-        <label asp-for="PhoneNumber">Phone Number:</label>
-        <input asp-for="PhoneNumber" class="form-control" />
+
+    <div class="form-group">
+        <label asp-for="TempUser.Department"></label>
+        <input asp-for="TempUser.Department" class="form-control" placeholder="Enter Department" />
     </div>
-    <div>
-        <label asp-for="Email">Email:</label>
-        <input asp-for="Email" class="form-control" />
+
+    <div class="form-group"> <!--Will become dropdown when access level is integrated-->
+        <label asp-for="TempUser.AccessLevel"></label>
+        <input asp-for="TempUser.AccessLevel" type="number" class="form-control" placeholder="Enter Access Level" />
     </div>
 
     <label>Enter New Username:</label>
@@ -44,12 +50,12 @@
     <input asp-for="Password" class="form-control" type="password" />
     <span asp-validation-for="Password" class="text-danger">Please enter a Password</span>
     <br />
-    <button class="btn btn-primary">Submit</button>
+    <button class="btn btn-primary">Add User</button>
     <button asp-page="AddUser" asp-page-handler="PopulateHandler" formnovalidate>Populate</button>
     <button asp-page="AddUser" asp-page-handler="ClearHandler" formnovalidate>Clear</button>
+
+    
 </form>
-
-
 
 
   

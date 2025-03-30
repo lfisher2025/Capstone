@@ -35,10 +35,14 @@ namespace Lab1.Pages.Admin
             {
                 PartnerInfo.Add(new BusinessPartner
                 {
-                    businessID = Int32.Parse(partnerReader["businessID"].ToString()),
-                    name = partnerReader["name"].ToString(),
-                    representativeID = Int32.Parse(partnerReader["representativeID"].ToString()),
-                    status = partnerReader["status"].ToString()
+                    PartnerName = partnerReader["PartnerName"] != DBNull.Value ? partnerReader["PartnerName"].ToString() : string.Empty,
+                    PartnerOrg = partnerReader["PartnerOrg"] != DBNull.Value ? partnerReader["PartnerOrg"].ToString() : string.Empty,
+                    PartnerContact = partnerReader["PartnerContact"] != DBNull.Value ? partnerReader["PartnerContact"].ToString() : string.Empty,
+                    PartnerType = partnerReader["PartnerType"] != DBNull.Value ? partnerReader["PartnerType"].ToString() : string.Empty,
+                    Sector = partnerReader["Sector"] != DBNull.Value ? partnerReader["Sector"].ToString() : string.Empty,
+                    Status = partnerReader["Status"] != DBNull.Value ? partnerReader["Status"].ToString() : string.Empty,
+                    LastInteractionDate = partnerReader["LastInteractionDate"] != DBNull.Value ? Convert.ToDateTime(partnerReader["LastInteractionDate"]) : DateTime.MinValue,
+                    GrantID = partnerReader["GrantID"] != DBNull.Value ? Convert.ToInt32(partnerReader["GrantID"]) : 0
                 });
             }
             DBClass.Lab1DBConnection.Close();

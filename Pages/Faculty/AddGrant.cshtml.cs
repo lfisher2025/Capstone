@@ -9,22 +9,7 @@ namespace Lab1.Pages.Faculty
     public class AddGrantModel : PageModel
     {
         [BindProperty]
-        public String GrantName { get; set; }
-        [BindProperty]
-        public double Amount { get; set; }
-        [BindProperty]
-        public DateTime AwardDate { get; set; }
-        [BindProperty]
-
-        public int FacultyID { get; set; }
-        [BindProperty]
-        public int BusinessPartnerID { get; set; }
-        [BindProperty]
-        public int StatusSelect { get; set; }
-        public String GrantNotes { get; set; }
-        public String Status { get; set; }
-        public AddGrantModel Grant { get; set; }
-
+        public Grant TempGrant { get; set; } = new Grant();
 
         public IActionResult OnGet()
         {
@@ -42,33 +27,16 @@ namespace Lab1.Pages.Faculty
 
         public void OnPost()
         {
-            if (StatusSelect == 1)
-            {
-                Status = "In-Progress";
-            }
-            else if (StatusSelect == 2)
-            {
-                Status = "Accepted";
-            }
-            else if (StatusSelect == 3)
-            {
-                Status = "Rejected";
-            }
-
-            Grant NewGrant = new Grant();
-            NewGrant.Name = GrantName;
-            NewGrant.Amount = Amount;
-            NewGrant.BusinessID = BusinessPartnerID;
-
-            DBClass.AddGrant(NewGrant);
+   
+            DBClass.AddGrant(TempGrant);
 
             DBClass.Lab1DBConnection.Close();
         }
 
-        public IActionResult OnPostPopulateHandler()
+        public IActionResult OnPostPopulateHandler() //Needs new logic for JMU care DB
         {
-            GrantName = "Education Grant";
-            Amount = 10000.00;
+            //GrantName = "Education Grant";
+            //Amount = 10000.00;
 
             return Page();
         }
