@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using static System.Net.WebRequestMethods
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -66,7 +67,19 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Admin/AdminHome">Lab 3</a>
+                @{
+                    var userType = Context.Session.GetString("UserType") != null ? Convert.ToInt32(Context.Session.GetString("UserType")) : 0;
+                    string pageLink = userType switch
+                    {
+                        1 => "/Admin/AdminHome",
+                        2 => "/Faculty/FacultyHome",
+                        3 => "/Employee/EmployeeHome",
+                        4 => "/BusinessPartners/BusinessPartnerHome",
+                        _ => "/Index" // default page if userType is not set
+                    };
+                }
+
+                <a class="navbar-brand" asp-area="" asp-page="@pageLink">Lab 3</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -99,6 +112,13 @@
                         </li>
                     </ul>
                 </div>
+                @{
+                    if (Context.Session.GetString("username") != null)
+                    {
+                        <a class="btn btn-danger me-2" asp-page="/HashedLogin/Logout">Logout</a> /*me-2 sets distance between buttons */
+                    }
+                    }
+                <br/>
                 <button type="button" class="btn btn-primary position-relative text-white" onclick="location.href='/Messaging/Inbox'">
                     Inbox
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
