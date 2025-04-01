@@ -615,6 +615,21 @@ namespace Lab1.Pages.DB
 
 
         }
+
+        public static SqlDataReader GetUserTasks(int UserID)
+        {
+            SqlCommand cmdUserTasks = new SqlCommand();
+            cmdUserTasks.Connection = Lab1DBConnection;
+            cmdUserTasks.Connection.ConnectionString = Lab1DBConnString;
+            cmdUserTasks.CommandText = "SELECT * FROM Task WHERE UserID = @UserID";
+
+            cmdUserTasks.Parameters.AddWithValue("@UserID", UserID);
+            cmdUserTasks.Connection.Open();
+
+            SqlDataReader tempreader = cmdUserTasks.ExecuteReader();
+
+            return tempreader;
+        }     
     }
 
 }

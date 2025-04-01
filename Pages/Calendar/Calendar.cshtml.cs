@@ -1,7 +1,10 @@
+using Lab1.Pages.DB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Reflection.PortableExecutable;
 
 namespace Lab1.Pages.Calendar
 {
@@ -9,6 +12,9 @@ namespace Lab1.Pages.Calendar
     {
         // Change Days to List<List<Day>> to hold multiple weeks of days
         public List<List<Day>> Days { get; set; } = new List<List<Day>>();
+
+        [BindProperty]
+        public List<Task> UserTasks { get; set; } = new List<Task>(); 
 
         public void OnGet()
         {
@@ -45,9 +51,39 @@ namespace Lab1.Pages.Calendar
                 }
                 Days.Add(week); // Add the week to the overall calendar
             }
+
+            //Get current userID for task query
+            string temp = HttpContext.Session.GetString("UserID");
+            int UserID =  int.Parse(temp);
+
+            //Gather User tasks to put on the calendar
+            SqlDataReader TaskReader = DBClass.GetUserTasks(UserID);
+
+            //read tasks into the list
+
+            while (TaskReader.Read())
+            {
+                Task task = new Task
+                {
+                    TaskID = TaskReader.GetInt32(TaskReader.GetOrdinal("TaskID")),
+                    TaskName = TaskReader.GetString(TaskReader.GetOrdinal("TaskName")),
+                    TaskDescription = TaskReader.IsDBNull(TaskReader.GetOrdinal("TaskDescription"))
+           ? null
+           : TaskReader.GetString(TaskReader.GetOrdinal("TaskDescription")),
+                    Deadline = TaskReader.GetDateTime(TaskReader.GetOrdinal("Deadline")),
+                    Status = TaskReader.IsDBNull(TaskReader.GetOrdinal("Status"))
+           ? null
+           : TaskReader.GetString(TaskReader.GetOrdinal("Status")),
+                    AssignedTo = TaskReader.GetInt32(TaskReader.GetOrdinal("AssignedTo")),
+                    ProjectID = TaskReader.GetInt32(TaskReader.GetOrdinal("ProjectID"))
+                };
+
+                UserTasks.Add(task);
+            }
+
         }
 
-
+        
     }
 
     public class Day
