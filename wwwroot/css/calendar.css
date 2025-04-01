@@ -1,0 +1,70 @@
+﻿.main-content {
+    flex-grow: 1;
+    padding: 50px;
+}
+
+.calendar {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #F4EFE1;
+}
+
+    .calendar td {
+        background-color: #DACCE6;
+    }
+
+    .calendar th, .calendar td {
+        border: 1px solid #ddd;
+        text-align: center;
+        height: 60px;
+    }
+
+    .calendar th {
+        background-color: #6A0DAD;
+        color: white;
+    }
+
+        .calendar th.selected {
+            background-color: #DACCE6 !important;
+            color: black;
+        }
+
+.modal-content {
+    background-color: #DACCE6;
+    color: #343a40;
+}
+
+.btn-primary {
+    background-color: #6A0DAD;
+    border-color: #6f42c1;
+}
+
+    .btn-primary:hover {
+        background-color: #DACCE6;
+    }
+
+.profile-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 5px;
+    background-color: white;
+}
+
+.profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.header-container {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    border-bottom: 2px solid #ddd;
+    flex-direction: row-reverse;
+}

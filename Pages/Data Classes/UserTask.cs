@@ -2,7 +2,7 @@
 
 namespace Lab1.Pages.Data_Classes
 {
-    public class Task
+    public class UserTask
     {
         public int TaskID { get; set; }
         public string TaskName { get; set; }

@@ -1,3 +1,4 @@
+using Lab1.Pages.Data_Classes;
 using Lab1.Pages.DB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,7 +15,7 @@ namespace Lab1.Pages.Calendar
         public List<List<Day>> Days { get; set; } = new List<List<Day>>();
 
         [BindProperty]
-        public List<Task> UserTasks { get; set; } = new List<Task>(); 
+        public List<UserTask> TaskList { get; set; } = new List<UserTask>(); 
 
         public void OnGet()
         {
@@ -63,7 +64,7 @@ namespace Lab1.Pages.Calendar
 
             while (TaskReader.Read())
             {
-                Task task = new Task
+                UserTask taskobj = new UserTask
                 {
                     TaskID = TaskReader.GetInt32(TaskReader.GetOrdinal("TaskID")),
                     TaskName = TaskReader.GetString(TaskReader.GetOrdinal("TaskName")),
@@ -78,8 +79,9 @@ namespace Lab1.Pages.Calendar
                     ProjectID = TaskReader.GetInt32(TaskReader.GetOrdinal("ProjectID"))
                 };
 
-                UserTasks.Add(task);
+                TaskList.Add(taskobj);
             }
+            DBClass.Lab1DBConnection.Close();
 
         }
 
