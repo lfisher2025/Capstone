@@ -28,7 +28,9 @@ namespace Lab1.Pages.Admin
 
         public void OnPost()
         {
-            TempUser.UserTypeID = UserType;
+            
+            TempUser.DateJoined = DateTime.Now;
+
 
             currentUserID = HttpContext.Session.GetString("UserID");
             int UserID = Convert.ToInt32(currentUserID);

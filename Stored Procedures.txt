@@ -10,7 +10,6 @@ CREATE PROCEDURE InsertUserAndGetID
     @NewUserID INT OUTPUT
 AS
 BEGIN
-    SET NOCOUNT ON;
 
     INSERT INTO Users (FirstName, LastName, Email, UserTypeID, Department, DateJoined, AccessLevel)
     VALUES (@FirstName, @LastName, @Email, @UserTypeID, @Department, @DateJoined, @AccessLevel);

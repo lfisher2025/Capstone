@@ -15,9 +15,10 @@ namespace Lab1.Pages.Data_Classes
         [Required]
         public DateTime assignDate { get; set; }
         [Required]
-        public int employeeID { get; set; }
-        [Required]
-        public int adminID { get; set; }
+   
+        public int assignedBy { get; set; }
+
+        public int assignedTo { get; set; }
 
     }
 }

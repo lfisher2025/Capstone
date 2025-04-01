@@ -3,16 +3,15 @@ CREATE TABLE UserType (
     name NVARCHAR(60) NOT NULL
 );
 
-CREATE TABLE [Users](
-    UserID INT PRIMARY KEY,
+CREATE TABLE [Users] (
+    UserID INT IDENTITY(1,1) PRIMARY KEY,
     FirstName VARCHAR(50),
     LastName VARCHAR(50),
     Email VARCHAR(100),
     UserTypeID INT,
     Department VARCHAR(100),
     DateJoined DATE,
-    AccessLevel INT,
-    FOREIGN KEY (UserTypeID) REFERENCES UserType(typeID)
+    AccessLevel INT
 );
 
 CREATE TABLE FileMetadata(
