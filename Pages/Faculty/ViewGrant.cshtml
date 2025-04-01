@@ -5,6 +5,8 @@
 }
 
 <h2>Grants</h2>
+<a asp-page="/Faculty/AddGrant" class="btn btn-primary">Add Grant</a>
+
 
 <form method="post">
     <div class="form-group">
@@ -46,12 +48,12 @@
         <label asp-for="tempGrant.GrantDescription"></label>
         <textarea class="form-control" asp-for="tempGrant.GrantDescription" placeholder="Enter Grant Description"></textarea>
     </div>
-
+@* 
     <div class="form-group">
         <!-- Ideally a dropdown of User Names -->
         <label asp-for="tempGrant.UserID"></label>
         <input type="number" class="form-control" asp-for="tempGrant.UserID" />
-    </div>
+    </div> *@
 
     <button type="submit" class="btn btn-primary mt-2">Search</button>
 </form>
