@@ -1,22 +1,209 @@
-html {
-  font-size: 14px;
+html, body {
+    min-height: 100%;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.container {
+    display: flex;
+    height: 100%;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.container-fluid {
+    display: flex;
+    min-height: 100%;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.column {
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #aaa;
+    height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
+.sidebar {
+    flex: 0.35;
+    background: #450084;
+    color: white;
+    min-height: 170vh;
+    padding: 1rem;
+}
+
+    .sidebar a {
+        position: relative;
+        color: white;
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        margin-bottom: 10px;
+        transition: color 0.3s;
+    }
+
+        .sidebar a.active {
+            background-color: white;
+            color: #450084;
+            font-weight: bold;
+        }
+
+        .sidebar a:hover {
+            color: black;
+        }
+
+        .sidebar a::after {
+            content: "";
+            position: absolute;
+            bottom: 4px;
+            left: 10px;
+            width: 0%;
+            height: 2px;
+            background-color: white;
+            transition: width 0.3s ease-in-out;
+        }
+
+.logo {
+    position: relative;
+    vertical-align: top;
+    background-color: white;
+    margin-bottom: 20px;
+}
+
+.tab {
+    padding: 20px;
+}
+
+.tabs button {
+    position: absolute;
+    width: 40%;
+    padding: 10px;
+    background-color: #450084;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+    .tabs button:hover {
+        background-color: #B599CE;
+    }
+
+.main-content {
+    flex: 1.5;
+    background-color: white;
+    padding: 20px;
+}
+
+.project-window {
+    background-color: #eee;
+    padding: 100px;
+    width: 500px;
+    box-shadow: 0 4px 8px rgba(181, 153, 206, 0.815);
+    border-radius: 50px;
+    text-align: left;
+}
+
+.calendar-container .day {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 2px;
+    cursor: pointer;
+    background-color: lightgrey;
+}
+
+    .calendar-container .day.selected {
+        background-color: #450084;
+        color: white;
+    }
+
+.profile-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 5px;
+    background-color: white;
+}
+
+.profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.header-container {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    border-bottom: 2px solid #ddd;
+    flex-direction: row-reverse;
+}
+
+.right-panel {
+    background-color: #DACCE6;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+}
+
+.right-section {
+    flex: 0.8;
+}
+
+.project-summary {
+    background-color: #F4EFE1;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.stats-box {
+    background-color: #F4EFE1;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.calendar-container {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.day {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.form-check-input:not(:checked):focus {
+    border-color: black;
+    box-shadow: none;
+}
+
+.day.selected {
+    background-color: #450084;
+}
+
+.right-panel,
+.project-summary,
+.stats-box,
+.calendar-container,
+.todays-task {
+    background-color: #F4EFE1;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.clickable-card:hover {
+    box-shadow: 0 4px 12px rgba(69, 0, 132, 0.2);
+    color: #450084;
 }
