@@ -1,35 +1,495 @@
-﻿@page
+﻿
+@page
 @model Lab1.Pages.Faculty.FacultyHomeModel
 @{
 }
 
-
-<h2>Welcome [Faculty Name]</h2>
-
-<a asp-page="/Faculty/AddGrant" class="btn btn-info">Add Grant</a>
-<br/>
-<h2>Project List</h2>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Project Name</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Status</th>
-            <th>Progress</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var project in Model.Projects)
-        {
-            <tr>
-                <td>@project.ProjectName</td>
-                <td>@project.StartDate.ToString("yyyy-MM-dd")</td>
-                <td>@project.EndDate.ToString("yyyy-MM-dd")</td>
-                <td>@project.ProjectStatus</td>
-                <td>@project.ProgressStatus</td>
-            </tr>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="JMU CARE" />
+    <title>JMU CARE Calendar</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- LOAD BOOTSTRAP CSS - DO NOT DELETE -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="styles.css" rel="stylesheet">
+    <!-- END LOADING BOOTSTRAP CSS -->
+    <style>
+        html, body {
+            min-height: 100%;
         }
-    </tbody>
-</table>
+
+        .container {
+            display: flex;
+            height: 100%;
+        }
+
+        .container-fluid {
+            display: flex;
+            min-height: 100%;
+        }
+
+        .column {
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #aaa;
+            height: 100%;
+        }
+
+        .sidebar {
+            flex: .35;
+            background: #450084;
+            color: white;
+            min-height: 170vh;
+            padding: 1rem;
+        }
+
+            .sidebar a {
+                position: relative;
+                color: white;
+                display: block;
+                padding: 10px;
+                text-decoration: none;
+                margin-bottom: 10px;
+                transition: color 0.3s;
+            }
+
+                .sidebar a.active {
+                    background-color: white;
+                    color: #450084;
+                    font-weight: bold;
+                }
+
+                .sidebar a:hover {
+                    color: black;
+                }
+
+                .sidebar a::after {
+                    content: "";
+                    position: absolute;
+                    bottom: 4px;
+                    left: 10px;
+                    width: 0%;
+                    height: 2px;
+                    background-color: white;
+                    transition: width 0.3s ease-in-out;
+                }
+
+        .logo {
+            position: relative;
+            vertical-align: t;
+            background-color: white;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 20px 20px 20px 20px;
+        }
+
+        .tabs button {
+            position: absolute;
+            width: 40%;
+            padding: 10px;
+            background-color: #450084;
+            color: white;
+            border-radius: 20px; /* Rounded button */
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+            .tabs button:hover {
+                background-color: #B599CE;
+            }
+
+        .main-content {
+            flex: 1.5;
+            background-color: white;
+            padding: 20px;
+        }
+
+        .project-window {
+            background-color: #eee;
+            padding: 100px;
+            width: 500px;
+            box-shadow: 0 4px 8px rgba(181, 153, 206, 0.815);
+            border-radius: 50px;
+            text-align: left;
+        }
+
+        .calendar-container .day {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 2px;
+            cursor: pointer;
+            background-color: lightgrey;
+        }
+
+            .calendar-container .day.selected {
+                background-color: #450084;
+                color: white;
+            }
+
+        .profile-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 5px;
+            background-color: white; /* Adjust as needed */
+        }
+
+        .profile-img {
+            width: 50px; /* Adjust size as needed */
+            height: 50px;
+            border-radius: 50%; /* Makes it a circle */
+            object-fit: cover; /* Ensures the image fills the space */
+        }
+
+        .header-container {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between; /* Space items evenly */
+            align-items: center;
+            background-color: white;
+            border-bottom: 2px solid #ddd; /* Optional divider */
+            flex-direction: row-reverse; /* Switches the order */
+        }
+
+        .right-panel {
+            background-color: #DACCE6;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            .right-section
+
+        {
+            flex: 0.8;
+        }
+
+        .project-summary {
+            background-color: #F4EFE1;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .stats-box {
+            background-color: #F4EFE1;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .calendar-container {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .day {
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .form-check-input:not(:checked):focus {
+            border-color: black;
+            box-shadow: none;
+        }
+
+        .day.selected {
+            background-color: #450084;
+        }
+
+        .right-panel,
+        .project-summary,
+        .stats-box,
+        .calendar-container,
+        .todays-task {
+            background-color: #F4EFE1;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .clickable-card:hover {
+            box-shadow: 0 4px 12px rgba(69, 0, 132, 0.2);
+            color: #450084;
+        }
+
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="column sidebar">
+                <img src="/images/JMUCare.png" alt="jmucarelogo" class="logo img-fluid w-100" style="vertical-align: top;">
+                <div class="row">
+                    <a href="/Faculty/FacultyHome" class="active"><i class="bi bi-house-door-fill me-2"></i>Home</a>
+                    <a href="/Employee/EmployeeViewProject"><i class="bi bi-kanban-fill me-2"></i>Projects</a>
+                    <a href="/Faculty/ViewGrant"><i class="bi bi-cash-coin me-2"></i>Grants</a>
+                    <a href="/Calendar/Calendar"><i class="bi bi-calendar-event-fill me-2"></i>Calendar</a>
+
+                </div>
+            </div>
+            <!---navigation ending --->
+            <!-- Main Content -->
+            <div class="col-md-10 main-content">
+                <div class="header-container">
+                    <div class="profile-section">
+                        <img src="/images/persona2.jpg" alt="Profile Picture" class="profile-img">
+                        <span class="profile-name">Anna Smith</span>
+                    </div>
+                    <h4 class="calendar-title">Welcome Back!</h4>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Today's Task -->
+                        <div class="todays-task">
+                            <h5 class="mb-3">Today's Task</h5>
+                            <ul class="list-unstyled">
+                                <ul class="list-unstyled">
+                                    <li class="d-flex align-items-center mb-2">
+                                        <input class="form-check-input me-2 rounded-circle border-success" type="checkbox" checked>
+                                        <span>Update research grant and confirm with team for approval</span>
+                                        <span class="badge bg-success ms-auto">Completed</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-2">
+                                        <input class="form-check-input me-2 rounded-circle border-secondary" type="checkbox">
+                                        <span>Approve pending projects or request modifications accordingly</span>
+                                        <span class="badge bg-danger ms-auto">In review</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-2">
+                                        <input class="form-check-input me-2 rounded-circle border-secondary" type="checkbox">
+                                        <span>Consult team and create new calendar events based on upcoming schedule</span>
+                                        <span class="badge bg-danger ms-auto">In review</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-2">
+                                        <input class="form-check-input me-2 rounded-circle border-secondary" type="checkbox">
+                                        <span>Add new updates to relevant projects</span>
+                                        <span class="badge bg-warning ms-auto">On going</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-2">
+                                        <input class="form-check-input me-2 rounded-circle border-success" type="checkbox" checked>
+                                        <span>Interactive prototype for app screens</span>
+                                        <span class="badge bg-success ms-auto">Completed</span>
+                                    </li>
+                                </ul>
+
+                        </div>
+                        <!--grant tracking-->
+                        <div class="right-panel">
+                            <h5 class="mb-3">Grant Tracker</h5>
+                            <table class="table table-sm table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Grant</th>
+                                        <th>Status</th>
+                                        <th>Amount</th>
+                                        <th>Due</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>JMU Research</td>
+                                        <td><span class="badge bg-warning text-dark">Pending</span></td>
+                                        <td>$2,500</td>
+                                        <td>July 21</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ADPi Philanthropy</td>
+                                        <td><span class="badge bg-success">Approved</span></td>
+                                        <td>$1,000</td>
+                                        <td>July 28</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Creative Project Fund</td>
+                                        <td><span class="badge bg-danger">Denied</span></td>
+                                        <td>$3,000</td>
+                                        <td>Aug 3</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--grant tracking-->
+                        <!-- Project Summary -->
+                        <div class="project-summary">
+                            <h5>Project Summary</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Project Manager</th>
+                                        <th>Due Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>JMU Research</td>
+                                        <td>Maryam Sharifian</td>
+                                        <td>Jul 15, 2024</td>
+                                        <td><span class="badge bg-success">Approved</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>UdyIT AI App Project</td>
+                                        <td>Rae Gilchrist</td>
+                                        <td>Jul 25, 2024</td>
+                                        <td><span class="badge bg-warning">Delayed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Marketing and Branding</td>
+                                        <td>Rakesh Kumar</td>
+                                        <td>Aug 3, 2024</td>
+                                        <td><span class="badge bg-danger">Re-work</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>App Development Project</td>
+                                        <td>Shiva Goami</td>
+                                        <td>Aug 5, 2024</td>
+                                        <td><span class="badge bg-success">Approved</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Grant Applications</td>
+                                        <td>Elham Torabi</td>
+                                        <td>Aug 8, 2024</td>
+                                        <td><span class="badge bg-warning">On going</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Right Panel -->
+                    <div class="col-md-6">
+                        <!-- Mini Calendar -->
+                        <div class="calendar-container mb-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <button class="btn btn-sm"><i class="bi bi-chevron-left"></i></button>
+                                <h6 class="mb-0">April 2025</h6>
+                                <button class="btn btn-sm"><i class="bi bi-chevron-right"></i></button>
+                            </div>
+                            <div class="d-flex justify-content-center text-muted small mt-2">
+                                <div class="mx-1">S</div>
+                                <div class="mx-1">M</div>
+                                <div class="mx-1">T</div>
+                                <div class="mx-1">W</div>
+                                <div class="mx-1">T</div>
+                                <div class="mx-1">F</div>
+                                <div class="mx-1">S</div>
+                            </div>
+                            <div class="d-flex flex-wrap justify-content-center mt-2">
+                                <div class="day">30</div>
+                                <div class="day">31</div>
+                                <div class="day selected">1</div>
+                                <div class="day">2</div>
+                                <div class="day">3</div>
+                                <div class="day">4</div>
+                                <div class="day">5</div>
+                            </div>
+                        </div>
+
+                        <!-- Stats -->
+                        <div class="right-panel clickable-card" data-bs-toggle="modal" data-bs-target="#weeklyActivityModal" style="cursor: pointer;">
+                            <p class="fw-bold">Weekly Activity</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>80%</span>
+                                <i class="bi bi-bar-chart fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="right-panel clickable-card" data-bs-toggle="modal" data-bs-target="#total" style="cursor: pointer;">
+                            <p class="fw-bold">Total Tasks Completed</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>40</span>
+                                <i class="bi bi-clock-history fs-4"></i>
+                            </div>
+                        </div>
+                        <div class="right-panel clickable-card" data-bs-toggle="modal" data-bs-target="#projectsfin" style="cursor: pointer;">
+                            <p class="fw-bold">Projects Finished</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>4</span>
+                                <i class="bi bi-folder2-open fs-4"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Weekly Activity Modal -->
+                    <div class="modal fade" id="weeklyActivityModal" tabindex="-1" aria-labelledby="weeklyActivityModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content" style="background-color: #F4EFE1;">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="weeklyActivityModalLabel">Weekly Activity Overview</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><strong>Tasks Completed:</strong> 40</p>
+                                    <p><strong>Hours Worked:</strong> 32 hrs</p>
+                                    <p><strong>Projects Engaged:</strong> 5</p>
+                                    <p><strong>Most Active Day:</strong> Wednesday</p>
+                                    <p><strong>Top Project:</strong> Fintech App UI</p>
+                                    <hr>
+                                    <h6>Graph coming soon!</h6>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Modal for Total Tasks-->
+                    <div class="modal fade" id="total" tabindex="-1" aria-labelledby="totalTasksModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content" style="background-color: #F4EFE1;">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="totalTasksModalLabel">Total Tasks Completed</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <ul>
+                                        <li>User flow design for app interface - ✅</li>
+                                        <li>Fintech project landing page - ✅</li>
+                                        <li>Marketing visuals for campaign - ✅</li>
+                                        <li>Accessibility review report - ✅</li>
+                                    </ul>
+                                    <p><strong>Total:</strong> 40 tasks completed</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Modal for Projects Finished-->
+                    <div class="modal fade" id="projectsfin" tabindex="-1" aria-labelledby="projectsFinishedModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content" style="background-color: #F4EFE1;">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="projectsFinishedModalLabel">Projects Finished</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <ul>
+                                        <li>Fintech App UI Design</li>
+                                        <li>SMAD Capstone Website</li>
+                                        <li>Burn Boot Camp App Audit</li>
+                                        <li>FridgeBuddy App UX Case Study</li>
+                                    </ul>
+                                    <p><strong>Total:</strong> 4 projects completed</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

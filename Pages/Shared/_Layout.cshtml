@@ -15,29 +15,28 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .navbar {
-            background-color: #007bff;
+            
         }
 
         .navbar-brand, .nav-link {
-            color: #000000 !important;
+
         }
         .navbar-toggler-icon {
-            background-color: #000000;
+            
         }
         .navbar-nav .nav-link:hover {
-            color: #ffd700 !important;
+            
         }
 
         .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
             display: block;
         }
         .footer {
-            background-color: #343a40;
-            color: #fff;
+            
             padding: 5px 0;
         }
         .footer a {
-            color: #ffd700;
+            
         }
         .footer a:hover {
             text-decoration: underline;
@@ -78,7 +77,7 @@
                         _ => "/Index" // default page if userType is not set
                     };
                 }
-
+                @*
                 <a class="navbar-brand" asp-area="" asp-page="@pageLink">Lab 3</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -114,6 +113,7 @@
                         </li>
                     </ul>
                 </div>
+                
                 @{
                     if (Context.Session.GetString("username") != null)
                     {
@@ -127,7 +127,7 @@
                         55+
                         <span class="visually-hidden">unread messages</span>
                     </span>
-                </button>
+                </button>*@
             </div>
         </nav>
     </header>
@@ -138,9 +138,9 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class=" footer text-muted">
         <div class="container">
-            &copy; 2025 - Lab1 - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2025 - JMU Care - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
 

@@ -1,21 +1,115 @@
-﻿@page
+﻿
+@page
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
 }
 
+<style>
+        body {
+        overflow-x: hidden;
+        background: url(/images/LoginPageBackground.png) no-repeat center fixed;
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+        flex-direction: column;
+        }
+
+        .logo {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        max-width: 250px;
+        margin-bottom: 30px;
+        }
+
+        .label {
+        text-align: left;
+        }
+
+        .forgor {
+        text-align: right;
+        }
+
+        .login-container {
+        background-color: white;
+        padding: 40px 60px;
+        width: 100%;
+        box-shadow: 0 4px 8px rgba(181, 153, 206, 0.815);
+        border-radius: 20px;
+        text-align: center;
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px; /* Rounded corners for inputs */
+        }
+
+        .login-container button {
+            width: 40%;
+            padding: 10px;
+            background-color: #DACCE6;
+            color: white;
+            border: none;
+            border-radius: 20px; /* Rounded button */
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .login-container button:hover {
+                background-color: #B599CE;
+            }
+
+         a {
+             position: aboslute;
+             top: 10px;
+             right: 10px;
+         }
+               
+</style>
+
+            @{
+                if (HttpContext.Session.GetString("username") != null)
+                {
+                    <a class="btn btn-danger me-2" asp-page="/HashedLogin/Logout">Logout</a>
+                    /*me-2 sets distance between buttons */
+                }
+            }
+            <br />
+            @*<button type="button" class="btn btn-primary position-relative text-white" onclick="location.href='/Messaging/Inbox'">
+                    Inbox
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        55+
+                        <span class="visually-hidden">unread messages</span>
+                    </span>
+                </button>*@
+        </div>
+    </nav>
+</header>
+
+<body>
+    <img src="/images/JMUCare.png" alt="Logo" class="logo" style="max-width: 250px;">
+</body>
+
 <div class="text-center">
-    <h1 class="display-4">Welcome to The GrantOrg Landing Page</h1>
-    <p>Created by Luke Fisher, Cody Bridge, Jeremy Cohen, and Lloyd Davis.</p>
+    <h1 class="display-4">Welcome to JMU Care</h1>
     <p>Please log in then select a menu choice above to begin.</p>
     <div class="text-center">
-        @{
-            if (HttpContext.Session.GetString("username") == null) {
-                <a asp-page="/HashedLogin/HashedLogin" class="btn btn-primary">Login</a>
-                <br />
-                <br />
-                <a asp-page="/Admin/AddUser" class="btn btn-primary">Create Account</a>
-            }
-        }
+        <a asp-page="/HashedLogin/HashedLogin" class="btn btn-primary">Login</a>
+        <br/>
+        <br/>
+        <a asp-page="/Admin/AddUser" class="btn btn-primary">Create Account</a>
     </div>
 </div>
+

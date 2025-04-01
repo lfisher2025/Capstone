@@ -11,7 +11,7 @@ namespace Lab1.Pages.Practice
         [BindProperty]
         public string Password { get; set; }
 
-        
+
         public void OnGet()
         {
             // Check if user is already logged in, if they are, display that they are logged in. The view handles showing the login form or not. 
@@ -39,7 +39,7 @@ namespace Lab1.Pages.Practice
                 int UserType = DBClass.GetUserType(UserID);
                 HttpContext.Session.SetString("UserType", UserType.ToString());
                 DBClass.Lab1DBConnection.Close();
-                return Page();
+                return Redirect("/Faculty/FacultyHome");
             }
             else
             {
@@ -51,6 +51,7 @@ namespace Lab1.Pages.Practice
         }
     }
 }
+
 
 
 
