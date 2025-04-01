@@ -36,15 +36,20 @@ namespace Lab1.Pages.Admin
             {
                 GrantInfo.Add(new Grant
                 {
-                    GrantID = Int32.Parse(grantReader["GrantID"].ToString()),
-                    Name = grantReader["Name"].ToString(),
-                    Category = grantReader["Category"].ToString(),
-                    GrantStatus = grantReader["GrantStatus"].ToString()
+                    GrantName = grantReader["GrantName"] != DBNull.Value ? grantReader["GrantName"].ToString() : string.Empty,
+                    FundingAgency = grantReader["FundingAgency"] != DBNull.Value ? grantReader["FundingAgency"].ToString() : string.Empty,
+                    SubmissionDate = grantReader["SubmissionDate"] != DBNull.Value ? Convert.ToDateTime(grantReader["SubmissionDate"]) : DateTime.MinValue,
+                    Deadline = grantReader["Deadline"] != DBNull.Value ? Convert.ToDateTime(grantReader["Deadline"]) : DateTime.MinValue,
+                    ProposalID = grantReader["ProposalID"] != DBNull.Value ? Convert.ToInt32(grantReader["ProposalID"]) : 0,
+                    FundingAmount = grantReader["FundingAmount"] != DBNull.Value ? Convert.ToDecimal(grantReader["FundingAmount"]) : 0,
+                    Type = grantReader["Type"] != DBNull.Value ? grantReader["Type"].ToString() : string.Empty,
+                    GrantDescription = grantReader["GrantDescription"] != DBNull.Value ? grantReader["GrantDescription"].ToString() : string.Empty,
+                    
                 });
             }
             DBClass.Lab1DBConnection.Close();
 
-            SqlDataReader projectReader = DBClass.ViewAdminProjects();
+            SqlDataReader projectReader = DBClass.ViewAllProjects();
 
             while (projectReader.Read())
             {

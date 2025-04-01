@@ -11,13 +11,8 @@ namespace Lab1.Pages.Admin
     {
         [BindProperty]
         public int UserType { get; set; }
-    
-        public String SelectUser { get; set; }
-        [BindProperty] public String FirstName { get; set; }
-        [BindProperty] public String LastName { get; set; }
-        [BindProperty] public String MiddleInitial { get; set; }
-        [BindProperty] public String PhoneNumber { get; set; }
-        [BindProperty] public String Email { get; set; }
+        [BindProperty]
+        public User TempUser { get; set; } = new User();
         [BindProperty] public String Username { get; set; }
         [BindProperty] public String Password { get; set; } 
         public String currentUserID { get; set; }
@@ -33,34 +28,30 @@ namespace Lab1.Pages.Admin
 
         public void OnPost()
         {
-            User NewUser = new User();
-            NewUser.FirstName = FirstName;
-            NewUser.LastName = LastName;
-            NewUser.Email = Email;
-            NewUser.MiddleInitial = MiddleInitial;
-            NewUser.PhoneNumber = PhoneNumber;
-            NewUser.UserType = UserType;
+            
+            TempUser.DateJoined = DateTime.Now;
+
 
             currentUserID = HttpContext.Session.GetString("UserID");
             int UserID = Convert.ToInt32(currentUserID);
 
-            int newID = DBClass.AddUser(NewUser,UserID);
+            int newID = DBClass.AddUser(TempUser,UserID);
             DBClass.Lab1DBConnection.Close();
             DBClass.CreateHashedUser(Username, Password, newID);
             DBClass.Lab1DBConnection.Close();
 
         }
 
-        public IActionResult OnPostPopulateHandler()
+        public IActionResult OnPostPopulateHandler() // Needs to be updated for new DB 
         {
             ModelState.Clear();
 
-            FirstName = "Luke";
-            LastName = "Fisher";
-            Email = "fishe4lj@dukes.jmu.edu";
-            MiddleInitial = "J";
-            PhoneNumber = "1234567890";
-            UserType = 3;
+            //FirstName = "Luke";
+            //LastName = "Fisher";
+            //Email = "fishe4lj@dukes.jmu.edu";
+            //MiddleInitial = "J";
+            //PhoneNumber = "1234567890";
+            //UserType = 3;
             return Page();
         }
 

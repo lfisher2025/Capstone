@@ -23,23 +23,16 @@ namespace Lab1.Pages.DB
 
         // Connection String - How to find and connect to DB
         private static readonly String? Lab1DBConnString =
-            "Server=localhost;Database=Lab3;Trusted_Connection=True";
+            "Server=localhost;Database=JMUCare;Trusted_Connection=True";
 
         private static readonly String? AuthConnString =
             "Server=Localhost;Database=AUTH;Trusted_Connection=True";
 
 
 
-        //Connection Methods:
 
-        //Add a new user
-
-        public static int AddUser(User newUser, int CurrentUserID)
+        public static int AddUser(User newUser, int CurrentUserID) //Updated for JMU Care DB
         {
-
-
-            //This method and the SQL procedure were developed with the help of ChatGPT.The tool was utilized to assist us with seamlessly linking
-            // the generated userID in the Lab1 DB to the UserID in the AUTH DB.
             SqlCommand cmdAddUser = new SqlCommand();
             cmdAddUser.Connection = Lab1DBConnection;
             cmdAddUser.Connection.ConnectionString = Lab1DBConnString;
@@ -49,11 +42,11 @@ namespace Lab1.Pages.DB
             // Add input parameters
             cmdAddUser.Parameters.AddWithValue("@FirstName", newUser.FirstName);
             cmdAddUser.Parameters.AddWithValue("@LastName", newUser.LastName);
-            cmdAddUser.Parameters.AddWithValue("@MiddleInitial", (object)newUser.MiddleInitial ?? DBNull.Value);
-            cmdAddUser.Parameters.AddWithValue("@Role", newUser.UserType);
-            cmdAddUser.Parameters.AddWithValue("@PhoneNumber", newUser.PhoneNumber);
             cmdAddUser.Parameters.AddWithValue("@Email", newUser.Email);
-            cmdAddUser.Connection.Open();
+            cmdAddUser.Parameters.AddWithValue("@UserTypeID", newUser.UserTypeID);
+            cmdAddUser.Parameters.AddWithValue("@Department", newUser.Department);
+            cmdAddUser.Parameters.AddWithValue("@DateJoined", newUser.DateJoined);
+            cmdAddUser.Parameters.AddWithValue("@AccessLevel", newUser.AccessLevel);
 
             // Add output parameter for UserID
             SqlParameter outputIdParam = new SqlParameter("@NewUserID", SqlDbType.Int)
@@ -62,96 +55,24 @@ namespace Lab1.Pages.DB
             };
             cmdAddUser.Parameters.Add(outputIdParam);
 
+            cmdAddUser.Connection.Open();
+
             int rowsAffected = cmdAddUser.ExecuteNonQuery(); // Execute procedure
-            int newUserId = -1; // Initialize a new variable to capture the userID autoincremented by the DB
+            int newUserId = -1;
 
             if (rowsAffected > 0)
             {
-                newUserId = (int)outputIdParam.Value; // Retrieve UserID
+                newUserId = (int)outputIdParam.Value;
                 Console.WriteLine($"User inserted successfully. New User ID: {newUserId}");
-
-                return newUserId;
-
-            }
-            else
-            {
-                Console.WriteLine("No rows were inserted.");
-                return -1;
-            }
-
-            Lab1DBConnection.Close();
-
-
-            if (newUser.UserType == 3)
-            {
-                DBClass.AddEmployee(newUserId, CurrentUserID);
-            }
-            else if (newUser.UserType == 4)
-            {
-                DBClass.AddRepresentative(newUserId);
-            }
-            else if (newUser.UserType == 2)
-            {
-                //will be added later, the initial form needs to dynamically change when a faculty user is selected to add new fields
-            }
-
-
-        }
-
-        public static void AddEmployee(int IDResult, int CurrentUserID)
-        {
-            string addEmplyString = "INSERT INTO Employee (employeeID, adminID) VALUES (@IDResult,@CurrentUserID);";
-            SqlCommand cmdAddEmployee = new SqlCommand();
-            cmdAddEmployee.Connection = Lab1DBConnection;
-            cmdAddEmployee.Connection.ConnectionString = Lab1DBConnString;
-            cmdAddEmployee.CommandText = addEmplyString;
-
-            cmdAddEmployee.Parameters.AddWithValue("@IDResult", IDResult);
-            cmdAddEmployee.Parameters.AddWithValue("@CurrentUserID", CurrentUserID);
-
-
-            Lab1DBConnection.Open();
-            int rowsAffected = cmdAddEmployee.ExecuteNonQuery(); 
-
-            if (rowsAffected > 0)
-            {
-                Console.WriteLine("Data inserted successfully.");
             }
             else
             {
                 Console.WriteLine("No rows were inserted.");
             }
 
-            Lab1DBConnection.Close();
-        }
-        public static void Addfaculty(int IDResult)
-        {
-            //will be added later, the initial form needs to dynamically change when a faculty user is selected to add new fields
-        }
+            cmdAddUser.Connection.Close();
 
-        public static void AddRepresentative(int IDResult)
-        {
-            string addRepString = "INSERT INTO Representative (representativeID) VALUES (@IDResult);";
-            SqlCommand cmdAddRep = new SqlCommand();
-            cmdAddRep.Connection = Lab1DBConnection;
-            cmdAddRep.Connection.ConnectionString = Lab1DBConnString;
-            cmdAddRep.CommandText = addRepString;
-
-            cmdAddRep.Parameters.AddWithValue("@IDResult", IDResult);
-
-            Lab1DBConnection.Open();
-            int rowsAffected = cmdAddRep.ExecuteNonQuery(); 
-
-            if (rowsAffected > 0)
-            {
-                Console.WriteLine("Data inserted successfully.");
-            }
-            else
-            {
-                Console.WriteLine("No rows were inserted.");
-            }
-
-            Lab1DBConnection.Close();
+            return newUserId;
         }
 
         public static SqlDataReader ViewAllGrants()
@@ -166,7 +87,7 @@ namespace Lab1.Pages.DB
             SqlDataReader tempReader = cmdViewGrants.ExecuteReader();
 
             return tempReader;
-        }
+        } //Ready for JMU Care DB
 
         public static SqlDataReader ViewUserMessages(int UserID)
         {
@@ -184,13 +105,29 @@ namespace Lab1.Pages.DB
             return tempreader;
         }
 
-        public static void AddGrant(Grant NewGrant)
+        public static void AddGrant(Grant NewGrant) //Updated for JMU Care DB
         {
-            string AddGrantString = "INSERT INTO GRANT (name, amount, businessid) VALUES (" + NewGrant.Name + "," + NewGrant.Amount + "," + NewGrant.BusinessID + ");";
+            string AddGrantString = @"
+            INSERT INTO Grant
+            (GrantName, FundingAgency, SubmissionDate, Deadline, ProposalID, FundingAmount, Type, GrantDescription, UserID)
+            VALUES
+            (@GrantName, @FundingAgency, @SubmissionDate, @Deadline, @ProposalID, @FundingAmount, @Type, @GrantDescription, @UserID)";
             SqlCommand cmdAddGrant = new SqlCommand();
             cmdAddGrant.Connection = Lab1DBConnection;
             cmdAddGrant.Connection.ConnectionString = Lab1DBConnString;
             cmdAddGrant.CommandText = AddGrantString;
+
+            cmdAddGrant.Parameters.Add("@GrantName", SqlDbType.VarChar, 100).Value = NewGrant.GrantName;
+            cmdAddGrant.Parameters.Add("@FundingAgency", SqlDbType.VarChar, 100).Value = NewGrant.FundingAgency;
+            cmdAddGrant.Parameters.Add("@SubmissionDate", SqlDbType.Date).Value = NewGrant.SubmissionDate;
+            cmdAddGrant.Parameters.Add("@Deadline", SqlDbType.Date).Value = NewGrant.Deadline;
+            cmdAddGrant.Parameters.Add("@ProposalID", SqlDbType.Int).Value = NewGrant.ProposalID;
+            cmdAddGrant.Parameters.Add("@FundingAmount", SqlDbType.Decimal).Value = NewGrant.FundingAmount;
+            cmdAddGrant.Parameters.Add("@Type", SqlDbType.VarChar, 50).Value = NewGrant.Type;
+            cmdAddGrant.Parameters.Add("@GrantDescription", SqlDbType.VarChar).Value = NewGrant.GrantDescription;
+            cmdAddGrant.Parameters.Add("@UserID", SqlDbType.Int).Value = NewGrant.UserID;
+
+
             Lab1DBConnection.Open();
             int rowsAffected = cmdAddGrant.ExecuteNonQuery(); // Ensures execution
 
@@ -206,18 +143,27 @@ namespace Lab1.Pages.DB
             Lab1DBConnection.Close();
         }
 
-        public static void AddBusinessPartner(BusinessPartner NewBusinessPartner)
+        public static void AddBusinessPartner(BusinessPartner NewBusinessPartner) //Updated for JMU Care DB
         {
-            string AddPartnerString = "INSERT INTO BusinessPartner (name, representativeID, status) VALUES (@name,@repID,@status);";
+            string AddPartnerString= @"
+            INSERT INTO Partnership
+            (PartnerName, PartnerOrg, PartnerContact, PartnerType, Sector, Status, LastInteractionDate, GrantID)
+            VALUES
+            (@PartnerName, @PartnerOrg, @PartnerContact, @PartnerType, @Sector, @Status, @LastInteractionDate, @GrantID)";
 
             SqlCommand cmdAddPartner = new SqlCommand();
             cmdAddPartner.Connection = Lab1DBConnection;
             cmdAddPartner.Connection.ConnectionString = Lab1DBConnString;
             cmdAddPartner.CommandText = AddPartnerString;
 
-            cmdAddPartner.Parameters.AddWithValue("@name", NewBusinessPartner.name);
-            cmdAddPartner.Parameters.AddWithValue("@repID", NewBusinessPartner.representativeID);
-            cmdAddPartner.Parameters.AddWithValue("@status", NewBusinessPartner.status);
+            cmdAddPartner.Parameters.Add("@PartnerName", SqlDbType.VarChar, 100).Value = NewBusinessPartner.PartnerName;
+            cmdAddPartner.Parameters.Add("@PartnerOrg", SqlDbType.VarChar, 100).Value = NewBusinessPartner.PartnerOrg;
+            cmdAddPartner.Parameters.Add("@PartnerContact", SqlDbType.VarChar, 100).Value = NewBusinessPartner.PartnerContact;
+            cmdAddPartner.Parameters.Add("@PartnerType", SqlDbType.VarChar, 50).Value = NewBusinessPartner.PartnerType;
+            cmdAddPartner.Parameters.Add("@Sector", SqlDbType.VarChar, 50).Value = NewBusinessPartner.Sector;
+            cmdAddPartner.Parameters.Add("@Status", SqlDbType.VarChar, 50).Value = NewBusinessPartner.Status;
+            cmdAddPartner.Parameters.Add("@LastInteractionDate", SqlDbType.Date).Value = NewBusinessPartner.LastInteractionDate;
+            cmdAddPartner.Parameters.Add("@GrantID", SqlDbType.Int).Value = NewBusinessPartner.GrantID;
 
 
 
@@ -240,7 +186,7 @@ namespace Lab1.Pages.DB
             
         }
 
-        public static SqlDataReader ViewAdminProjects()
+        public static SqlDataReader ViewAllProjects()
         {
             string ViewAdminProjectsString = "SELECT Project.name, Grants.amount , Project.dueDate " +
                 "FROM Project JOIN Grants ON Project.grantID = Grants.grantID ;";
@@ -257,59 +203,56 @@ namespace Lab1.Pages.DB
 
         }
 
-        public static SqlDataReader ViewEmployeeProjects()
-        {
-            string ViewEmployeeProjectsString = "SELECT name, completeStatus FROM Project;";
-
-            SqlCommand cmdViewEmployeeProjects = new SqlCommand();
-            cmdViewEmployeeProjects.Connection = Lab1DBConnection;
-            cmdViewEmployeeProjects.Connection.ConnectionString = Lab1DBConnString;
-            cmdViewEmployeeProjects.CommandText = ViewEmployeeProjectsString;
-            Lab1DBConnection.Open();
-
-            SqlDataReader tempReader = cmdViewEmployeeProjects.ExecuteReader();
-            return tempReader;
-        }
+       
+       
 
      
 
-        public static void AddNewProject(Project project, int currentUserID)
+        public static void AddNewProject(Project project, int currentUserID) //Method needs to also generate user-project pairs for composite table in DB
         {
-            string getFacultyString = "SELECT facultyID FROM FacultyGrant WHERE grantID = @grantID;";
-            SqlCommand cmdGetFaculty = new SqlCommand();
-            cmdGetFaculty.Connection = Lab1DBConnection;
-            cmdGetFaculty.Connection.ConnectionString = Lab1DBConnString;
-            cmdGetFaculty.CommandText = getFacultyString;
+            //string getFacultyString = "SELECT facultyID FROM FacultyGrant WHERE grantID = @grantID;";
+            //SqlCommand cmdGetFaculty = new SqlCommand();
+            //cmdGetFaculty.Connection = Lab1DBConnection;
+            //cmdGetFaculty.Connection.ConnectionString = Lab1DBConnString;
+            //cmdGetFaculty.CommandText = getFacultyString;
 
-            cmdGetFaculty.Parameters.AddWithValue("@grantID", project.grantID);
+            //cmdGetFaculty.Parameters.AddWithValue("@grantID", project.GrantID);
 
-            Lab1DBConnection.Open();
+            //Lab1DBConnection.Open();
 
-            SqlDataReader facultyReader = cmdGetFaculty.ExecuteReader();
+            //SqlDataReader facultyReader = cmdGetFaculty.ExecuteReader();
 
-            int facultyResult = 0;
-            if (facultyReader.Read())
-            {
-                facultyResult = Convert.ToInt32(facultyReader["facultyID"]);
-            }
-            Lab1DBConnection.Close();
+            //int facultyResult = 0;
+            //if (facultyReader.Read())
+            //{
+            //    facultyResult = Convert.ToInt32(facultyReader["facultyID"]);
+            //}
+            //Lab1DBConnection.Close();
 
-            string AddProjectString = "INSERT INTO PROJECT (grantID, employeeID, adminID, facultyID, name, dueDate) " +
-                          "OUTPUT INSERTED.ProjectID VALUES (@grantID, @employeeID, @adminID, @facultyID, @name, @dueDate)";
+            string sqlQuery = @"
+    INSERT INTO Project
+        (ProjectName, StartDate, EndDate, ProjectStatus, ProgressStatus, ProjectLead, UserID, GrantID)
+    OUTPUT INSERTED.ProjectID
+    VALUES
+        (@ProjectName, @StartDate, @EndDate, @ProjectStatus, @ProgressStatus, @ProjectLead, @UserID, @GrantID)";
+
             SqlCommand cmdAddProject = new SqlCommand();
             cmdAddProject.Connection = Lab1DBConnection;
             cmdAddProject.Connection.ConnectionString = Lab1DBConnString;
-            cmdAddProject.CommandText = AddProjectString;
+            cmdAddProject.CommandText = sqlQuery;
 
-            cmdAddProject.Parameters.AddWithValue("@grantID", project.grantID);
-            cmdAddProject.Parameters.AddWithValue("@employeeID", project.employeeID);
-            cmdAddProject.Parameters.AddWithValue("@adminID", currentUserID);
-            cmdAddProject.Parameters.AddWithValue("@facultyID", facultyResult);
-            cmdAddProject.Parameters.AddWithValue("@name", project.name);
-            cmdAddProject.Parameters.AddWithValue("@dueDate", project.DueDate?.ToString("yyyy-MM-dd" ?? "N/A"));
+            cmdAddProject.Parameters.AddWithValue("@ProjectName", project.ProjectName);
+            cmdAddProject.Parameters.AddWithValue("@StartDate", project.StartDate);
+            cmdAddProject.Parameters.AddWithValue("@EndDate", project.EndDate);
+            cmdAddProject.Parameters.AddWithValue("@ProjectStatus", project.ProjectStatus);
+            cmdAddProject.Parameters.AddWithValue("@ProgressStatus", project.ProgressStatus);
+            cmdAddProject.Parameters.AddWithValue("@ProjectLead", project.ProjectLead);
+            cmdAddProject.Parameters.AddWithValue("@UserID", project.UserID);
+            cmdAddProject.Parameters.AddWithValue("@GrantID", project.GrantID);
 
-            Lab1DBConnection.Open();
+            cmdAddProject.Connection.Open();
             int newProjectID = (int)cmdAddProject.ExecuteScalar();
+
 
             Lab1DBConnection.Close();
 
@@ -320,7 +263,7 @@ namespace Lab1.Pages.DB
             cmdAddNote.CommandText = NoteInsertQuery;
 
             cmdAddNote.Parameters.AddWithValue("@ProjectID", newProjectID);
-            cmdAddNote.Parameters.AddWithValue("@note", project.note);
+            //cmdAddNote.Parameters.AddWithValue("@note", project.note);
 
             Lab1DBConnection.Open();
             cmdAddNote.ExecuteNonQuery();
@@ -328,15 +271,15 @@ namespace Lab1.Pages.DB
 
         }
 
-        public static SqlDataReader ViewFacultyProjects(int facultyID)
+        public static SqlDataReader ViewUserProjects(int userID)// Updated for JMU Care DB 
         {
-            string ViewEmplyProjString = "SELECT * FROM PROJECT WHERE facultyID = @facultyID;";
+            string ViewEmplyProjString = "SELECT * FROM PROJECT WHERE UserID = @userID;";
             SqlCommand cmdViewEmplyProj = new SqlCommand();
             cmdViewEmplyProj.Connection = Lab1DBConnection;
             cmdViewEmplyProj.Connection.ConnectionString = Lab1DBConnString;
             cmdViewEmplyProj.CommandText = ViewEmplyProjString;
 
-            cmdViewEmplyProj.Parameters.AddWithValue("@facultyID", facultyID);
+            cmdViewEmplyProj.Parameters.AddWithValue("@userID", userID);
 
             Lab1DBConnection.Open();
 
@@ -346,7 +289,7 @@ namespace Lab1.Pages.DB
             Lab1DBConnection.Close();
         }
 
-        public static bool HashedParameterLogin(string Username, string Password)
+        public static bool HashedParameterLogin(string Username, string Password)//Ready for JMU Care DB
         {
             string loginQuery =
                 "SELECT Password FROM HashedCredentials WHERE Username = @Username";
@@ -375,10 +318,7 @@ namespace Lab1.Pages.DB
             return false;
         }
 
-
-
-
-        public static void CreateHashedUser(string Username, string Password, int UserID)
+        public static void CreateHashedUser(string Username, string Password, int UserID)//Ready for JMU Care DB
         {
             //The int UserID is the userID generated when the user is added to the Lab1DB. it is retrieved in the AddUser() method
             //This will link the login information with a user in the system.
@@ -401,7 +341,7 @@ namespace Lab1.Pages.DB
 
         }
 
-        public static int GetUserID(string username)
+        public static int GetUserID(string username)//Ready for JMU Care DB
         {
             //This method is called after a successful login to add the userID to the session state to be used for subsequent queries. 
             string getIDQuery = "SELECT UserID FROM HashedCredentials WHERE username = @username";
@@ -418,7 +358,7 @@ namespace Lab1.Pages.DB
             int UserID = (int)cmdGetID.ExecuteScalar();
 
             return UserID;
-        }
+        } 
 
         public static SqlDataReader GetUserMessages(string UserID)
         {
@@ -472,9 +412,9 @@ namespace Lab1.Pages.DB
 
         }
 
-        public static SqlDataReader GetUsers()
+        public static SqlDataReader GetUsers() //Updated for JMU Care DB
         {
-            string getUsersQuery = "SELECT userID, firstName, lastName FROM Users";
+            string getUsersQuery = "SELECT UserID, FirstName, LastName FROM Users";
 
             SqlCommand cmdGetUsers = new SqlCommand();
             cmdGetUsers.Connection = Lab1DBConnection;
@@ -487,62 +427,96 @@ namespace Lab1.Pages.DB
             return tempreader;
         }
 
-        public static SqlDataReader ViewProject(Project project)
+        public static SqlDataReader ViewProject(Project project) //Updated for JMU Care DB
         {
             string ViewProjectQuery = @"
-                SELECT p.name AS ProjectName, p.dueDate, p.submissionDate, p.completeStatus
-                FROM Project p
-                WHERE (@ProjectName IS NULL OR p.name LIKE '%' + @ProjectName + '%')
-                AND (@DueDate IS NULL OR p.dueDate = @DueDate OR p.dueDate IS NULL)
-                AND (@SubmissionDate IS NULL OR p.submissionDate = @SubmissionDate OR p.submissionDate IS NULL)
-                AND (@CompleteStatus IS NULL OR p.completeStatus = @CompleteStatus);";
+      SELECT p.ProjectName, p.StartDate, p.EndDate, p.ProjectStatus, p.ProgressStatus, p.ProjectLead, p.UserID, p.GrantID
+      FROM Project p
+      WHERE (@ProjectName IS NULL OR p.ProjectName LIKE '%' + @ProjectName + '%')
+      AND (@StartDate IS NULL OR p.StartDate = @StartDate)
+      AND (@EndDate IS NULL OR p.EndDate = @EndDate)
+      AND (@ProjectStatus IS NULL OR p.ProjectStatus = @ProjectStatus)
+      AND (@ProgressStatus IS NULL OR p.ProgressStatus = @ProgressStatus)
+      AND (@ProjectLead IS NULL OR p.ProjectLead = @ProjectLead)
+      AND (@UserID IS NULL OR p.UserID = @UserID)
+      AND (@GrantID IS NULL OR p.GrantID = @GrantID);";
 
             SqlCommand cmdViewProjects = new SqlCommand();
+
             cmdViewProjects.Connection = Lab1DBConnection;
             cmdViewProjects.Connection.ConnectionString = Lab1DBConnString;
             cmdViewProjects.CommandText = ViewProjectQuery;
 
             cmdViewProjects.Parameters.AddWithValue("@ProjectName",
-                string.IsNullOrEmpty(project.name) ? (object)DBNull.Value : project.name);
+                string.IsNullOrEmpty(project.ProjectName) ? (object)DBNull.Value : project.ProjectName);
 
-            cmdViewProjects.Parameters.AddWithValue("@DueDate",
-                project.DueDate == DateTime.MinValue ? (object)DBNull.Value : project.DueDate);
+            cmdViewProjects.Parameters.AddWithValue("@StartDate",
+                project.StartDate == DateTime.MinValue ? (object)DBNull.Value : project.StartDate);
 
-            cmdViewProjects.Parameters.AddWithValue("@SubmissionDate",
-                project.submissionDate == DateTime.MinValue ? (object)DBNull.Value : project.submissionDate);
+            cmdViewProjects.Parameters.AddWithValue("@EndDate",
+                project.EndDate == DateTime.MinValue ? (object)DBNull.Value : project.EndDate);
 
-            cmdViewProjects.Parameters.AddWithValue("@CompleteStatus",
-                project.CompleteStatus ?? (object)DBNull.Value);
+            cmdViewProjects.Parameters.AddWithValue("@ProjectStatus",
+                string.IsNullOrEmpty(project.ProjectStatus) ? (object)DBNull.Value : project.ProjectStatus);
 
+            cmdViewProjects.Parameters.AddWithValue("@ProgressStatus",
+                string.IsNullOrEmpty(project.ProgressStatus) ? (object)DBNull.Value : project.ProgressStatus);
 
-            cmdViewProjects.Connection.Open(); 
+            cmdViewProjects.Parameters.AddWithValue("@ProjectLead",
+                project.ProjectLead == 0 ? (object)DBNull.Value : project.ProjectLead);
+
+            cmdViewProjects.Parameters.AddWithValue("@UserID",
+                project.UserID == 0 ? (object)DBNull.Value : project.UserID);
+
+            cmdViewProjects.Parameters.AddWithValue("@GrantID",
+                project.GrantID == 0 ? (object)DBNull.Value : project.GrantID);
+
+            cmdViewProjects.Connection.Open();
 
             SqlDataReader tempreader = cmdViewProjects.ExecuteReader();
 
-            
+
             return tempreader;
 
             
         }
 
-        public static void EditGrant (Grant g)
+        public static void EditGrant (Grant grant) //Updated for JMU Care DB
         {
-            String sqlQuery = "UPDATE Grants SET";
-            sqlQuery += "Name='" + g.Name + "',";
-            sqlQuery += "Category='" + g.Category + "',";
-            sqlQuery += "Status='" + g.GrantStatus + "',";
-            sqlQuery += "Amount='" + g.Amount + "'WHERE GrantID=" + g.GrantID;
+            string sqlQuery = @"
+    UPDATE Grant SET
+        GrantName = @GrantName,
+        FundingAgency = @FundingAgency,
+        SubmissionDate = @SubmissionDate,
+        Deadline = @Deadline,
+        ProposalID = @ProposalID,
+        FundingAmount = @FundingAmount,
+        Type = @Type,
+        GrantDescription = @GrantDescription,
+        UserID = @UserID
+    WHERE GrantID = @GrantID";
 
-            SqlCommand cmdGrantRead = new SqlCommand();
-            cmdGrantRead.Connection = Lab1DBConnection;
-            cmdGrantRead.Connection.ConnectionString = Lab1DBConnString;
-            cmdGrantRead.CommandText = sqlQuery;
-            cmdGrantRead.Connection.Open();
+            SqlCommand cmdGrantUpdate = new SqlCommand();
+            cmdGrantUpdate.Connection = Lab1DBConnection;
+            cmdGrantUpdate.Connection.ConnectionString = Lab1DBConnString;
+            cmdGrantUpdate.CommandText = sqlQuery;
 
-            cmdGrantRead.ExecuteNonQuery();
+            cmdGrantUpdate.Parameters.AddWithValue("@GrantName", grant.GrantName);
+            cmdGrantUpdate.Parameters.AddWithValue("@FundingAgency", grant.FundingAgency);
+            cmdGrantUpdate.Parameters.AddWithValue("@SubmissionDate", grant.SubmissionDate);
+            cmdGrantUpdate.Parameters.AddWithValue("@Deadline", grant.Deadline);
+            cmdGrantUpdate.Parameters.AddWithValue("@ProposalID", grant.ProposalID);
+            cmdGrantUpdate.Parameters.AddWithValue("@FundingAmount", grant.FundingAmount);
+            cmdGrantUpdate.Parameters.AddWithValue("@Type", grant.Type);
+            cmdGrantUpdate.Parameters.AddWithValue("@GrantDescription", grant.GrantDescription);
+            cmdGrantUpdate.Parameters.AddWithValue("@UserID", grant.UserID);
+            cmdGrantUpdate.Parameters.AddWithValue("@GrantID", grant.GrantID);
+
+            cmdGrantUpdate.Connection.Open();
+            cmdGrantUpdate.ExecuteNonQuery();
         }
 
-        public static SqlDataReader SingleGrantReader(int GrantID)
+        public static SqlDataReader SingleGrantReader(int GrantID) // Ready for JMU Care DB
         {
             SqlCommand cmdGrantRead = new SqlCommand();
             cmdGrantRead.Connection = Lab1DBConnection;
@@ -555,12 +529,12 @@ namespace Lab1.Pages.DB
             return tempReader;
         }
 
-        public static SqlDataReader PartnerReader()
+        public static SqlDataReader PartnerReader() //Updated for JMU Care DB
         {
             SqlCommand cmdPartnerRead = new SqlCommand();
             cmdPartnerRead.Connection = Lab1DBConnection;
             cmdPartnerRead.Connection.ConnectionString = Lab1DBConnString;
-            cmdPartnerRead.CommandText = "SELECT * FROM BusinessPartner";
+            cmdPartnerRead.CommandText = "SELECT * FROM Partnership";
             cmdPartnerRead.Connection.Open();
 
             SqlDataReader tempReader = cmdPartnerRead.ExecuteReader();
@@ -568,7 +542,7 @@ namespace Lab1.Pages.DB
             return tempReader;
         }
 
-        public static int GetUserType(int userID)
+        public static int GetUserType(int userID) //Ready for JMU Care DB
         {
             SqlCommand cmdGetType = new SqlCommand();
             cmdGetType.Connection = Lab1DBConnection;
@@ -585,17 +559,61 @@ namespace Lab1.Pages.DB
 
 
 
-        public static SqlDataReader ViewAllRepresenatives()
+        public static SqlDataReader ViewAllRepresenatives() //Updated for JMU Care DB
         {
             SqlCommand cmdViewReps = new SqlCommand();
             cmdViewReps.Connection = Lab1DBConnection;
             cmdViewReps.Connection.ConnectionString = Lab1DBConnString;
-            cmdViewReps.CommandText = "SELECT userID, firstName, lastName FROM Users WHERE userTypeID = 4";
+            cmdViewReps.CommandText = "SELECT UserID, FirstName, LastName FROM Users WHERE UserTypeID = 4";
             cmdViewReps.Connection.Open();
 
             SqlDataReader tempreader = cmdViewReps.ExecuteReader();
 
             return tempreader;
+        }
+
+        public static SqlDataReader GrantSearch(Grant Grant) //Updated for JMU Care DB
+        {
+            string GrantSearchQuery = @"
+    SELECT *
+    FROM Grant
+    WHERE (@GrantName IS NULL OR GrantName LIKE '%' + @GrantName + '%')
+      AND (@FundingAgency IS NULL OR FundingAgency LIKE '%' + @FundingAgency + '%')
+      AND (@SubmissionDate IS NULL OR SubmissionDate = @SubmissionDate)
+      AND (@Deadline IS NULL OR Deadline = @Deadline)
+      AND (@FundingAmount IS NULL OR FundingAmount = @FundingAmount)
+      AND (@Type IS NULL OR Type LIKE '%' + @Type + '%')";
+
+            SqlCommand cmdGrantSearch = new SqlCommand();
+            cmdGrantSearch.Connection = Lab1DBConnection;
+            cmdGrantSearch.Connection.ConnectionString = Lab1DBConnString;
+            cmdGrantSearch.CommandText = GrantSearchQuery;
+
+            cmdGrantSearch.Parameters.AddWithValue("@GrantName",
+                string.IsNullOrEmpty(Grant.GrantName) ? (object)DBNull.Value : Grant.GrantName);
+
+            cmdGrantSearch.Parameters.AddWithValue("@FundingAgency",
+                string.IsNullOrEmpty(Grant.FundingAgency) ? (object)DBNull.Value : Grant.FundingAgency);
+
+            cmdGrantSearch.Parameters.AddWithValue("@SubmissionDate",
+                Grant.SubmissionDate == DateTime.MinValue ? (object)DBNull.Value : Grant.SubmissionDate);
+
+            cmdGrantSearch.Parameters.AddWithValue("@Deadline",
+                Grant.Deadline == DateTime.MinValue ? (object)DBNull.Value : Grant.Deadline);
+
+            cmdGrantSearch.Parameters.AddWithValue("@FundingAmount",
+                Grant.FundingAmount == 0 ? (object)DBNull.Value : Grant.FundingAmount);
+
+            cmdGrantSearch.Parameters.AddWithValue("@Type",
+                string.IsNullOrEmpty(Grant.Type) ? (object)DBNull.Value : Grant.Type);
+
+            cmdGrantSearch.Connection.Open();
+
+            SqlDataReader tempreader = cmdGrantSearch.ExecuteReader();
+
+            return tempreader;
+
+
         }
     }
 

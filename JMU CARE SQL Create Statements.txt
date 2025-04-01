@@ -6,15 +6,16 @@ CREATE TABLE UserType (
 
 -- Create User Table 
 CREATE TABLE Users (
-    userID INT PRIMARY KEY IDENTITY(1,1),
-    firstName NVARCHAR(60) NOT NULL,
-    lastName NVARCHAR(60) NOT NULL,
-    middleInitial NVARCHAR(1) NOT NULL,
-    userTypeID INT NOT NULL,
-    phoneNumber NVARCHAR(15) NOT NULL,
-    email NVARCHAR(60) NOT NULL,
+    UserID INT IDENTITY(1,1) PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Email VARCHAR(100),
+    UserTypeID INT,
+    Department VARCHAR(100),
+    DateJoined DATE,
+    AccessLevel INT
+);
 
-    FOREIGN KEY (userTypeID) REFERENCES UserType(typeID)
 );
 
 

@@ -12,11 +12,15 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var row in Model.Projects)
+        @foreach (var project in Model.Projects)
         {
             <tr>
-                <td>@row.name</td>
-                <td>@row.CompleteStatus</td>
+                <td>@project.ProjectName</td>
+                <td>@project.StartDate.ToString("yyyy-MM-dd")</td>
+                <td>@project.EndDate.ToString("yyyy-MM-dd")</td>
+                <td>@project.ProjectStatus</td>
+                <td>@project.ProgressStatus</td>
+                <td>@project.ProjectLead</td>
             </tr>
         }
     </tbody>

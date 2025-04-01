@@ -3,26 +3,54 @@
 @{
     ViewData["Title"] = "Edit Grant"; 
 }
+<form method="post">
+    <input type="hidden" asp-for="GrantToUpdate.GrantID" />
 
-<form asp-asp-page="EditGrant">
-    <input type="hidden" asp-for="@Model.GrantToUpdate.GrantID"/>
-    <label asp-for="@Model.GrantToUpdate.Name"></label>
-    <input type="text" asp-for="@Model.GrantToUpdate.Name" />
-    <br /><br />
-    <label asp-for="@Model.GrantToUpdate.Category"></label>
-    <input type="text" asp-for="@Model.GrantToUpdate.Category" />
-    <br /><br />
-    <label asp-for="@Model.GrantToUpdate.GrantStatus"></label>
-    <select asp-for="@Model.GrantToUpdate.GrantStatus">
-        <option value="1">In Progress</option>
-        <option value="2">Awarded</option>
-        <option value="3">Applied</option>
-        <option value="4">Rejected</option>
-    </select>
-    <br /><br />
-    <label asp-for="@Model.GrantToUpdate.Amount"></label>
-    <input type="number" asp-for="@Model.GrantToUpdate.Amount" />
-    <br /><br />
-    <input type="submit" class="btn btn-success" asp-page="EditGrant"/>
+    <div class="form-group">
+        <label asp-for="GrantToUpdate.GrantName"></label>
+        <input asp-for="GrantToUpdate.GrantName" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GrantToUpdate.FundingAgency"></label>
+        <input asp-for="GrantToUpdate.FundingAgency" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GrantToUpdate.SubmissionDate"></label>
+        <input asp-for="GrantToUpdate.SubmissionDate" type="date" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GrantToUpdate.Deadline"></label>
+        <input asp-for="GrantToUpdate.Deadline" type="date" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GrantToUpdate.ProposalID"></label>
+        <input asp-for="GrantToUpdate.ProposalID" type="number" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GrantToUpdate.FundingAmount"></label>
+        <input asp-for="GrantToUpdate.FundingAmount" type="number" step="0.01" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GrantToUpdate.Type"></label>
+        <input asp-for="GrantToUpdate.Type" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GrantToUpdate.GrantDescription"></label>
+        <textarea asp-for="GrantToUpdate.GrantDescription" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group"> <!--Needs to be multiselect dropdown with db logic for multiple users (composite table)-->
+        <label asp-for="GrantToUpdate.UserID"></label>
+        <input asp-for="GrantToUpdate.UserID" type="number" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update Grant</button>
     <a asp-page="/Faculty/ViewGrant" class="btn btn-secondary">Cancel</a>
 </form>

@@ -1,4 +1,5 @@
-﻿@page
+﻿ @page
+@using Lab1.Pages.Data_Classes
 @model Lab1.Pages.Admin.ManageBusinessPartnersModel
 @{
 }
@@ -8,15 +9,27 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>Organization</th>
+            <th>Contact</th>
+            <th>Type</th>
+            <th>Sector</th>
             <th>Status</th>
+            <th>Last Interaction</th>
+            <th>GrantID</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var row in Model.PartnerInfo)
+        @foreach (var partner in Model.PartnerInfo)
         {
             <tr>
-                <td>@row.name</td>
-                <td>@row.status</td>
+                <td>@partner.PartnerName</td>
+                <td>@partner.PartnerOrg</td>
+                <td>@partner.PartnerContact</td>
+                <td>@partner.PartnerType</td>
+                <td>@partner.Sector</td>
+                <td>@partner.Status</td>
+                <td>@partner.LastInteractionDate.ToString("yyyy-MM-dd")</td>
+                <td>@partner.GrantID</td>
             </tr>
         }
     </tbody>

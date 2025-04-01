@@ -9,7 +9,7 @@ namespace Lab1.Pages.Faculty
 {
     public class FacultyHomeModel : PageModel
     {
-         public List<SelectListItem> Projects { get; set; } = new();
+         public List<Project> Projects { get; set; } = new();
         public String MultiSelectMessage { get; set; }
         public String UserID { get; set; }
         public int SelectedProject { get; set; }
@@ -31,16 +31,20 @@ namespace Lab1.Pages.Faculty
             { return RedirectToPage("/Shared/UnauthorizedResource"); }
 
             // Gather all projects for the current user
-            int facultyID = Convert.ToInt32(UserID);
+            int userID = Convert.ToInt32(UserID);
 
-            SqlDataReader reader = DBClass.ViewFacultyProjects(facultyID);
+            SqlDataReader projectReader = DBClass.ViewUserProjects(userID);
 
-            while (reader.Read())
+            while (projectReader.Read())
             {
-                Projects.Add(new SelectListItem
+                Projects.Add(new Project
                 {
-                    Value = reader["projectID"].ToString(),  // Project ID as value
-                    Text = reader["name"].ToString()  // Project name as displayed text
+                    ProjectName = projectReader["ProjectName"] != DBNull.Value ? projectReader["ProjectName"].ToString() : string.Empty,
+                    StartDate = projectReader["StartDate"] != DBNull.Value ? Convert.ToDateTime(projectReader["StartDate"]) : DateTime.MinValue,
+                    EndDate = projectReader["EndDate"] != DBNull.Value ? Convert.ToDateTime(projectReader["EndDate"]) : DateTime.MinValue,
+                    ProjectStatus = projectReader["ProjectStatus"] != DBNull.Value ? projectReader["ProjectStatus"].ToString() : string.Empty,
+                    ProgressStatus = projectReader["ProgressStatus"] != DBNull.Value ? projectReader["ProgressStatus"].ToString() : string.Empty,
+                    ProjectLead = projectReader["ProjectLead"] != DBNull.Value ? Convert.ToInt32(projectReader["ProjectLead"]) : 0,
                 });
             }
             DBClass.Lab1DBConnection.Close();

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Reflection.PortableExecutable;
 using Lab1.Pages.Data_Classes;
 using Lab1.Pages.DB;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ namespace Lab1.Pages.Faculty
 {
     public class ViewGrantModel : PageModel
     {
-        private readonly string connectionString = "Server=localhost;Database=Lab3;Trusted_Connection=True";
+      
 
         [BindProperty(SupportsGet = true)]
         public string SearchName { get; set; }
@@ -21,7 +22,8 @@ namespace Lab1.Pages.Faculty
         [BindProperty(SupportsGet = true)]
         public double? SearchAmount { get; set; }
 
-        public List<GrantData> Grants { get; set; } = new();
+        [BindProperty]
+        public Grant tempGrant { get; set; } = new Grant();
         public List<Grant> GrantInfo { get; set; }
         public ViewGrantModel()
         {
@@ -46,53 +48,55 @@ namespace Lab1.Pages.Faculty
             {
                 GrantInfo.Add(new Grant
                 {
-                    GrantID = Int32.Parse(ViewGrants["GrantID"].ToString()),
-                    Name = ViewGrants["Name"].ToString(),
-                    Category = ViewGrants["Category"].ToString(),
-                    GrantStatus = ViewGrants["GrantStatus"].ToString(),
-                    Amount = Convert.ToDouble(ViewGrants["Amount"].ToString())
+                    GrantID = ViewGrants["GrantID"] != DBNull.Value ? Convert.ToInt32(ViewGrants["GrantID"]) : 0,
+                    GrantName = ViewGrants["GrantName"] != DBNull.Value ? ViewGrants["GrantName"].ToString() : string.Empty,
+                    FundingAgency = ViewGrants["FundingAgency"] != DBNull.Value ? ViewGrants["FundingAgency"].ToString() : string.Empty,
+                    SubmissionDate = ViewGrants["SubmissionDate"] != DBNull.Value ? Convert.ToDateTime(ViewGrants["SubmissionDate"]) : DateTime.MinValue,
+                    Deadline = ViewGrants["Deadline"] != DBNull.Value ? Convert.ToDateTime(ViewGrants["Deadline"]) : DateTime.MinValue,
+                    ProposalID = ViewGrants["ProposalID"] != DBNull.Value ? Convert.ToInt32(ViewGrants["ProposalID"]) : 0,
+                    FundingAmount = ViewGrants["FundingAmount"] != DBNull.Value ? Convert.ToDecimal(ViewGrants["FundingAmount"]) : 0,
+                    Type = ViewGrants["Type"] != DBNull.Value ? ViewGrants["Type"].ToString() : string.Empty,
+                    GrantDescription = ViewGrants["GrantDescription"] != DBNull.Value ? ViewGrants["GrantDescription"].ToString() : string.Empty,
+                    UserID = ViewGrants["UserID"] != DBNull.Value ? Convert.ToInt32(ViewGrants["UserID"]) : 0
                 });
             }
             DBClass.Lab1DBConnection.Close();
-            using (SqlConnection conn = new(connectionString))
+
+            return Page();
+
+        }
+
+
+        public IActionResult OnPost()
+        {
+            
+
+            GrantInfo.Clear();
+            SqlDataReader SearchRead = DBClass.GrantSearch(tempGrant);
+
+
+            while (SearchRead.Read())
             {
-                conn.Open();
-
-                string query = @"
-                SELECT Name, Category, Amount
-                FROM Grants
-                WHERE (@SearchName IS NULL OR Name LIKE '%' + @SearchName + '%')
-                AND (@SearchCategory IS NULL OR Category LIKE '%' + @SearchCategory + '%')
-                AND (@SearchAmount IS NULL OR Amount = @SearchAmount)";
-
-                using (SqlCommand cmd = new(query, conn))
+                GrantInfo.Add(new Grant
                 {
-                    cmd.Parameters.AddWithValue("@SearchName", string.IsNullOrEmpty(SearchName) ? (object)DBNull.Value : SearchName);
-                    cmd.Parameters.AddWithValue("@SearchCategory", string.IsNullOrEmpty(SearchCategory) ? (object)DBNull.Value : SearchCategory);
-                    cmd.Parameters.AddWithValue("@SearchAmount", SearchAmount ?? (object)DBNull.Value);
+                    GrantID = SearchRead["GrantID"] != DBNull.Value ? Convert.ToInt32(SearchRead["GrantID"]) : 0,
+                    GrantName = SearchRead["GrantName"] != DBNull.Value ? SearchRead["GrantName"].ToString() : string.Empty,
+                    FundingAgency = SearchRead["FundingAgency"] != DBNull.Value ? SearchRead["FundingAgency"].ToString() : string.Empty,
+                    SubmissionDate = SearchRead["SubmissionDate"] != DBNull.Value ? Convert.ToDateTime(SearchRead["SubmissionDate"]) : DateTime.MinValue,
+                    Deadline = SearchRead["Deadline"] != DBNull.Value ? Convert.ToDateTime(SearchRead["Deadline"]) : DateTime.MinValue,
+                    ProposalID = SearchRead["ProposalID"] != DBNull.Value ? Convert.ToInt32(SearchRead["ProposalID"]) : 0,
+                    FundingAmount = SearchRead["FundingAmount"] != DBNull.Value ? Convert.ToDecimal(SearchRead["FundingAmount"]) : 0,
+                    Type = SearchRead["Type"] != DBNull.Value ? SearchRead["Type"].ToString() : string.Empty,
+                    GrantDescription = SearchRead["GrantDescription"] != DBNull.Value ? SearchRead["GrantDescription"].ToString() : string.Empty,
+                    UserID = SearchRead["UserID"] != DBNull.Value ? Convert.ToInt32(SearchRead["UserID"]) : 0
 
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Grants.Add(new GrantData
-                            {
-                                Name = reader["Name"].ToString(),
-                                Category = reader["Category"].ToString(),
-                                Amount = Convert.ToDouble(reader["Amount"])
-                            });
-                        }
-                    }
-                }
+                });
             }
+            DBClass.Lab1DBConnection.Close();
             return Page();
         }
 
-        public class GrantData
-        {
-            public string Name { get; set; }
-            public string Category { get; set; }
-            public double Amount { get; set; }
-        }
+    
+        
     }
 }

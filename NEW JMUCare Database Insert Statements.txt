@@ -1,0 +1,54 @@
+--Insert UserTypes
+INSERT INTO UserType (typeID, name) VALUES 
+(1, 'Admin'),
+(2, 'Faculty'),
+(3, 'Employee'),
+(4, 'Representative');
+
+-- Insert User
+INSERT INTO [Users] (FirstName, LastName, Email, UserTypeID, Department, DateJoined, AccessLevel)
+VALUES ('Anna', 'Smith', 'anna.smith@example.com', 2, 'Research & Development', '2022-08-15', 3);
+
+-- Get Anna's UserID
+DECLARE @AnnaID INT;
+SET @AnnaID = SCOPE_IDENTITY();
+
+-- Insert Grant
+INSERT INTO Grants (GrantID, GrantName, FundingAgency, SubmissionDate, Deadline, ProposalID, FundingAmount, Type, GrantDescription, UserID)
+VALUES (1, 'Child Development Study', 'National Science Foundation', '2023-01-15', '2023-04-01', 1001, 50000.00, 'Research', 'Study on early childhood development patterns.', @AnnaID);
+
+-- Insert Project
+INSERT INTO Project (ProjectID, ProjectName, StartDate, EndDate, ProjectStatus, ProgressStatus, ProjectLead, UserID, GrantID)
+VALUES (1, 'Early Learning Initiative', '2023-05-01', '2024-05-01', 'Active', 'On Track', @AnnaID, @AnnaID, 1);
+
+-- Insert Task
+INSERT INTO Task (TaskID, TaskName, TaskDescription, Deadline, Status, AssignedTo, ProjectID)
+VALUES (1, 'Collect Survey Data', 'Gather initial survey responses from participants.', '2023-06-15', 'Completed', @AnnaID, 1);
+
+-- Insert Research Data
+INSERT INTO ResearchData (DataID, DataType, Version, AccessLevel, DataDescription, UploadDate, ProjectID)
+VALUES (1, 'Survey Results', 'v1.0', 2, 'Initial survey data collected from participants.', '2023-06-16', 1);
+
+-- Insert Report
+INSERT INTO Report (ReportID, ReportType, DateGenerated, Description, ExportFormat, GeneratedBy, DataID)
+VALUES (1, 'Summary Report', '2023-06-20', 'Summary analysis of survey results.', 'PDF', @AnnaID, 1);
+
+-- Insert Faculty Affiliate Application
+INSERT INTO FacultyAffiliateApplication (ApplicationID, ApplicationDate, ApplicationStatus, UserID)
+VALUES (1, '2023-02-10', 'Approved', @AnnaID);
+
+-- Insert Seed Fund
+INSERT INTO SeedFund (FundID, FundAmount, Status, Outcome, ApplicationID)
+VALUES (1, 10000.00, 'Allocated', 'Used for initial participant recruitment.', 1);
+
+-- Insert Partnership
+INSERT INTO Partnership (PartnerID, PartnerName, PartnerOrg, PartnerContact, PartnerType, Sector, Status, LastInteractionDate, GrantID, RepresentativeID)
+VALUES (1, 'John Doe', 'Early Learning Org', 'john.doe@elo.org', 'Community Partner', 'Education', 'Active', '2024-01-10', 1, @AnnaID);
+
+-- Insert MOU (Memo Of Understanding)
+INSERT INTO MemoOfUnderstanding (MouID, MouStartDate, MouEndDate, FileID, PartnerID)
+VALUES (1, '2023-03-01', '2024-03-01', NULL, 1); -- FileID is NULL since you requested no FileMetaData data
+
+-- Insert Project User
+INSERT INTO ProjectUsers (ProjectID, UserID)
+VALUES (1, @AnnaID);

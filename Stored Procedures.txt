@@ -1,22 +1,21 @@
 -- Create Procedure to insert new user and capture the generated ID for insertion into AUTH
--- This procedure is for the "LAB3" database
 CREATE PROCEDURE InsertUserAndGetID
     @FirstName VARCHAR(50),
     @LastName VARCHAR(50),
-    @MiddleInitial CHAR(1) NULL,
-    @Role VARCHAR(50),
-    @PhoneNumber VARCHAR(20),
     @Email VARCHAR(100),
-    @NewUserID INT OUTPUT  -- Output parameter for UserID
+    @UserTypeID INT,
+    @Department VARCHAR(100),
+    @DateJoined DATE,
+    @AccessLevel INT,
+    @NewUserID INT OUTPUT
 AS
 BEGIN
-    SET NOCOUNT OFF;
 
-    INSERT INTO Users (FirstName, LastName, MiddleInitial, userTypeID, PhoneNumber, Email)
-    VALUES (@FirstName, @LastName, @MiddleInitial, @Role, @PhoneNumber, @Email);
+    INSERT INTO Users (FirstName, LastName, Email, UserTypeID, Department, DateJoined, AccessLevel)
+    VALUES (@FirstName, @LastName, @Email, @UserTypeID, @Department, @DateJoined, @AccessLevel);
 
-    SET @NewUserID = SCOPE_IDENTITY(); -- Get the newly inserted UserID
-END
+    SET @NewUserID = SCOPE_IDENTITY();
+END;
 
 
 --This procedure is for the "AUTH" database

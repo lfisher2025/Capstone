@@ -9,22 +9,18 @@ namespace Lab1.Pages.Admin
     public class AddBusinessPartnerModel : PageModel
     {
         [BindProperty]
-        public String CompanyName { get; set; }
+        public BusinessPartner NewPartner { get; set; } = new BusinessPartner();
 
-        [BindProperty]
-        public int RepresentativeID { get; set; }
-
-       
 
         [BindProperty]
         public int StatusSelect {  get; set; }
        
-        [BindProperty]
-        public String Name {  get; set; }
-
         public IList<User> Representitives { get; set; } = new List<User>();
 
         public String Status { get; set; }
+
+        [BindProperty]
+        public int RepresentativeID { get; set; }
 
         //Eventually, the OnGet method will need to select the representatives from the database for a user to select one to attach to the business
         public IActionResult OnGet()
@@ -52,6 +48,7 @@ namespace Lab1.Pages.Admin
                     });
                 }
                 DBClass.Lab1DBConnection.Close();
+
                 
                 return Page(); 
             }
@@ -80,26 +77,32 @@ namespace Lab1.Pages.Admin
             {
                 Status = "Active Partner";
             }
+            else if (StatusSelect == 6)
+            {
+                Status = "Completed";
+            }
+            else if (StatusSelect == 7)
+            {
+                Status = "On Hold";
+            }
             
-            BusinessPartner NewPartner = new BusinessPartner();
-            NewPartner.name = CompanyName;
-            NewPartner.status = Status;
-            NewPartner.representativeID = RepresentativeID;
+            NewPartner.Status = Status;
 
             DBClass.AddBusinessPartner(NewPartner);
 
             DBClass.Lab1DBConnection.Close();  
         }
 
-        public IActionResult OnPostPopulateHandler()
+        public IActionResult OnPostPopulateHandler() //Needs to be updated to reflect new partner structure
         {
-            ModelState.Clear();
+            //ModelState.Clear();
 
-            CompanyName = "JMU Company";
-            RepresentativeID = 4;
-            Status = "Prospect";
+            //CompanyName = "JMU Company";
+            //RepresentativeID = 4;
+            //Status = "Prospect";
 
             return Page();
+
         }
 
         public IActionResult OnPostClearHandler()
