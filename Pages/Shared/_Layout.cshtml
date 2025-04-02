@@ -186,13 +186,13 @@
                             _ => "/Index" // default page if userType is not set
                         };
                     }
-                    <a asp-page="@pageLink"><i class="bi bi-house-door-fill me-2"></i>Home</a>
+                    <a asp-page="@pageLink" class="active"><i class="bi bi-house-door-fill me-2"></i>Home</a>
                     <a asp-page="/Projects/Projects"><i class="bi bi-kanban-fill me-2"></i>Projects</a>
                     <a asp-page="/Tasks/Tasks"><i class="bi bi-list-check me-2"></i>Tasks</a>
                     <a asp-page="/Faculty/ViewGrant"><i class="bi bi-cash-coin me-2"></i>Grants</a>
                     <a asp-page="/Team/YourTeam"><i class="bi bi-people-fill me-2"></i>Your Team</a>
                     <a asp-page="/Messaging/Inbox"><i class="bi bi-chat-dots-fill me-2"></i>Message</a>
-                    <a asp-page="/Calendar/Calendar" class="active"><i class="bi bi-calendar-event-fill me-2"></i>Calendar</a>
+                    <a asp-page="/Calendar/Calendar"><i class="bi bi-calendar-event-fill me-2"></i>Calendar</a>
                     <a asp-page="/Settings/Settings"><i class="bi bi-gear-fill me-2"></i>Settings</a>
                 </div>
             </div>
