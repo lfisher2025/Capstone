@@ -51,10 +51,11 @@
         .login-container {
             background-color: white;
             padding: 40px 60px;
-            width: 100%;
+            width: 60%;
             box-shadow: 0 4px 8px rgba(181, 153, 206, 0.815);
             border-radius: 20px;
             text-align: center;
+            margin: auto;
         }
 
             .login-container h2 {
@@ -101,7 +102,7 @@ else
 
     <body id="page-top">
         <img src="~/images/JMUCare.png" alt="Logo" class="logo" style="max-width: 250px;" />
-        <div class="login-container">
+            <div class="login-container position-absolute top-50 start-50 translate-middle">
             <form asp-page="HashedLogin">
                 <h6 class="label">Email</h6>
                 <input asp-for="Username" class="form-control" placeholder="Enter Username" />

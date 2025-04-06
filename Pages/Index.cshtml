@@ -5,7 +5,7 @@
     ViewData["Title"] = "Home page";
 }
 
-@section Styles {
+
     <style>
         body {
         overflow-x: hidden;
@@ -18,7 +18,10 @@
         margin: 0;
         background-color: #f0f0f0;
         flex-direction: column;
+        text-align: center;
         }
+
+
 
         .logo {
         position: absolute;
@@ -77,9 +80,13 @@
              top: 10px;
              right: 10px;
          }
+
+         div {
+            
+         }
                
 </style>
-}
+
 
             @{
                 if (HttpContext.Session.GetString("username") != null)
@@ -94,18 +101,13 @@
 
 <body>
     <img src="~/images/JMUCare.png" alt="Logo" class="logo" style="max-width: 250px;" />
-
-
-
-<div class="text-center">
-    <h1 class="display-4">Welcome to JMU Care</h1>
-    <p>Please log in then select a menu choice above to begin.</p>
-    <div class="text-center">
-        <a asp-page="/HashedLogin/HashedLogin" class="btn btn-primary">Login</a>
-        <br/>
-        <br/>
-        <a asp-page="/Admin/AddUser" class="btn btn-primary">Create Account</a>
+    <div class="position-absolute top-50 start-50 translate-middle">
+        <h1 class="display-4">Welcome to JMU Care</h1>
+        <p>Please log in then select a menu choice above to begin.</p>
+            <a asp-page="/HashedLogin/HashedLogin" class="btn btn-primary">Login</a>
+            <br/>
+            <br/>
+            <a asp-page="/Admin/AddUser" class="btn btn-primary">Create Account</a>
     </div>
-</div>
 
 </body>

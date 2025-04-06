@@ -1,4 +1,4 @@
-﻿@* @using static System.Net.WebRequestMethods
+﻿@using static System.Net.WebRequestMethods
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="~/Lab1.styles.css" asp-append-version="true" />
     <style>
         body {
-            background-color: #f8f9fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .navbar {
@@ -60,11 +59,19 @@
         .navbar-collapse.collapse {
             display: block !important;
         }
+
+        #inbox {
+            position: sticky;
+            top: 0;
+            right: 0;
+        }
+
     </style>
 </head>
 <body>
-    <header> *@
-       @*  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3">
+    <header>
+        @*
+         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3">
             <div class="container">
                 @{
                     var userType = Context.Session.GetString("UserType") != null ? Convert.ToInt32(Context.Session.GetString("UserType")) : 0;
@@ -118,28 +125,32 @@
                     if (Context.Session.GetString("username") != null)
                     {
                         <a class="btn btn-danger me-2" asp-page="/HashedLogin/Logout">Logout</a> /*me-2 sets distance between buttons */
+                        <button type="button" id="inbox" class="btn btn-primary position-relative text-white " onclick="location.href='/Messaging/Inbox'">
+                            Inbox
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                55+
+                                <span class="visually-hidden">unread messages</span>
+                            </span>
+                        </button>
                     }
                     }
                 <br/>
-                <button type="button" class="btn btn-primary position-relative text-white" onclick="location.href='/Messaging/Inbox'">
-                    Inbox
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        55+
-                        <span class="visually-hidden">unread messages</span>
-                    </span>
-                </button>
+  
             </div>
         </nav>
+        *@
     </header> 
+    
     
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
+    
 
     <footer class=" footer text-muted">
-        <div class="container">
+        <div class="position-absolute bottom-0 end-0">
             &copy; 2025 - JMU Care - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
