@@ -6,12 +6,11 @@ using Lab1.Pages.Data_Classes;
 using Lab1.Pages.DB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
 namespace Lab1.Pages.Faculty
 {
-    public class ViewGrantModel : PageModel
+    public class GrantSearchModel : PageModel
     {
-        
+
 
         [BindProperty(SupportsGet = true)]
         public string SearchName { get; set; }
@@ -25,7 +24,7 @@ namespace Lab1.Pages.Faculty
         [BindProperty]
         public Grant tempGrant { get; set; } = new Grant();
         public List<Grant> GrantInfo { get; set; }
-        public ViewGrantModel()
+        public GrantSearchModel()
         {
             GrantInfo = new List<Grant>();
         }
@@ -69,7 +68,7 @@ namespace Lab1.Pages.Faculty
 
         public IActionResult OnPost()
         {
-            
+
 
             GrantInfo.Clear();
             SqlDataReader SearchRead = DBClass.GrantSearch(tempGrant);
@@ -96,7 +95,5 @@ namespace Lab1.Pages.Faculty
             return Page();
         }
 
-    
-        
     }
 }

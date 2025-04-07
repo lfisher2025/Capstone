@@ -4,7 +4,7 @@ using Lab1.Pages.Data_Classes;
 using Lab1.Pages.DB;
 
 
-namespace Lab1.Pages.Faculty
+namespace Lab1.Pages.Faculty.GrantWork
 {
     public class AddGrantModel : PageModel
     {
