@@ -19,10 +19,6 @@
         <input type="text" class="form-control" asp-for="tempGrant.FundingAgency" placeholder="Enter Funding Agency" />
     </div>
 
-    <div class="form-group">
-        <label asp-for="tempGrant.SubmissionDate"></label>
-        <input type="date" class="form-control" asp-for="tempGrant.SubmissionDate" />
-    </div>
 
     <div class="form-group">
         <label asp-for="tempGrant.Deadline"></label>
@@ -93,13 +89,12 @@
             <tr>
                 <td>@grant.GrantName</td>
                 <td>@grant.FundingAgency</td>
-                <td>@grant.SubmissionDate.ToString("yyyy-MM-dd")</td>
                 <td>@grant.Deadline.ToString("yyyy-MM-dd")</td>
                 <td>@grant.ProposalID</td>
                 <td>@grant.FundingAmount.ToString("C")</td>
                 <td>@grant.Type</td>
                 <td>@grant.GrantDescription</td>
-                <td>@grant.UserID</td>
+                
             </tr>
         }
     </tbody>

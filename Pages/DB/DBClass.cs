@@ -111,7 +111,7 @@ namespace Lab1.Pages.DB
             INSERT INTO Grant
             (GrantName, FundingAgency, SubmissionDate, Deadline, ProposalID, FundingAmount, Type, GrantDescription, UserID)
             VALUES
-            (@GrantName, @FundingAgency, @SubmissionDate, @Deadline, @ProposalID, @FundingAmount, @Type, @GrantDescription, @UserID)";
+            (@GrantName, @FundingAgency, @SubmissionDate, @Deadline, @ProposalID, @FundingAmount, @Type, @GrantDescription)";
             SqlCommand cmdAddGrant = new SqlCommand();
             cmdAddGrant.Connection = Lab1DBConnection;
             cmdAddGrant.Connection.ConnectionString = Lab1DBConnString;
@@ -119,13 +119,12 @@ namespace Lab1.Pages.DB
 
             cmdAddGrant.Parameters.Add("@GrantName", SqlDbType.VarChar, 100).Value = NewGrant.GrantName;
             cmdAddGrant.Parameters.Add("@FundingAgency", SqlDbType.VarChar, 100).Value = NewGrant.FundingAgency;
-            cmdAddGrant.Parameters.Add("@SubmissionDate", SqlDbType.Date).Value = NewGrant.SubmissionDate;
             cmdAddGrant.Parameters.Add("@Deadline", SqlDbType.Date).Value = NewGrant.Deadline;
             cmdAddGrant.Parameters.Add("@ProposalID", SqlDbType.Int).Value = NewGrant.ProposalID;
             cmdAddGrant.Parameters.Add("@FundingAmount", SqlDbType.Decimal).Value = NewGrant.FundingAmount;
             cmdAddGrant.Parameters.Add("@Type", SqlDbType.VarChar, 50).Value = NewGrant.Type;
             cmdAddGrant.Parameters.Add("@GrantDescription", SqlDbType.VarChar).Value = NewGrant.GrantDescription;
-            cmdAddGrant.Parameters.Add("@UserID", SqlDbType.Int).Value = NewGrant.UserID;
+            
 
 
             Lab1DBConnection.Open();
@@ -493,7 +492,6 @@ namespace Lab1.Pages.DB
         FundingAmount = @FundingAmount,
         Type = @Type,
         GrantDescription = @GrantDescription,
-        UserID = @UserID
     WHERE GrantID = @GrantID";
 
             SqlCommand cmdGrantUpdate = new SqlCommand();
@@ -503,13 +501,11 @@ namespace Lab1.Pages.DB
 
             cmdGrantUpdate.Parameters.AddWithValue("@GrantName", grant.GrantName);
             cmdGrantUpdate.Parameters.AddWithValue("@FundingAgency", grant.FundingAgency);
-            cmdGrantUpdate.Parameters.AddWithValue("@SubmissionDate", grant.SubmissionDate);
             cmdGrantUpdate.Parameters.AddWithValue("@Deadline", grant.Deadline);
             cmdGrantUpdate.Parameters.AddWithValue("@ProposalID", grant.ProposalID);
             cmdGrantUpdate.Parameters.AddWithValue("@FundingAmount", grant.FundingAmount);
             cmdGrantUpdate.Parameters.AddWithValue("@Type", grant.Type);
             cmdGrantUpdate.Parameters.AddWithValue("@GrantDescription", grant.GrantDescription);
-            cmdGrantUpdate.Parameters.AddWithValue("@UserID", grant.UserID);
             cmdGrantUpdate.Parameters.AddWithValue("@GrantID", grant.GrantID);
 
             cmdGrantUpdate.Connection.Open();
@@ -579,7 +575,6 @@ namespace Lab1.Pages.DB
     FROM Grant
     WHERE (@GrantName IS NULL OR GrantName LIKE '%' + @GrantName + '%')
       AND (@FundingAgency IS NULL OR FundingAgency LIKE '%' + @FundingAgency + '%')
-      AND (@SubmissionDate IS NULL OR SubmissionDate = @SubmissionDate)
       AND (@Deadline IS NULL OR Deadline = @Deadline)
       AND (@FundingAmount IS NULL OR FundingAmount = @FundingAmount)
       AND (@Type IS NULL OR Type LIKE '%' + @Type + '%')";
@@ -594,9 +589,6 @@ namespace Lab1.Pages.DB
 
             cmdGrantSearch.Parameters.AddWithValue("@FundingAgency",
                 string.IsNullOrEmpty(Grant.FundingAgency) ? (object)DBNull.Value : Grant.FundingAgency);
-
-            cmdGrantSearch.Parameters.AddWithValue("@SubmissionDate",
-                Grant.SubmissionDate == DateTime.MinValue ? (object)DBNull.Value : Grant.SubmissionDate);
 
             cmdGrantSearch.Parameters.AddWithValue("@Deadline",
                 Grant.Deadline == DateTime.MinValue ? (object)DBNull.Value : Grant.Deadline);
@@ -629,7 +621,82 @@ namespace Lab1.Pages.DB
             SqlDataReader tempreader = cmdUserTasks.ExecuteReader();
 
             return tempreader;
-        }     
+        }
+
+        public static SqlDataReader GetUserGrants(int UserID)
+        {
+            SqlCommand cmdUserGrants = new SqlCommand();
+            cmdUserGrants.Connection = Lab1DBConnection;
+            cmdUserGrants.Connection.ConnectionString = Lab1DBConnString;
+            cmdUserGrants.CommandText = @"
+                SELECT 
+                    GrantApplication.GrantApplicationID,
+                    GrantApplication.ApplicationStatus,
+                    GrantApplication.PrincipleInvestigator,
+                    Grants.GrantID,
+                    Grants.GrantName,
+                    Grants.FundingAgency,
+                    Grants.Deadline,
+                    Grants.ProposalID,
+                    Grants.FundingAmount,
+                    Grants.Type,
+                    Grants.GrantDescription
+                FROM GrantApplication
+                JOIN GrantApplicationUsers 
+                    ON GrantApplication.GrantApplicationID = GrantApplicationUsers.GrantApplicationID
+                JOIN Grants 
+                    ON GrantApplication.GrantID = Grants.GrantID
+                WHERE GrantApplicationUsers.UserID = @UserID;";
+
+            cmdUserGrants.Parameters.AddWithValue("@UserID", UserID);
+            cmdUserGrants.Connection.Open();
+
+            SqlDataReader tempreader = cmdUserGrants.ExecuteReader();
+
+            return tempreader;
+        }
+
+        public static SqlDataReader GetUserDailyTasks(int UserID)
+        {
+            SqlCommand cmdDailyTasks = new SqlCommand();
+            cmdDailyTasks.Connection = Lab1DBConnection;
+            cmdDailyTasks.Connection.ConnectionString = Lab1DBConnString;
+            cmdDailyTasks.CommandText = "SELECT TaskName, Status, Deadline FROM Task WHERE AssignedTo = @UserID AND CAST(Deadline AS DATE) = @Today; ";
+
+            cmdDailyTasks.Parameters.AddWithValue("@UserID", UserID);
+            cmdDailyTasks.Parameters.AddWithValue("@Today", DateTime.Today);
+            cmdDailyTasks.Connection.Open();
+
+            SqlDataReader tempreader = cmdDailyTasks.ExecuteReader();
+
+            return tempreader;
+        }
+
+
+        public static String GetUserName(int UserID)
+        {
+            SqlCommand cmdGetName = new SqlCommand();
+            cmdGetName.Connection = Lab1DBConnection;
+            cmdGetName.Connection.ConnectionString = Lab1DBConnString;
+            cmdGetName.CommandText = "SELECT FirstName, LastName FROM [Users] WHERE UserID = @UserID";
+
+            cmdGetName.Parameters.AddWithValue("@UserID",UserID);
+            cmdGetName.Connection.Open();
+
+            String FullName = "";
+            SqlDataReader tempreader = cmdGetName.ExecuteReader();
+
+            while (tempreader.Read())
+            {
+                 String FirstName = tempreader.GetString(0);
+                 String LastName = tempreader.GetString(1);
+                 FullName = FirstName + LastName;
+            }
+            Lab1DBConnection.Close();
+            return FullName;
+
+        }
+
     }
 
 }

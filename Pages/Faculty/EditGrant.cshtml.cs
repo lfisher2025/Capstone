@@ -36,13 +36,12 @@ namespace Lab1.Pages.Faculty
                 {
                     GrantName = singleGrant["GrantName"] != DBNull.Value ? singleGrant["GrantName"].ToString() : string.Empty,
                     FundingAgency = singleGrant["FundingAgency"] != DBNull.Value ? singleGrant["FundingAgency"].ToString() : string.Empty,
-                    SubmissionDate = singleGrant["SubmissionDate"] != DBNull.Value ? Convert.ToDateTime(singleGrant["SubmissionDate"]) : DateTime.MinValue,
                     Deadline = singleGrant["Deadline"] != DBNull.Value ? Convert.ToDateTime(singleGrant["Deadline"]) : DateTime.MinValue,
                     ProposalID = singleGrant["ProposalID"] != DBNull.Value ? Convert.ToInt32(singleGrant["ProposalID"]) : 0,
                     FundingAmount = singleGrant["FundingAmount"] != DBNull.Value ? Convert.ToDecimal(singleGrant["FundingAmount"]) : 0,
                     Type = singleGrant["Type"] != DBNull.Value ? singleGrant["Type"].ToString() : string.Empty,
                     GrantDescription = singleGrant["GrantDescription"] != DBNull.Value ? singleGrant["GrantDescription"].ToString() : string.Empty,
-                    UserID = singleGrant["UserID"] != DBNull.Value ? Convert.ToInt32(singleGrant["UserID"]) : 0
+
                 };
             }
             DBClass.Lab1DBConnection.Close();
