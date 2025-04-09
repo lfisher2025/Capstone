@@ -32,7 +32,7 @@ namespace Lab1.Pages.Faculty
 
         public IActionResult OnGet()
         {
-            string UserID = HttpContext.Session.GetString("username");
+            string UserID = HttpContext.Session.GetString("UserID");
             string UserType = HttpContext.Session.GetString("UserType");
 
             if (string.IsNullOrEmpty(UserID))
@@ -51,13 +51,11 @@ namespace Lab1.Pages.Faculty
                     GrantID = ViewGrants["GrantID"] != DBNull.Value ? Convert.ToInt32(ViewGrants["GrantID"]) : 0,
                     GrantName = ViewGrants["GrantName"] != DBNull.Value ? ViewGrants["GrantName"].ToString() : string.Empty,
                     FundingAgency = ViewGrants["FundingAgency"] != DBNull.Value ? ViewGrants["FundingAgency"].ToString() : string.Empty,
-                    SubmissionDate = ViewGrants["SubmissionDate"] != DBNull.Value ? Convert.ToDateTime(ViewGrants["SubmissionDate"]) : DateTime.MinValue,
                     Deadline = ViewGrants["Deadline"] != DBNull.Value ? Convert.ToDateTime(ViewGrants["Deadline"]) : DateTime.MinValue,
                     ProposalID = ViewGrants["ProposalID"] != DBNull.Value ? Convert.ToInt32(ViewGrants["ProposalID"]) : 0,
                     FundingAmount = ViewGrants["FundingAmount"] != DBNull.Value ? Convert.ToDecimal(ViewGrants["FundingAmount"]) : 0,
                     Type = ViewGrants["Type"] != DBNull.Value ? ViewGrants["Type"].ToString() : string.Empty,
-                    GrantDescription = ViewGrants["GrantDescription"] != DBNull.Value ? ViewGrants["GrantDescription"].ToString() : string.Empty,
-                    UserID = ViewGrants["UserID"] != DBNull.Value ? Convert.ToInt32(ViewGrants["UserID"]) : 0
+                    GrantDescription = ViewGrants["GrantDescription"] != DBNull.Value ? ViewGrants["GrantDescription"].ToString() : string.Empty
                 });
             }
             DBClass.Lab1DBConnection.Close();
@@ -82,13 +80,11 @@ namespace Lab1.Pages.Faculty
                     GrantID = SearchRead["GrantID"] != DBNull.Value ? Convert.ToInt32(SearchRead["GrantID"]) : 0,
                     GrantName = SearchRead["GrantName"] != DBNull.Value ? SearchRead["GrantName"].ToString() : string.Empty,
                     FundingAgency = SearchRead["FundingAgency"] != DBNull.Value ? SearchRead["FundingAgency"].ToString() : string.Empty,
-                    SubmissionDate = SearchRead["SubmissionDate"] != DBNull.Value ? Convert.ToDateTime(SearchRead["SubmissionDate"]) : DateTime.MinValue,
                     Deadline = SearchRead["Deadline"] != DBNull.Value ? Convert.ToDateTime(SearchRead["Deadline"]) : DateTime.MinValue,
                     ProposalID = SearchRead["ProposalID"] != DBNull.Value ? Convert.ToInt32(SearchRead["ProposalID"]) : 0,
                     FundingAmount = SearchRead["FundingAmount"] != DBNull.Value ? Convert.ToDecimal(SearchRead["FundingAmount"]) : 0,
                     Type = SearchRead["Type"] != DBNull.Value ? SearchRead["Type"].ToString() : string.Empty,
                     GrantDescription = SearchRead["GrantDescription"] != DBNull.Value ? SearchRead["GrantDescription"].ToString() : string.Empty,
-                    UserID = SearchRead["UserID"] != DBNull.Value ? Convert.ToInt32(SearchRead["UserID"]) : 0
 
                 });
             }

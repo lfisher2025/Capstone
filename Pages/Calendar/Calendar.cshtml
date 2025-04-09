@@ -272,25 +272,42 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var week in Model.Days)
+            @foreach (var week in Model.Days)
+            {
+                <tr>
+                    @foreach (var day in week)
                     {
-                        <tr>
-                            @foreach (var day in week)
+                        <td>
+                            @if (day.DayOfMonth > 0)
                             {
-                                <td>
-                                    @if (day.DayOfMonth > 0)
-                                    {
-                                        <div>@day.DayOfMonth</div>
+                                <div>@day.DayOfMonth</div>
 
-                                        @foreach (var task in Model.TaskList)
-                                        {
-                                            if (task.Deadline.Day == day.DayOfMonth)
-                                            {
-                                                <div class="badge bg-secondary">@task.TaskName</div>
-                                            }
-                                        }
+                                @* Show tasks *@
+                                @foreach (var task in Model.TaskList)
+                                {
+                                    if (task.Deadline.Day == day.DayOfMonth &&
+                                    task.Deadline.Month == Model.CurrentMonth &&
+                                    task.Deadline.Year == Model.CurrentYear)
+                                    {
+                                        <div class="badge bg-secondary">@task.TaskName</div>
                                     }
-                                </td>
+                                }
+
+                                @* Show events *@
+                                @foreach (var ev in Model.UserEvents)
+                                {
+                                    if (ev.EventDateTime.Day == day.DayOfMonth &&
+                                    ev.EventDateTime.Month == Model.CurrentMonth &&
+                                    ev.EventDateTime.Year == Model.CurrentYear)
+                                    {
+                                        <div class="badge bg-info">@ev.Title</div>
+                                    }
+                                }
+                            }
+                        </td>
+                    }
+                </tr>
+            }
                             }
                         </tr>
                     }
@@ -309,32 +326,35 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="eventForm" method="post">
                     <div class="mb-3">
-                        <label for="eventTitle" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="eventTitle" placeholder="Title">
+                        <label asp-for="NewEvent.Title" class="form-label"></label>
+                        <input asp-for="NewEvent.Title" class="form-control" placeholder="Title" />
+                        <span asp-validation-for="NewEvent.Title" class="text-danger"></span>
                     </div>
+
                     <div class="mb-3">
-                        <label class="form-label">Date and Time</label>
-                        <input type="datetime-local" class="form-control" id="eventDateTime">
+                        <label asp-for="NewEvent.EventDateTime" class="form-label"></label>
+                        <input asp-for="NewEvent.EventDateTime" class="form-control" type="datetime-local" />
+                        <span asp-validation-for="NewEvent.EventDateTime" class="text-danger"></span>
                     </div>
+
                     <div class="mb-3">
-                        <label for="addPeople" class="form-label">Add People</label>
-                        <input type="text" class="form-control" id="addPeople" placeholder="Enter names or emails">
+                        <label asp-for="SelectedUserIDs" class="form-label"></label>
+                        <select asp-for="SelectedUserIDs" asp-items="@(new SelectList(Model.UserList, "Key", "Value"))" multiple class="form-select">
+                        </select>
                     </div>
+
                     <div class="mb-3">
-                        <label for="eventOverview" class="form-label">Overview of Project</label>
-                        <textarea class="form-control" id="eventOverview" rows="3" placeholder="Enter details"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="uploadFiles" class="form-label">Upload Files</label>
-                        <input type="file" class="form-control" id="uploadFiles">
+                        <label asp-for="NewEvent.Description" class="form-label"></label>
+                        <textarea asp-for="NewEvent.Description" class="form-control" rows="3" placeholder="Enter details"></textarea>
+                        <span asp-validation-for="NewEvent.Description" class="text-danger"></span>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary" form="eventForm">Save</button>
             </div>
         </div>
     </div>

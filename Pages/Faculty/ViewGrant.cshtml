@@ -5,6 +5,63 @@
 }
 
 <h2>Grants</h2>
+<a asp-page="/Faculty/AddGrant" class="btn btn-primary">Add Grant</a>
+
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="tempGrant.GrantName"></label>
+        <input type="text" class="form-control" asp-for="tempGrant.GrantName" placeholder="Enter Grant Name" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="tempGrant.FundingAgency"></label>
+        <input type="text" class="form-control" asp-for="tempGrant.FundingAgency" placeholder="Enter Funding Agency" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="tempGrant.SubmissionDate"></label>
+        <input type="date" class="form-control" asp-for="tempGrant.SubmissionDate" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="tempGrant.Deadline"></label>
+        <input type="date" class="form-control" asp-for="tempGrant.Deadline" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="tempGrant.ProposalID"></label>
+        <input type="number" class="form-control" asp-for="tempGrant.ProposalID" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="tempGrant.FundingAmount"></label>
+        <input type="number" step="0.01" class="form-control" asp-for="tempGrant.FundingAmount" placeholder="Enter Funding Amount" />
+    </div>
+    <div class="form-group">
+        <label asp-for="tempGrant.FundingAmount"></label>
+        <input type="number" step="0.01" class="form-control" asp-for="tempGrant.FundingAmount" placeholder="Enter Funding Amount" />
+    </div>
+    <div class="form-group">
+        <label asp-for="tempGrant.FundingAmount"></label>
+        <input type="number" step="0.01" class="form-control" asp-for="tempGrant.FundingAmount" placeholder="Enter Funding Amount" />
+    </div>
+    <div class="form-group">
+        <label asp-for="tempGrant.FundingAmount"></label>
+        <input type="number" step="0.01" class="form-control" asp-for="tempGrant.FundingAmount" placeholder="Enter Funding Amount" />
+    </div>
+    <div class="form-group">
+        <label asp-for="tempGrant.FundingAmount"></label>
+        <input type="number" step="0.01" class="form-control" asp-for="tempGrant.FundingAmount" placeholder="Enter Funding Amount" />
+    </div>
+    <div class="form-group">
+        <label asp-for="tempGrant.FundingAmount"></label>
+        <input type="number" step="0.01" class="form-control" asp-for="tempGrant.FundingAmount" placeholder="Enter Funding Amount" />
+    </div>
+    <div class="form-group">
+        <label asp-for="tempGrant.FundingAmount"></label>
+        <input type="number" step="0.01" class="form-control" asp-for="tempGrant.FundingAmount" placeholder="Enter Funding Amount" />
+    </div>
 
 
 
@@ -41,7 +98,6 @@
             <tr>
                 <td>@grant.GrantName</td>
                 <td>@grant.FundingAgency</td>
-                <td>@grant.SubmissionDate.ToString("yyyy-MM-dd")</td>
                 <td>@grant.Deadline.ToString("yyyy-MM-dd")</td>
                 <td>@grant.FundingAmount.ToString("C")</td>
                 <td>@grant.Type</td>

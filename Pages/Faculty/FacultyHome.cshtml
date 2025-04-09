@@ -18,198 +18,198 @@
     <!-- END LOADING BOOTSTRAP CSS -->
     <style>
         html, body {
-            min-height: 100%;
-            min-width: 100%
+        min-height: 100%;
+        min-width: 100%
         }
 
         .container {
-            display: flex;
-            height: 100%;
+        display: flex;
+        height: 100%;
         }
 
         .container-fluid {
-            display: flex;
-            min-height: 100%;
+        display: flex;
+        min-height: 100%;
         }
 
         .column {
-            justify-content: center;
-            align-items: center;
-            border: 1px solid #aaa;
-            height: 100%;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #aaa;
+        height: 100%;
         }
 
         .sidebar {
-            flex: .35;
-            background: #450084;
-            color: white;
-            min-height: 170vh;
-            padding: 1rem;
+        flex: .35;
+        background: #450084;
+        color: white;
+        min-height: 170vh;
+        padding: 1rem;
         }
 
-            .sidebar a {
-                position: relative;
-                color: white;
-                display: block;
-                padding: 10px;
-                text-decoration: none;
-                margin-bottom: 10px;
-                transition: color 0.3s;
-            }
+        .sidebar a {
+        position: relative;
+        color: white;
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        margin-bottom: 10px;
+        transition: color 0.3s;
+        }
 
-                .sidebar a.active {
-                    background-color: white;
-                    color: #450084;
-                    font-weight: bold;
-                }
+        .sidebar a.active {
+        background-color: white;
+        color: #450084;
+        font-weight: bold;
+        }
 
-                .sidebar a:hover {
-                    color: black;
-                }
+        .sidebar a:hover {
+        color: black;
+        }
 
-                .sidebar a::after {
-                    content: "";
-                    position: absolute;
-                    bottom: 4px;
-                    left: 10px;
-                    width: 0%;
-                    height: 2px;
-                    background-color: white;
-                    transition: width 0.3s ease-in-out;
-                }
+        .sidebar a::after {
+        content: "";
+        position: absolute;
+        bottom: 4px;
+        left: 10px;
+        width: 0%;
+        height: 2px;
+        background-color: white;
+        transition: width 0.3s ease-in-out;
+        }
 
         .logo {
-            position: relative;
-            vertical-align: t;
-            background-color: white;
-            margin-bottom: 20px;
+        position: relative;
+        vertical-align: t;
+        background-color: white;
+        margin-bottom: 20px;
         }
 
         .tab {
-            padding: 20px 20px 20px 20px;
+        padding: 20px 20px 20px 20px;
         }
 
         .tabs button {
-            position: absolute;
-            width: 40%;
-            padding: 10px;
-            background-color: #450084;
-            color: white;
-            border-radius: 20px; /* Rounded button */
-            cursor: pointer;
-            transition: 0.3s ease;
+        position: absolute;
+        width: 40%;
+        padding: 10px;
+        background-color: #450084;
+        color: white;
+        border-radius: 20px; /* Rounded button */
+        cursor: pointer;
+        transition: 0.3s ease;
         }
 
-            .tabs button:hover {
-                background-color: #B599CE;
-            }
+        .tabs button:hover {
+        background-color: #B599CE;
+        }
 
         .main-content {
-            flex: 1.5;
-            background-color: white;
-            padding: 20px;
+        flex: 1.5;
+        background-color: white;
+        padding: 20px;
         }
 
         .project-window {
-            background-color: #eee;
-            padding: 100px;
-            width: 500px;
-            box-shadow: 0 4px 8px rgba(181, 153, 206, 0.815);
-            border-radius: 50px;
-            text-align: left;
+        background-color: #eee;
+        padding: 100px;
+        width: 500px;
+        box-shadow: 0 4px 8px rgba(181, 153, 206, 0.815);
+        border-radius: 50px;
+        text-align: left;
         }
 
         .calendar-container .day {
-            width: 38px;
-            height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            margin: 2px;
-            cursor: pointer;
-            background-color: lightgrey;
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin: 2px;
+        cursor: pointer;
+        background-color: lightgrey;
         }
 
-            .calendar-container .day.selected {
-                background-color: #450084;
-                color: white;
-            }
+        .calendar-container .day.selected {
+        background-color: #450084;
+        color: white;
+        }
 
         .profile-header {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 5px;
-            background-color: white; /* Adjust as needed */
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 5px;
+        background-color: white; /* Adjust as needed */
         }
 
         .profile-img {
-            width: 50px; /* Adjust size as needed */
-            height: 50px;
-            border-radius: 50%; /* Makes it a circle */
-            object-fit: cover; /* Ensures the image fills the space */
+        width: 50px; /* Adjust size as needed */
+        height: 50px;
+        border-radius: 50%; /* Makes it a circle */
+        object-fit: cover; /* Ensures the image fills the space */
         }
 
         .header-container {
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            display: flex;
-            justify-content: space-between; /* Space items evenly */
-            align-items: center;
-            background-color: white;
-            border-bottom: 2px solid #ddd; /* Optional divider */
-            flex-direction: row-reverse; /* Switches the order */
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        display: flex;
+        justify-content: space-between; /* Space items evenly */
+        align-items: center;
+        background-color: white;
+        border-bottom: 2px solid #ddd; /* Optional divider */
+        flex-direction: row-reverse; /* Switches the order */
         }
 
         .right-panel {
-            background-color: #DACCE6;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            .right-section
+        background-color: #DACCE6;
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        margin-bottom: 30px;
+        .right-section
 
         {
-            flex: 0.8;
+        flex: 0.8;
         }
 
         .project-summary {
-            background-color: #F4EFE1;
-            padding: 15px;
-            border-radius: 10px;
+        background-color: #F4EFE1;
+        padding: 15px;
+        border-radius: 10px;
         }
 
         .stats-box {
-            background-color: #F4EFE1;
-            padding: 15px;
-            border-radius: 10px;
+        background-color: #F4EFE1;
+        padding: 15px;
+        border-radius: 10px;
         }
 
         .calendar-container {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
         }
 
         .day {
-            width: 40px;
-            height: 40px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin: 5px;
-            cursor: pointer;
-            border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 50%;
         }
 
         .form-check-input:not(:checked):focus {
-            border-color: black;
-            box-shadow: none;
+        border-color: black;
+        box-shadow: none;
         }
 
         .day.selected {
-            background-color: #450084;
+        background-color: #450084;
         }
 
         .right-panel,
@@ -217,15 +217,15 @@
         .stats-box,
         .calendar-container,
         .todays-task {
-            background-color: #F4EFE1;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
+        background-color: #F4EFE1;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
         }
 
         .clickable-card:hover {
-            box-shadow: 0 4px 12px rgba(69, 0, 132, 0.2);
-            color: #450084;
+        box-shadow: 0 4px 12px rgba(69, 0, 132, 0.2);
+        color: #450084;
         }
 
     </style>
@@ -249,7 +249,7 @@
                     <a href="settings.html"><i class="bi bi-gear-fill me-2"></i>Settings</a>
                 </div>
             </div>
-         
+
             <!-- Main Content -->
             <div class="col-md-10 main-content">
                 <div class="header-container">
@@ -267,31 +267,43 @@
                             <h5 class="mb-3">Today's Task</h5>
                             <ul class="list-unstyled">
                                 <ul class="list-unstyled">
-                                    <li class="d-flex align-items-center mb-2">
-                                        <input class="form-check-input me-2 rounded-circle border-success" type="checkbox" checked>
-                                        <span>Update research grant and confirm with team for approval</span>
-                                        <span class="badge bg-success ms-auto">Completed</span>
-                                    </li>
-                                    <li class="d-flex align-items-center mb-2">
-                                        <input class="form-check-input me-2 rounded-circle border-secondary" type="checkbox">
-                                        <span>Approve pending projects or request modifications accordingly</span>
-                                        <span class="badge bg-danger ms-auto">In review</span>
-                                    </li>
-                                    <li class="d-flex align-items-center mb-2">
-                                        <input class="form-check-input me-2 rounded-circle border-secondary" type="checkbox">
-                                        <span>Consult team and create new calendar events based on upcoming schedule</span>
-                                        <span class="badge bg-danger ms-auto">In review</span>
-                                    </li>
-                                    <li class="d-flex align-items-center mb-2">
-                                        <input class="form-check-input me-2 rounded-circle border-secondary" type="checkbox">
-                                        <span>Add new updates to relevant projects</span>
-                                        <span class="badge bg-warning ms-auto">On going</span>
-                                    </li>
-                                    <li class="d-flex align-items-center mb-2">
-                                        <input class="form-check-input me-2 rounded-circle border-success" type="checkbox" checked>
-                                        <span>Interactive prototype for app screens</span>
-                                        <span class="badge bg-success ms-auto">Completed</span>
-                                    </li>
+                                    @{
+                                        int maxTaskDepth = 0;
+
+                                        if (Model.DailyTasks != null && Model.DailyTasks.Count() > 5)
+                                        {
+                                            maxTaskDepth = 5;
+                                        }
+                                        else if (Model.DailyTasks != null)
+                                        {
+                                            maxTaskDepth = Model.DailyTasks.Count();
+                                        }
+
+                                        for (int row = 0; row < maxTaskDepth; row++)
+                                        {
+                                            <li class="d-flex align-items-center mb-2">
+                                                <input class="form-check-input me-2 rounded-circle border-success" type="checkbox" checked>
+                                                <span>@Model.DailyTasks[row].TaskName</span>
+                                                <span class="badge bg-primary ms-auto">@Model.DailyTasks[row].Deadline</span>
+                                                <!--switch statement used to determine formatting-->
+                                                @switch (Model.DailyTasks[row].Status)
+                                                {
+                                                    case "Completed":
+                                                        <span class="badge bg-success ms-auto">Completed</span>
+                                                        break;
+                                                    case "On going":
+                                                        <span class="badge bg-warning ms-auto">On going</span>
+                                                        break;
+                                                    case "In review":
+                                                        <span class="badge bg-danger ms-auto">In review</span>
+                                                        break;
+                                                    default:
+                                                        <span class="badge bg-secondary">Unknown</span>
+                                                        break;
+                                                }
+                                            </li>
+                                        }
+                                    }
                                 </ul>
 
                         </div>
@@ -308,24 +320,47 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>JMU Research</td>
-                                        <td><span class="badge bg-warning text-dark">Pending</span></td>
-                                        <td>$2,500</td>
-                                        <td>July 21</td>
-                                    </tr>
-                                    <tr>
-                                        <td>ADPi Philanthropy</td>
-                                        <td><span class="badge bg-success">Approved</span></td>
-                                        <td>$1,000</td>
-                                        <td>July 28</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Creative Project Fund</td>
-                                        <td><span class="badge bg-danger">Denied</span></td>
-                                        <td>$3,000</td>
-                                        <td>Aug 3</td>
-                                    </tr>
+                                    @{
+                                        int maxGrantDepth = 0;
+
+                                        if (Model.Grants != null && Model.Grants.Count() > 3)
+                                        {
+                                            maxGrantDepth = 3;
+                                        }
+                                        else if (Model.Grants != null)
+                                        {
+                                            maxGrantDepth = Model.Grants.Count();
+                                        }
+
+                                        for (int row = 0; row < maxGrantDepth; row++)
+                                        {
+                                            <tr>
+                                                <td>@Model.Grants[row].GrantName</td>
+                                                <td>
+                                                    <!--switch statement used to determine formatting-->
+                                                    @switch (Model.Grants[row].ApplicationStatus)
+                                                    {
+                                                        case "Denied":
+                                                            <span class="badge bg-danger">Denied</span>
+                                                            break;
+                                                        case "Approved":
+                                                            <span class="badge bg-success">Approved</span>
+                                                            break;
+                                                        case "Pending":
+                                                            <span class="badge bg-warning text-dark">Pending</span>
+                                                            break;
+                                                        default:
+                                                            <span class="badge bg-secondary">Unknown</span>
+                                                            break;
+                                                    }
+                                                </td>
+
+                                                <td>@Model.Grants[row].FundingAmount.ToString("C")</td>
+                                                <td>@Model.Grants[row].Deadline.ToShortDateString()</td>
+                                            </tr>
+                                        }
+                                    }
+                                  
                                 </tbody>
                             </table>
                         </div>
@@ -343,36 +378,52 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>JMU Research</td>
-                                        <td>Maryam Sharifian</td>
-                                        <td>Jul 15, 2024</td>
-                                        <td><span class="badge bg-success">Approved</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>UdyIT AI App Project</td>
-                                        <td>Rae Gilchrist</td>
-                                        <td>Jul 25, 2024</td>
-                                        <td><span class="badge bg-warning">Delayed</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Marketing and Branding</td>
-                                        <td>Rakesh Kumar</td>
-                                        <td>Aug 3, 2024</td>
-                                        <td><span class="badge bg-danger">Re-work</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>App Development Project</td>
-                                        <td>Shiva Goami</td>
-                                        <td>Aug 5, 2024</td>
-                                        <td><span class="badge bg-success">Approved</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Grant Applications</td>
-                                        <td>Elham Torabi</td>
-                                        <td>Aug 8, 2024</td>
-                                        <td><span class="badge bg-warning">On going</span></td>
-                                    </tr>
+                                    @{
+                                        int maxProjectDepth = 0;
+
+                                        if (Model.Projects != null && Model.Projects.Count() > 5)
+                                        {
+                                            maxProjectDepth = 5;
+                                        }
+                                        else if (Model.Projects != null)
+                                        {
+                                            maxProjectDepth = Model.Projects.Count();
+                                        }
+
+                                        for (int row = 0; row < maxProjectDepth; row++)
+                                        {
+                                            <tr>
+                                                <td>@Model.Projects[row].ProjectName</td>
+                                                <!--the below dimension takes the projectlead (a user ID) and finds the name in the dictionary-->
+                                                <td>@Model.ProjectLeadNames[@Model.Projects[row].ProjectLead]</td>
+                                                <td>@Model.Projects[row].EndDate.ToShortDateString()</td>
+                                                <!--switch statement used to determine formatting-->
+                                                <td>
+                                                    @{
+                                                        var status = Model.Grants?[row]?.ApplicationStatus ?? "Unknown";
+                                                    }
+                                                    @switch (status)
+                                                    {
+                                                        case "On Going":
+                                                            <span class="badge bg-warning">On going</span>
+                                                            break;
+                                                        case "Approved":
+                                                            <span class="badge bg-success">Approved</span>
+                                                            break;
+                                                        case "Re-work":
+                                                            <span class="badge bg-danger">Re-work</span>
+                                                            break;
+                                                        case "Delayed":
+                                                            <span class="badge bg-warning">Delayed</span>
+                                                            break;
+                                                        default:
+                                                            <span class="badge bg-secondary">Unknown</span>
+                                                            break;
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
                                 </tbody>
                             </table>
                         </div>

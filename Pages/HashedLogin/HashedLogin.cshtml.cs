@@ -7,7 +7,7 @@ namespace Lab1.Pages.Practice
     public class HashedLoginModel : PageModel
     {
         [BindProperty]
-        public string Username { get; set; }
+        public string Email { get; set; }
         [BindProperty]
         public string Password { get; set; }
 
@@ -24,14 +24,14 @@ namespace Lab1.Pages.Practice
 
         public IActionResult OnPost()
         {
-            if (DBClass.HashedParameterLogin(Username, Password))
+            if (DBClass.HashedParameterLogin(Email, Password))
             {
-                HttpContext.Session.SetString("username", Username);
+                HttpContext.Session.SetString("email", Email);
                 ViewData["LoginMessage"] = "Login Successful!";
                 DBClass.Lab1DBConnection.Close();
 
                 //Adding UserID to session state for queries
-                int UserID = DBClass.GetUserID(Username);
+                int UserID = DBClass.GetUserID(Email);
                 HttpContext.Session.SetString("UserID", UserID.ToString());
                 DBClass.Lab1DBConnection.Close();
 

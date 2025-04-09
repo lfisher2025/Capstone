@@ -1,0 +1,95 @@
+INSERT INTO [Permissions] (PermissionID, PermissionName)
+VALUES 
+(1, 'Viewer'),
+(2, 'Editor'),
+(3, 'Owner');
+
+-- Insert UserTypes (already correct)
+INSERT INTO UserType (typeID, name) VALUES 
+(1, 'Admin'),
+(2, 'Faculty'),
+(3, 'Employee'),
+(4, 'Representative');
+
+-- Insert User (already correct)
+INSERT INTO [Users] (FirstName, LastName, Email, UserTypeID, Department, DateJoined, AccessLevel)
+VALUES ('Anna', 'Smith', 'anna.smith@example.com', 2, 'Research & Development', '2022-08-15', 3);
+
+-- Get Anna's UserID
+DECLARE @AnnaID INT;
+SET @AnnaID = SCOPE_IDENTITY();
+
+-- Insert Grant (REMOVE: SubmissionDate, REMOVE: UserID)
+INSERT INTO Grants (GrantID, GrantName, FundingAgency, Deadline, ProposalID, FundingAmount, Type, GrantDescription)
+VALUES (1, 'Child Development Study', 'National Science Foundation', '2023-04-01', 1001, 50000.00, 'Research', 'Study on early childhood development patterns.');
+
+-- Insert Project (REMOVE: UserID)
+INSERT INTO Project (ProjectID, ProjectName, StartDate, EndDate, ProjectStatus, ProgressStatus, ProjectLead, GrantID)
+VALUES (1, 'Early Learning Initiative', '2023-05-01', '2024-05-01', 'Active', 'On Track', @AnnaID, 1);
+
+INSERT INTO Task (TaskID, TaskName, TaskDescription, Deadline, Status, AssignedTo, ProjectID, GrantApplicationID)
+VALUES 
+(1, 'Collect Survey Data', 'Gather initial survey responses from participants.', '2023-06-15', 'Completed', @AnnaID, 1, NULL),
+(2, 'Literature Review', 'Review recent literature related to early childhood education.', '2025-04-08', 'Completed', @AnnaID, 1, NULL),
+(3, 'Prepare Consent Forms', 'Draft and print participant consent forms.', '2025-04-09', 'On going', @AnnaID, 1, NULL),
+(4, 'Data Cleaning', 'Clean and validate collected survey data.', '2025-04-10', 'In review', @AnnaID, 1, NULL),
+(5, 'Statistical Analysis', 'Run statistical analysis on survey results.', '2025-04-11', 'Completed', @AnnaID, 1, NULL),
+(6, 'Prepare Interim Report', 'Summarize initial findings for mid-project report.', '2025-04-12', 'On going', @AnnaID, 1, NULL),
+(7, 'Team Meeting', 'Discuss next steps and assign new responsibilities.', '2025-04-13', 'In review', @AnnaID, 1, NULL);
+
+-- Insert Research Data
+INSERT INTO ResearchData (DataID, DataType, Version, AccessLevel, DataDescription, UploadDate, ProjectID)
+VALUES (1, 'Survey Results', 'v1.0', 2, 'Initial survey data collected from participants.', '2023-06-16', 1);
+
+-- Insert Report
+INSERT INTO Report (ReportID, ReportType, DateGenerated, Description, ExportFormat, GeneratedBy, DataID)
+VALUES (1, 'Summary Report', '2023-06-20', 'Summary analysis of survey results.', 'PDF', @AnnaID, 1);
+
+-- Insert Faculty Affiliate Application
+INSERT INTO FacultyAffiliateApplication (ApplicationID, ApplicationDate, ApplicationStatus, UserID)
+VALUES (1, '2023-02-10', 'Approved', @AnnaID);
+
+-- Insert Seed Fund
+INSERT INTO SeedFund (FundID, FundAmount, Status, Outcome, ApplicationID)
+VALUES (1, 10000.00, 'Allocated', 'Used for initial participant recruitment.', 1);
+
+-- Insert Partnership
+INSERT INTO Partnership (PartnerID, PartnerName, PartnerOrg, PartnerContact, PartnerType, Sector, Status, LastInteractionDate, GrantID, RepresentativeID)
+VALUES (1, 'John Doe', 'Early Learning Org', 'john.doe@elo.org', 'Community Partner', 'Education', 'Active', '2024-01-10', 1, @AnnaID);
+
+-- Insert Memo of Understanding (FileID is NULL for now)
+INSERT INTO MemoOfUnderstanding (MouID, MouStartDate, MouEndDate, FileID, PartnerID)
+VALUES (1, '2023-03-01', '2024-03-01', NULL, 1);
+
+-- Insert ProjectUser (now requires PermissionID — assume ID = 1 for basic permission)
+INSERT INTO ProjectUsers (ProjectID, UserID, PermissionID)
+VALUES (1, @AnnaID, 1);
+
+-- Insert GrantApplication
+INSERT INTO GrantApplication (GrantApplicationID, GrantID, ApplicationStatus, PrincipleInvestigator)
+VALUES (1, 1, 'Pending', @AnnaID);
+
+-- Insert GrantApplicationUser (Anna with basic permission level 1)
+INSERT INTO GrantApplicationUsers (GrantApplicationID, UserID, PermissionLevel)
+VALUES (1, @AnnaID, 1);
+
+INSERT INTO Event (Title, ScheduledDate, Description)
+VALUES 
+('Event - April 8', '2025-04-08 10:00:00', 'Daily event scheduled for April 8th.'),
+('Event - April 9', '2025-04-09 10:00:00', 'Daily event scheduled for April 9th.'),
+('Event - April 10', '2025-04-10 10:00:00', 'Daily event scheduled for April 10th.'),
+('Event - April 11', '2025-04-11 10:00:00', 'Daily event scheduled for April 11th.'),
+('Event - April 12', '2025-04-12 10:00:00', 'Daily event scheduled for April 12th.'),
+('Event - April 13', '2025-04-13 10:00:00', 'Daily event scheduled for April 13th.'),
+('Event - April 14', '2025-04-14 10:00:00', 'Daily event scheduled for April 14th.');
+
+INSERT INTO EventUsers (EventID, UserID)
+VALUES 
+(1, 1),
+(2, 1),
+(3, 1),
+(4, 1),
+(5, 1),
+(6, 1),
+(7, 1);
+

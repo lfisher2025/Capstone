@@ -16,10 +16,6 @@
         <input asp-for="GrantToUpdate.FundingAgency" class="form-control" />
     </div>
 
-    <div class="form-group">
-        <label asp-for="GrantToUpdate.SubmissionDate"></label>
-        <input asp-for="GrantToUpdate.SubmissionDate" type="date" class="form-control" />
-    </div>
 
     <div class="form-group">
         <label asp-for="GrantToUpdate.Deadline"></label>
@@ -46,10 +42,7 @@
         <textarea asp-for="GrantToUpdate.GrantDescription" class="form-control"></textarea>
     </div>
 
-    <div class="form-group"> <!--Needs to be multiselect dropdown with db logic for multiple users (composite table)-->
-        <label asp-for="GrantToUpdate.UserID"></label>
-        <input asp-for="GrantToUpdate.UserID" type="number" class="form-control" />
-    </div>
+<!--Adding users needed-->
 
     <button type="submit" class="btn btn-primary">Update Grant</button>
     <a asp-page="/Faculty/ViewGrant" class="btn btn-secondary">Cancel</a>
