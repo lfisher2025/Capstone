@@ -618,7 +618,7 @@ namespace Lab1.Pages.DB
             SqlCommand cmdUserTasks = new SqlCommand();
             cmdUserTasks.Connection = Lab1DBConnection;
             cmdUserTasks.Connection.ConnectionString = Lab1DBConnString;
-            cmdUserTasks.CommandText = "SELECT * FROM Task WHERE AssignedTo = @UserID";
+            cmdUserTasks.CommandText = "SELECT * FROM Task WHERE employeeID = @UserID";
 
             cmdUserTasks.Parameters.AddWithValue("@UserID", UserID);
             cmdUserTasks.Connection.Open();
