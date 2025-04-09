@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Lab1.styles.css" asp-append-version="true" />
+    </head>
+@*
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -70,7 +72,6 @@
 </head>
 <body>
     <header>
-        @*
          <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3">
             <div class="container">
                 @{
@@ -84,7 +85,6 @@
                         _ => "/Index" // default page if userType is not set
                     };
                 }
-                @*
                 <a class="navbar-brand" asp-area="" asp-page="@pageLink">Lab 3</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -138,10 +138,9 @@
   
             </div>
         </nav>
-        *@
     </header> 
     
-    
+    *@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -160,7 +159,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
-</body>
+@*</body>*@
 </html> 
 
 

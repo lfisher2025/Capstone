@@ -3,10 +3,179 @@
 @{
 }
 
-<h2>Settings</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="JMU CARE" />
+    <meta name="author" content="Ace Houston" />
+    <title>JMU CARE Settings</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- LOAD BOOTSTRAP CSS - DO NOT DELETE -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="styles.css" rel="stylesheet">
+    <!-- END LOADING BOOTSTRAP CSS -->
+    <style>
+                    html, body {
+                        padding: 0;
+                        height: 100vh;
+                    }
+                    .container {
+                        display: flex;
+                        height: 100%;
+                    }
+                    .column {
+                        
+                        justify-content: center;
+                        align-items: center; 
+                        border: 1px solid #aaa;
+                        height: 100%;
+                    }
+                    .sidebar {
+                        flex: .35;
+                        background: #450084;
+                        color: white;
+                        min-height: 170vh;
+                        padding: 1rem;
+                    }
+                    .sidebar a {
+            position: relative;
+            color: white;
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+        .sidebar a.active {
+            background-color: white;
+            color: #450084;
+            font-weight: bold;
+        }
+        .sidebar a:hover {color: black;}
+        .sidebar a::after {
+            content: "";
+            position: absolute;
+            bottom: 4px;
+            left: 10px;
+            width: 0%;
+            height: 2px;
+            background-color: white;
+            transition: width 0.3s ease-in-out;
+        }
+                    .logo {
+                        position: relative;
+                        vertical-align: top;
+                        background-color: white;
+                        margin-bottom: 20px;
+                    }
+                    .tab {
+                        padding: 20 20 20 20;
+                    }
+                    .tabs button {
+                        position: absolute;
+                        width: 40%;
+                        padding: 10px;
+                        background-color: #450084;
+                        color: white;
 
-<button><a asp-page="/Admin/AddUser">Create User</a></button>
+                        border-radius: 20px; /* Rounded button */
+                        cursor: pointer;
+                        transition: 0.3s ease;
+                    }
+                    .tabs button:hover {
+                        background-color: #B599CE;
+                    }
+                    .main-content {
+                        flex: 1.5;
+                        background-color:white;
+                    }
+                    .todays-task {
+                    background-color: #eee;
+                    padding: 100px;
+                    width: 500px;
+                    box-shadow: 0 4px 8px rgba(181, 153, 206, 0.815);
+                    border-radius: 50px;
+                    text-align: top;
+                    }
+                    .project-window {
+                    background-color: #eee;
+                    padding: 100px;
+                    width: 500px;
+                    box-shadow: 0 4px 8px rgba(181, 153, 206, 0.815);
+                    border-radius: 50px;
+                    text-align: top;
+                    }
+                    .right-section {
+                        flex: 0.8;
+                    }
+                    .card {
+                        margin-top: 30pt;
+                        margin-bottom: 30pt;
+                    }
+                    .btn-primary {
+                        background-color: #6A0DAD;
+                        border-color: #6f42c1;
+                    }
+                    .btn-primary:hover {
+            background-color: black;
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
 
-<button>Edit User Permissions</button>
+<body>
+    <div class="container-fluid">
+        <div class="row">
 
-<button>Change Password</button>
+            <div class="column sidebar">
+                <img src="images/JMUCare.png" alt="jmucarelogo" class="logo img-fluid w-100" style="vertical-align: top;">
+                <div class="row">
+                    <a asp-page="/Faculty/FacultyHome"><i class="bi bi-house-door-fill me-2"></i>Home</a>
+                    <a href="/Employee/EmployeeViewProject"><i class="bi bi-kanban-fill me-2"></i>Projects</a>
+                    <a href="/Task"><i class="bi bi-list-check me-2"></i>Tasks</a>
+                    <a href="/Faculty/ViewGrant"><i class="bi bi-cash-coin me-2"></i>Grants</a>
+                    <a href="team.html"><i class="bi bi-people-fill me-2"></i>People</a>
+                    <a href="/Calendar/Calendar"><i class="bi bi-calendar-event-fill me-2"></i>Calendar</a>
+                    <a href="/Settings" class="active"><i class="bi bi-gear-fill me-2"></i>Settings</a>
+
+                </div>
+            </div>
+
+            <div class="column main-content">
+                <div class="card">
+                    <h5 class="card-header">Account Settings</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">Change Password</h5>
+                        <p class="card-text">Update your password for security.</p>
+                        <a asp-page="/ManageAccount/ChangePswd" class="btn btn-primary">Change Password</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <h5 class="card-header">User Management</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">Change User Permissions</h5>
+                        <p class="card-text">Modify user roles and permissions.</p>
+                        <a asp-page="/ManageAccount/ManagePermission" class="btn btn-primary">Manage Permissions</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <h5 class="card-header">User Creation</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">Create a User</h5>
+                        <p class="card-text">New employee? Add a new user!</p>
+                        <a asp-page="/ManageAccount/CreateUser" class="btn btn-primary">Create User</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <h5 class="card-header">Log Out</h5>
+                    <div class="card-body">
+                        <p class="card-text">End your current session securely.</p>
+                        <a href="#" class="btn btn-primary">Log Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

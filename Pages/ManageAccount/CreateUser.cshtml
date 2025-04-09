@@ -1,0 +1,63 @@
+﻿@page
+@model Lab1.Pages.ManageAccount.CreateUserModel
+@{
+}
+
+<h2>Create a User</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="TempUser.FirstName"></label>
+        <input asp-for="TempUser.FirstName" class="form-control" placeholder="Enter First Name" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TempUser.LastName"></label>
+        <input asp-for="TempUser.LastName" class="form-control" placeholder="Enter Last Name" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TempUser.Email"></label>
+        <input asp-for="TempUser.Email" type="email" class="form-control" placeholder="Enter Email" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label asp-for="TempUser.UserTypeID">User Type</label>
+        <select asp-for="TempUser.UserTypeID" class="form-select">
+            <option selected>Select A Type</option>
+            <option value=4>Representative</option>
+            <option value=2>Faculty</option>
+            <option value=3>Employee</option>
+
+        </select>
+        <br />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TempUser.Department"></label>
+        <input asp-for="TempUser.Department" class="form-control" placeholder="Enter Department" />
+    </div>
+
+    <div class="form-group">
+        <!--Will become dropdown when access level is integrated-->
+        <label asp-for="TempUser.AccessLevel"></label>
+        <input asp-for="TempUser.AccessLevel" type="number" class="form-control" placeholder="Enter Access Level" />
+    </div>
+
+    <label>Enter New Username:</label>
+    <input asp-for="Username" class="form-control" placeholder="Enter Username" />
+    <span asp-validation-for="Username" class="text-danger">Please enter a Username</span>
+    <br /><br />
+
+    <label>Enter New User's Password:</label>
+    <input asp-for="Password" class="form-control" type="password" />
+    <span asp-validation-for="Password" class="text-danger">Please enter a Password</span>
+    <br /><br />
+    <button class="btn btn-primary">Add User</button>
+    <button asp-page="AddUser" asp-page-handler="PopulateHandler" formnovalidate>Populate</button>
+    <button asp-page="AddUser" asp-page-handler="ClearHandler" formnovalidate>Clear</button>
+
+
+</form>
+
+
