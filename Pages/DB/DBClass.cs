@@ -23,7 +23,7 @@ namespace Lab1.Pages.DB
 
         // Connection String - How to find and connect to DB
         private static readonly String? Lab1DBConnString =
-            "Server=localhost;Database=JMUCare;Trusted_Connection=True";
+            "Server=localhost;Database=JMUCareTest;Trusted_Connection=True";
 
         private static readonly String? AuthConnString =
             "Server=Localhost;Database=AUTH;Trusted_Connection=True";
@@ -124,7 +124,7 @@ namespace Lab1.Pages.DB
             cmdAddGrant.Parameters.Add("@FundingAmount", SqlDbType.Decimal).Value = NewGrant.FundingAmount;
             cmdAddGrant.Parameters.Add("@Type", SqlDbType.VarChar, 50).Value = NewGrant.Type;
             cmdAddGrant.Parameters.Add("@GrantDescription", SqlDbType.VarChar).Value = NewGrant.GrantDescription;
-            
+
 
 
             Lab1DBConnection.Open();
@@ -144,7 +144,7 @@ namespace Lab1.Pages.DB
 
         public static void AddBusinessPartner(BusinessPartner NewBusinessPartner) //Updated for JMU Care DB
         {
-            string AddPartnerString= @"
+            string AddPartnerString = @"
             INSERT INTO Partnership
             (PartnerName, PartnerOrg, PartnerContact, PartnerType, Sector, Status, LastInteractionDate, GrantID)
             VALUES
@@ -182,7 +182,7 @@ namespace Lab1.Pages.DB
 
 
 
-            
+
         }
 
         public static SqlDataReader ViewAllProjects()
@@ -202,10 +202,10 @@ namespace Lab1.Pages.DB
 
         }
 
-       
-       
 
-     
+
+
+
 
         public static void AddNewProject(Project project, int currentUserID) //Method needs to also generate user-project pairs for composite table in DB
         {
@@ -272,7 +272,15 @@ namespace Lab1.Pages.DB
 
         public static SqlDataReader ViewUserProjects(int userID)// Updated for JMU Care DB 
         {
-            string ViewEmplyProjString = "SELECT * FROM PROJECT WHERE UserID = @userID;";
+            string ViewEmplyProjString = @"
+             SELECT * 
+             FROM PROJECT 
+             WHERE ProjectID IN (
+                 SELECT ProjectID 
+                 FROM ProjectUsers 
+                 WHERE UserID = @UserID
+             )";
+
             SqlCommand cmdViewEmplyProj = new SqlCommand();
             cmdViewEmplyProj.Connection = Lab1DBConnection;
             cmdViewEmplyProj.Connection.ConnectionString = Lab1DBConnString;
@@ -285,20 +293,17 @@ namespace Lab1.Pages.DB
             SqlDataReader tempReader = cmdViewEmplyProj.ExecuteReader();
             return tempReader;
 
-            Lab1DBConnection.Close();
+
         }
 
-        public static bool HashedParameterLogin(string Username, string Password)//Ready for JMU Care DB
+        public static bool HashedParameterLogin(string Email, string Password)//Ready for JMU Care DB
         {
-            string loginQuery =
-                "SELECT Password FROM HashedCredentials WHERE Username = @Username";
-
             SqlCommand cmdLogin = new SqlCommand();
             cmdLogin.Connection = Lab1DBConnection;
             cmdLogin.Connection.ConnectionString = AuthConnString;
             cmdLogin.CommandType = CommandType.StoredProcedure;
             cmdLogin.CommandText = "sp_Lab3Login";
-            cmdLogin.Parameters.AddWithValue("@Username", Username);
+            cmdLogin.Parameters.AddWithValue("@Email", Email);
 
             cmdLogin.Connection.Open();
 
@@ -317,19 +322,19 @@ namespace Lab1.Pages.DB
             return false;
         }
 
-        public static void CreateHashedUser(string Username, string Password, int UserID)//Ready for JMU Care DB
+        public static void CreateHashedUser(string Email, string Password, int UserID)//Ready for JMU Care DB
         {
             //The int UserID is the userID generated when the user is added to the Lab1DB. it is retrieved in the AddUser() method
             //This will link the login information with a user in the system.
             string loginQuery =
-                "INSERT INTO HashedCredentials (Username,Password,UserID) values (@Username, @Password, @UserID)";
+                "INSERT INTO HashedCredentials (Email,Password,UserID) values (@Email, @Password, @UserID)";
 
             SqlCommand cmdLogin = new SqlCommand();
             cmdLogin.Connection = Lab1DBConnection;
             cmdLogin.Connection.ConnectionString = AuthConnString;
 
             cmdLogin.CommandText = loginQuery;
-            cmdLogin.Parameters.AddWithValue("@Username", Username);
+            cmdLogin.Parameters.AddWithValue("@Email", Email);
             cmdLogin.Parameters.AddWithValue("@Password", PasswordHash.HashPassword(Password));
             cmdLogin.Parameters.AddWithValue("@UserID", UserID);
 
@@ -340,24 +345,24 @@ namespace Lab1.Pages.DB
 
         }
 
-        public static int GetUserID(string username)//Ready for JMU Care DB
+        public static int GetUserID(string Email)//Ready for JMU Care DB
         {
             //This method is called after a successful login to add the userID to the session state to be used for subsequent queries. 
-            string getIDQuery = "SELECT UserID FROM HashedCredentials WHERE username = @username";
+            string getIDQuery = "SELECT UserID FROM HashedCredentials WHERE email = @Email";
 
             SqlCommand cmdGetID = new SqlCommand();
             cmdGetID.Connection = Lab1DBConnection;
             cmdGetID.Connection.ConnectionString = AuthConnString;
 
             cmdGetID.CommandText = getIDQuery;
-            cmdGetID.Parameters.AddWithValue("@username", username);
+            cmdGetID.Parameters.AddWithValue("@Email", Email);
 
             cmdGetID.Connection.Open();
 
             int UserID = (int)cmdGetID.ExecuteScalar();
 
             return UserID;
-        } 
+        }
 
         public static SqlDataReader GetUserMessages(string UserID)
         {
@@ -413,7 +418,7 @@ namespace Lab1.Pages.DB
 
         public static SqlDataReader GetUsers() //Updated for JMU Care DB
         {
-            string getUsersQuery = "SELECT UserID, FirstName, LastName FROM Users";
+            string getUsersQuery = "SELECT UserID, FirstName + ' ' + LastName AS FullName FROM Users";
 
             SqlCommand cmdGetUsers = new SqlCommand();
             cmdGetUsers.Connection = Lab1DBConnection;
@@ -477,10 +482,10 @@ namespace Lab1.Pages.DB
 
             return tempreader;
 
-            
+
         }
 
-        public static void EditGrant (Grant grant) //Updated for JMU Care DB
+        public static void EditGrant(Grant grant) //Updated for JMU Care DB
         {
             string sqlQuery = @"
     UPDATE Grant SET
@@ -672,7 +677,6 @@ namespace Lab1.Pages.DB
             return tempreader;
         }
 
-
         public static String GetUserName(int UserID)
         {
             SqlCommand cmdGetName = new SqlCommand();
@@ -680,7 +684,7 @@ namespace Lab1.Pages.DB
             cmdGetName.Connection.ConnectionString = Lab1DBConnString;
             cmdGetName.CommandText = "SELECT FirstName, LastName FROM [Users] WHERE UserID = @UserID";
 
-            cmdGetName.Parameters.AddWithValue("@UserID",UserID);
+            cmdGetName.Parameters.AddWithValue("@UserID", UserID);
             cmdGetName.Connection.Open();
 
             String FullName = "";
@@ -688,13 +692,67 @@ namespace Lab1.Pages.DB
 
             while (tempreader.Read())
             {
-                 String FirstName = tempreader.GetString(0);
-                 String LastName = tempreader.GetString(1);
-                 FullName = FirstName + LastName;
+                String FirstName = tempreader.GetString(0);
+                String LastName = tempreader.GetString(1);
+                FullName = FirstName + LastName;
             }
             Lab1DBConnection.Close();
             return FullName;
 
+        }
+
+        public static int AddEvent(Event NewEvent)
+        {
+            SqlCommand cmdAddEvent = new SqlCommand();
+            cmdAddEvent.Connection = Lab1DBConnection;
+            cmdAddEvent.Connection.ConnectionString = Lab1DBConnString;
+            cmdAddEvent.CommandText = @"
+                        INSERT INTO Event (Title, Description, ScheduledDate)
+                        VALUES (@Title, @Description, @EventDateTime);
+                        SELECT CAST(SCOPE_IDENTITY() AS int);"; //retrieves newly generated eventID for eventUsers table
+            cmdAddEvent.Parameters.AddWithValue("@Title", NewEvent.Title);
+            cmdAddEvent.Parameters.AddWithValue("@Description", NewEvent.Description);
+            cmdAddEvent.Parameters.AddWithValue("@EventDateTime", NewEvent.EventDateTime);
+
+            cmdAddEvent.Connection.Open();
+
+            int newEventId = (int)cmdAddEvent.ExecuteScalar(); // execute scalar ensures ID is returned from the scoped identity
+
+            Lab1DBConnection.Close();
+            return newEventId;
+        }
+
+        public static void AddEventUsers(int newEventID, int UserID)
+        { 
+            SqlCommand cmdAddEventUsers = new SqlCommand();
+            cmdAddEventUsers.Connection = Lab1DBConnection;
+            cmdAddEventUsers.Connection.ConnectionString = Lab1DBConnString;
+            cmdAddEventUsers.CommandText = "INSERT INTO EventUsers (EventID, UserID) VALUES (@EventID, @UserID)";
+            cmdAddEventUsers.Parameters.AddWithValue("@EventID", newEventID);
+            cmdAddEventUsers.Parameters.AddWithValue("@UserID", UserID);
+
+            cmdAddEventUsers.Connection.Open();
+
+            cmdAddEventUsers.ExecuteNonQuery();
+        }
+
+        public static SqlDataReader GetUserEvents(int UserID)
+        {
+            SqlCommand cmdGetEvent = new SqlCommand();
+            cmdGetEvent.Connection = Lab1DBConnection;
+            cmdGetEvent.Connection.ConnectionString = Lab1DBConnString;
+            cmdGetEvent.CommandText = @"
+                SELECT * FROM Event
+                WHERE EventID IN (
+                SELECT EventID FROM EventUsers WHERE UserID = @UserID
+                )";
+            cmdGetEvent.Parameters.AddWithValue("@UserID", UserID);
+
+            cmdGetEvent.Connection.Open();
+
+            SqlDataReader tempreader = cmdGetEvent.ExecuteReader();
+
+            return tempreader;
         }
 
     }

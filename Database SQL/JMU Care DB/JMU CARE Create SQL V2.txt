@@ -3,6 +3,11 @@ CREATE TABLE UserType (
     name NVARCHAR(60) NOT NULL
 );
 
+CREATE TABLE [Permissions] (
+	PermissionID INT PRIMARY KEY,
+	PermissionName VARCHAR(50),
+);
+
 CREATE TABLE [Users] (
     UserID INT IDENTITY(1,1) PRIMARY KEY,
     FirstName VARCHAR(50),
@@ -12,6 +17,8 @@ CREATE TABLE [Users] (
     Department VARCHAR(100),
     DateJoined DATE,
     AccessLevel INT
+
+FOREIGN KEY (UserTypeID) REFERENCES UserType(typeID)
 );
 
 CREATE TABLE FileMetadata(
@@ -22,18 +29,42 @@ CREATE TABLE FileMetadata(
 	UploadDate DATETIME DEFAULT GETDATE()
 );
 
-CREATE TABLE Grants(
-    GrantID INT PRIMARY KEY,
-    GrantName VARCHAR(100),
-    FundingAgency VARCHAR(100),
-    SubmissionDate DATE,
-    Deadline DATE,
-    ProposalID INT,
-    FundingAmount DECIMAL(18, 2),
-    Type VARCHAR(50),
-    GrantDescription VARCHAR(MAX),
-    UserID INT,
-    FOREIGN KEY (UserID) REFERENCES [Users](UserID)
+CREATE TABLE Grants (
+	GrantID INT PRIMARY KEY,
+    	GrantName VARCHAR(100),
+   	FundingAgency VARCHAR(100),
+  	Deadline DATE,
+    	ProposalID INT,
+    	FundingAmount DECIMAL(18, 2),
+    	Type VARCHAR(50),
+    	GrantDescription VARCHAR(MAX)
+);
+
+CREATE TABLE GrantApplication (
+	GrantApplicationID INT PRIMARY KEY,
+	GrantID INT,
+	ApplicationStatus VARCHAR(50),
+	PrincipleInvestigator INT,
+	FOREIGN KEY (PrincipleInvestigator) REFERENCES [Users](UserID),
+	FOREIGN KEY (GrantID) REFERENCES Grants(GrantID) ON DELETE CASCADE
+);
+
+
+
+CREATE TABLE GrantApplicationUsers (
+	GrantApplicationID INT,
+	UserID INT,
+	PermissionLevel INT,
+
+	PRIMARY KEY (GrantApplicationID, UserID),
+
+	FOREIGN KEY (UserID)
+	REFERENCES [Users](UserID)
+	ON DELETE CASCADE,
+
+	FOREIGN KEY (PermissionLevel)
+	REFERENCES Permissions(PermissionID)
+	ON DELETE CASCADE
 );
 
 CREATE TABLE Project(
@@ -44,7 +75,6 @@ CREATE TABLE Project(
     ProjectStatus VARCHAR(50),
     ProgressStatus VARCHAR(50),
     ProjectLead INT,
-    UserID INT,
     GrantID INT,
     FOREIGN KEY (ProjectLead) REFERENCES [Users](UserID),
     FOREIGN KEY (GrantID) REFERENCES Grants(GrantID)
@@ -58,8 +88,29 @@ CREATE TABLE Task(
     Status VARCHAR(50),
     AssignedTo INT,
     ProjectID INT,
+    GrantApplicationID INT,
     FOREIGN KEY (AssignedTo) REFERENCES [Users](UserID),
-    FOREIGN KEY (ProjectID) REFERENCES Project(ProjectID)
+    FOREIGN KEY (ProjectID) REFERENCES Project(ProjectID),
+    FOREIGN KEY (GrantApplicationID) REFERENCES GrantApplication(GrantApplicationID)
+);
+
+CREATE TABLE Comment (
+	CommentID INT PRIMARY KEY IDENTITY(1,1),
+	CommentText VARCHAR(MAX)
+);
+
+CREATE TABLE TaskComment (
+	TaskID INT,
+	CommentID INT,
+	PRIMARY KEY (TaskID, CommentID),
+
+	FOREIGN KEY (TaskID)
+	REFERENCES Task(TaskID)
+	ON DELETE CASCADE,
+
+	FOREIGN KEY (CommentID)
+	REFERENCES Comment(CommentID)
+	ON DELETE CASCADE
 );
 
 CREATE TABLE ResearchData(
@@ -175,6 +226,7 @@ CREATE TABLE ProjectFiles (
 CREATE TABLE ProjectUsers (
     ProjectID INT NOT NULL,
     UserID INT NOT NULL,
+    PermissionID INT NOT NULL,
     PRIMARY KEY (ProjectID, UserID),
 
     FOREIGN KEY (ProjectID)
@@ -183,6 +235,33 @@ CREATE TABLE ProjectUsers (
 
     FOREIGN KEY (UserID)
         REFERENCES [Users](UserID)
-        ON DELETE CASCADE
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (PermissionID)
+	REFERENCES Permissions(PermissionID)
+	ON DELETE CASCADE
 );
 
+CREATE TABLE Event (
+	EventID INT PRIMARY KEY IDENTITY(1,1),
+	Title VARCHAR(50),
+	ScheduledDate DATETIME,
+	Description VARCHAR(MAX)
+);
+
+CREATE TABLE EventUsers (
+	EventID INT,
+	UserID INT,
+PRIMARY KEY (EventID, UserID),
+
+	FOREIGN KEY (EventID) 
+	REFERENCES Event(EventID)
+	ON DELETE CASCADE,
+
+	FOREIGN KEY (UserID)
+	REFERENCES [Users](UserID)
+	ON DELETE CASCADE
+); 
+	
+
+	

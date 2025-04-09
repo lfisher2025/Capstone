@@ -11,8 +11,8 @@ namespace Lab1.Pages.Faculty
     public class FacultyHomeModel : PageModel
     {
          public List<Project> Projects { get; set; } = new();
-        public List<GrantApplication> Grants { get; set; }
-        public List<UserTask> DailyTasks { get; set; } = new();
+        public List<GrantApplication> Grants { get; set; } = new List<GrantApplication>();
+        public List<UserTask> DailyTasks { get; set; } = new List<UserTask>();
         public String MultiSelectMessage { get; set; }
         public String UserID { get; set; }
         public int SelectedProject { get; set; }
@@ -38,11 +38,11 @@ namespace Lab1.Pages.Faculty
            
             int userID = Convert.ToInt32(UserID);
 
-            //GetProjects(userID);
+            GetProjects(userID);
 
-            //GetGrants(userID);
+            GetGrants(userID);
 
-            //GetTodaysTasks(userID);
+            GetTodaysTasks(userID);
 
 
             return Page();
@@ -87,20 +87,21 @@ namespace Lab1.Pages.Faculty
             {
                 Grants.Add(new GrantApplication
                 {
-                    GrantID = Convert.ToInt32(grantReader["GrantID"]),
-                    GrantName = grantReader["GrantName"].ToString(),
-                    FundingAgency = grantReader["FundingAgency"].ToString(),
-                    Deadline = Convert.ToDateTime(grantReader["Deadline"]),
-                    ProposalID = Convert.ToInt32(grantReader["ProposalID"]),
-                    FundingAmount = Convert.ToDecimal(grantReader["FundingAmount"]),
-                    GrantType = grantReader["GrantType"].ToString(),
-                    GrantDescription = grantReader["GrantDescription"].ToString(),
-                    GrantApplicationID = Convert.ToInt32(grantReader["GrantApplicationID"]),
-                    ApplicationStatus = grantReader["ApplicationStatus"].ToString(),
-                    PrincipleInvestigator = Convert.ToInt32(grantReader["PrincipleInvestigator"])
+                    GrantID = grantReader["GrantID"] != DBNull.Value ? Convert.ToInt32(grantReader["GrantID"]) : 0,
+                    GrantName = grantReader["GrantName"] != DBNull.Value ? grantReader["GrantName"].ToString() : "",
+                    FundingAgency = grantReader["FundingAgency"] != DBNull.Value ? grantReader["FundingAgency"].ToString() : "",
+                    Deadline = grantReader["Deadline"] != DBNull.Value ? Convert.ToDateTime(grantReader["Deadline"]) : DateTime.MinValue,
+                    ProposalID = grantReader["ProposalID"] != DBNull.Value ? Convert.ToInt32(grantReader["ProposalID"]) : 0,
+                    FundingAmount = grantReader["FundingAmount"] != DBNull.Value ? Convert.ToDecimal(grantReader["FundingAmount"]) : 0,
+                    GrantType = grantReader["Type"] != DBNull.Value ? grantReader["Type"].ToString() : "",
+                    GrantDescription = grantReader["GrantDescription"] != DBNull.Value ? grantReader["GrantDescription"].ToString() : "",
+                    GrantApplicationID = grantReader["GrantApplicationID"] != DBNull.Value ? Convert.ToInt32(grantReader["GrantApplicationID"]) : 0,
+                    ApplicationStatus = grantReader["ApplicationStatus"] != DBNull.Value ? grantReader["ApplicationStatus"].ToString() : "",
+                    PrincipleInvestigator = grantReader["PrincipleInvestigator"] != DBNull.Value ? Convert.ToInt32(grantReader["PrincipleInvestigator"]) : 0
                 });
 
             }
+            DBClass.Lab1DBConnection.Close();
         }
 
         public void GetTodaysTasks(int userID)
@@ -117,6 +118,7 @@ namespace Lab1.Pages.Faculty
                 });
 
             }
+            DBClass.Lab1DBConnection.Close();
         }
     }
 }

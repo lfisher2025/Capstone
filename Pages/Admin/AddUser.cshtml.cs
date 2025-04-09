@@ -13,7 +13,7 @@ namespace Lab1.Pages.Admin
         public int UserType { get; set; }
         [BindProperty]
         public User TempUser { get; set; } = new User();
-        [BindProperty] public String Username { get; set; }
+        [BindProperty] public String Email { get; set; }
         [BindProperty] public String Password { get; set; } 
         public String currentUserID { get; set; }
         
@@ -37,7 +37,7 @@ namespace Lab1.Pages.Admin
 
             int newID = DBClass.AddUser(TempUser,UserID);
             DBClass.Lab1DBConnection.Close();
-            DBClass.CreateHashedUser(Username, Password, newID);
+            DBClass.CreateHashedUser(Email, Password, newID);
             DBClass.Lab1DBConnection.Close();
 
         }

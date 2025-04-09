@@ -268,9 +268,16 @@
                             <ul class="list-unstyled">
                                 <ul class="list-unstyled">
                                     @{
-                                        int maxTaskDepth;
-                                        if(Model.DailyTasks.Count() > 5) { maxTaskDepth = 5; }
-                                        else { maxTaskDepth = Model.DailyTasks.Count(); }
+                                        int maxTaskDepth = 0;
+
+                                        if (Model.DailyTasks != null && Model.DailyTasks.Count() > 5)
+                                        {
+                                            maxTaskDepth = 5;
+                                        }
+                                        else if (Model.DailyTasks != null)
+                                        {
+                                            maxTaskDepth = Model.DailyTasks.Count();
+                                        }
 
                                         for (int row = 0; row < maxTaskDepth; row++)
                                         {
@@ -297,32 +304,6 @@
                                             </li>
                                         }
                                     }
-
-                                    <li class="d-flex align-items-center mb-2">
-                                        <input class="form-check-input me-2 rounded-circle border-success" type="checkbox" checked>
-                                        <span>Update research grant and confirm with team for approval</span>
-                                        <span class="badge bg-success ms-auto">Completed</span>
-                                    </li>
-                                    <li class="d-flex align-items-center mb-2">
-                                        <input class="form-check-input me-2 rounded-circle border-secondary" type="checkbox">
-                                        <span>Approve pending projects or request modifications accordingly</span>
-                                        <span class="badge bg-danger ms-auto">In review</span>
-                                    </li>
-                                    <li class="d-flex align-items-center mb-2">
-                                        <input class="form-check-input me-2 rounded-circle border-secondary" type="checkbox">
-                                        <span>Consult team and create new calendar events based on upcoming schedule</span>
-                                        <span class="badge bg-danger ms-auto">In review</span>
-                                    </li>
-                                    <li class="d-flex align-items-center mb-2">
-                                        <input class="form-check-input me-2 rounded-circle border-secondary" type="checkbox">
-                                        <span>Add new updates to relevant projects</span>
-                                        <span class="badge bg-warning ms-auto">On going</span>
-                                    </li>
-                                    <li class="d-flex align-items-center mb-2">
-                                        <input class="form-check-input me-2 rounded-circle border-success" type="checkbox" checked>
-                                        <span>Interactive prototype for app screens</span>
-                                        <span class="badge bg-success ms-auto">Completed</span>
-                                    </li>
                                 </ul>
 
                         </div>
@@ -340,12 +321,16 @@
                                 </thead>
                                 <tbody>
                                     @{
-                                        int maxGrantDepth;
-                                        if (@Model.Grants.Count() > 3)
+                                        int maxGrantDepth = 0;
+
+                                        if (Model.Grants != null && Model.Grants.Count() > 3)
                                         {
                                             maxGrantDepth = 3;
                                         }
-                                        else { maxGrantDepth = @Model.Grants.Count(); }
+                                        else if (Model.Grants != null)
+                                        {
+                                            maxGrantDepth = Model.Grants.Count();
+                                        }
 
                                         for (int row = 0; row < maxGrantDepth; row++)
                                         {
@@ -394,12 +379,16 @@
                                 </thead>
                                 <tbody>
                                     @{
-                                        int maxProjectDepth;
-                                        if (@Model.Projects.Count() > 5)
+                                        int maxProjectDepth = 0;
+
+                                        if (Model.Projects != null && Model.Projects.Count() > 5)
                                         {
                                             maxProjectDepth = 5;
                                         }
-                                        else { maxProjectDepth = @Model.Projects.Count(); }
+                                        else if (Model.Projects != null)
+                                        {
+                                            maxProjectDepth = Model.Projects.Count();
+                                        }
 
                                         for (int row = 0; row < maxProjectDepth; row++)
                                         {
@@ -410,7 +399,10 @@
                                                 <td>@Model.Projects[row].EndDate.ToShortDateString()</td>
                                                 <!--switch statement used to determine formatting-->
                                                 <td>
-                                                    @switch (Model.Grants[row].ApplicationStatus)
+                                                    @{
+                                                        var status = Model.Grants?[row]?.ApplicationStatus ?? "Unknown";
+                                                    }
+                                                    @switch (status)
                                                     {
                                                         case "On Going":
                                                             <span class="badge bg-warning">On going</span>

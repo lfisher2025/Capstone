@@ -1,0 +1,18 @@
+-- Create Procedure to insert new user and capture the generated ID for insertion into AUTH
+CREATE PROCEDURE InsertUserAndGetID
+    @FirstName VARCHAR(50),
+    @LastName VARCHAR(50),
+    @Email VARCHAR(100),
+    @UserTypeID INT,
+    @Department VARCHAR(100),
+    @DateJoined DATE,
+    @AccessLevel INT,
+    @NewUserID INT OUTPUT
+AS
+BEGIN
+
+    INSERT INTO Users (FirstName, LastName, Email, UserTypeID, Department, DateJoined, AccessLevel)
+    VALUES (@FirstName, @LastName, @Email, @UserTypeID, @Department, @DateJoined, @AccessLevel);
+
+    SET @NewUserID = SCOPE_IDENTITY();
+END;
