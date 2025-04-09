@@ -19,10 +19,6 @@
         <input type="text" class="form-control" asp-for="tempGrant.FundingAgency" placeholder="Enter Funding Agency" />
     </div>
 
-    <div class="form-group">
-        <label asp-for="tempGrant.SubmissionDate"></label>
-        <input type="date" class="form-control" asp-for="tempGrant.SubmissionDate" />
-    </div>
 
     <div class="form-group">
         <label asp-for="tempGrant.Deadline"></label>
@@ -62,7 +58,7 @@
         <label asp-for="tempGrant.FundingAmount"></label>
         <input type="number" step="0.01" class="form-control" asp-for="tempGrant.FundingAmount" placeholder="Enter Funding Amount" />
     </div>
-
+    </form>
 
 
 @{ //Used ChatGPT to troubleshoot my switch case (Lines 30-37)
