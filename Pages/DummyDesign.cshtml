@@ -1,0 +1,75 @@
+﻿@page
+@model Lab1.Pages.DummyDesignModel
+@{
+}
+
+<style>
+    .sidenav {
+        height: 100%;
+        width: 160px;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #450084;
+        overflow-x: hidden;
+        padding-top: 20px;
+    }
+
+    .main-content{
+        margin-left: 160px;
+        padding:0px 10px;
+    }
+</style>
+
+
+<div class="sidenav">
+    <img src="/images/JMUCare.png" alt="jmucarelogo" class="logo img-fluid w-100" style="vertical-align: top;">
+    <div class="row">
+        <a asp-page="/Faculty/FacultyHome"><i class="bi bi-house-door-fill me-2"></i>Home</a>
+        <a href="/Employee/EmployeeViewProject"><i class="bi bi-kanban-fill me-2"></i>Projects</a>
+        <a href="/Task"><i class="bi bi-list-check me-2"></i>Tasks</a>
+        <a href="/Faculty/ViewGrant"><i class="bi bi-cash-coin me-2"></i>Grants</a>
+        <a href="team.html"><i class="bi bi-people-fill me-2"></i>People</a>
+        <a href="/Calendar/Calendar"><i class="bi bi-calendar-event-fill me-2"></i>Calendar</a>
+        <a href="/Settings" class="active"><i class="bi bi-gear-fill me-2"></i>Settings</a>
+
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="card" style="width: 40rem;">
+        <h5 class="card-header">Account Settings</h5>
+        <div class="card-body">
+            <h5 class="card-title">Change Password</h5>
+            <p class="card-text">Update your password for security.</p>
+            <a asp-page="/ManageAccount/ChangePswd" class="btn btn-primary">Change Password</a>
+        </div>
+    </div>
+    <br />
+    <div class="card">
+        <h5 class="card-header">User Management</h5>
+        <div class="card-body">
+            <h5 class="card-title">Change User Permissions</h5>
+            <p class="card-text">Modify user roles and permissions.</p>
+            <a asp-page="/ManageAccount/ManagePermission" class="btn btn-primary">Manage Permissions</a>
+        </div>
+    </div>
+    <br />
+    <div class="card">
+        <h5 class="card-header">User Creation</h5>
+        <div class="card-body">
+            <h5 class="card-title">Create a User</h5>
+            <p class="card-text">New employee? Add a new user!</p>
+            <a asp-page="/ManageAccount/CreateUser" class="btn btn-primary">Create User</a>
+        </div>
+    </div>
+    <br />
+    <div class="card">
+        <h5 class="card-header">Log Out</h5>
+        <div class="card-body">
+            <p class="card-text">End your current session securely.</p>
+            <a class="btn btn-danger me-2" asp-page="/HashedLogin/Logout">Log Out</a>
+        </div>
+    </div>
+</div>
