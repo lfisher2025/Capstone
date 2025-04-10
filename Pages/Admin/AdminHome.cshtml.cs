@@ -64,6 +64,13 @@ namespace Lab1.Pages.Admin
             DBClass.Lab1DBConnection.Close();
 
             //Scrape comppletion status for each project and make a dictionary for JSON object for view
+            ProjectStatusData = Projects
+            .GroupBy(p => p.ProjectStatus)
+            .ToDictionary(
+             grp => grp.Key,
+             grp => grp.Select(p => p.ProjectName).ToList()
+       );
+
         }
 
         public void GetGrants()

@@ -509,11 +509,8 @@
                   "Not Started": "rgb(203, 119, 138)"    // Red/Pink
                 };
 
-                // Sample project data for each status
-                const projectStatusData = {
-                  "Completed": ["Project A", "Project B", "Project C"],
-                  "In Progress": ["Project D", "Project E"],
-                  "Not Started": ["Project F"]
+                // Project data by status
+                const projectStatusData = { @Html.Raw(Json.Serialize(Model.ProjectStatusData))
                 };
 
                 const modalStatusTitle = document.getElementById("modalStatusTitle");
