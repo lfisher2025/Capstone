@@ -754,6 +754,27 @@ namespace Lab1.Pages.DB
 
             return tempreader;
         }
+        public void OnPostArchive()
+        {
+            SqlCommand cmdArchive = new SqlCommand();
+            cmdArchive.Connection = Lab1DBConnection;
+            cmdArchive.Connection.ConnectionString = Lab1DBConnString;
+            cmdArchive.CommandType = CommandType.StoredProcedure;
+            cmdArchive.CommandText = "ArchiveAndDeleteCompletedProjects";
+        }
+        public static SqlDataReader ViewArchive()
+        {
+            string ArchiveSelectString = "SELECT * FROM Archive;";
+            SqlCommand cmdViewArchive = new SqlCommand();
+            cmdViewArchive.Connection = Lab1DBConnection;
+            cmdViewArchive.Connection.ConnectionString = Lab1DBConnString;
+            cmdViewArchive.CommandText = ArchiveSelectString;
+            Lab1DBConnection.Open();
+
+            SqlDataReader tempReader = cmdViewArchive.ExecuteReader();
+
+            return tempReader;
+        } //Ready for JMU Care DB
 
     }
 

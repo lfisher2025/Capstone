@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Reflection.PortableExecutable;
 using Lab1.Pages.Data_Classes;
 using Lab1.Pages.DB;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 namespace Lab1.Pages.Faculty
 {
     public class GrantSearchModel : PageModel
@@ -55,7 +57,7 @@ namespace Lab1.Pages.Faculty
                     FundingAmount = ViewGrants["FundingAmount"] != DBNull.Value ? Convert.ToDecimal(ViewGrants["FundingAmount"]) : 0,
                     Type = ViewGrants["Type"] != DBNull.Value ? ViewGrants["Type"].ToString() : string.Empty,
                     GrantDescription = ViewGrants["GrantDescription"] != DBNull.Value ? ViewGrants["GrantDescription"].ToString() : string.Empty
-                }); 
+                });
             }
             DBClass.Lab1DBConnection.Close();
 
@@ -90,6 +92,5 @@ namespace Lab1.Pages.Faculty
             DBClass.Lab1DBConnection.Close();
             return Page();
         }
-
     }
 }
