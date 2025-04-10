@@ -32,9 +32,14 @@
         .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
             display: block;
         }
+
         .footer {
             
             padding: 5px 0;
+            display: block;
+            position: sticky;
+            bottom: 8px;
+            right: 16px;
         }
         .footer a {
             
@@ -70,7 +75,8 @@
 
     </style>
 </head>
-<body>
+
+<body>@*
     <header>
          <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3">
             <div class="container">
@@ -139,7 +145,7 @@
             </div>
         </nav>
     </header> 
-    
+    *@
     
     <div class="container">
         <main role="main" class="pb-3">
@@ -147,12 +153,13 @@
         </main>
     </div>
     
-
-    <footer class=" footer text-muted">
-        <div class="position-absolute bottom-0 end-0">
+    @*
+    <footer class="footer text-muted">
+        <div>
             &copy; 2025 - JMU Care - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
+    *@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
