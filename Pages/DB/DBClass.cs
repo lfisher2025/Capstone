@@ -89,6 +89,21 @@ namespace Lab1.Pages.DB
             return tempReader;
         } //Ready for JMU Care DB
 
+        public static SqlDataReader ViewUsers()
+        {
+            string UserSelectString = "SELECT * FROM Users;";
+            SqlCommand cmdViewUsers = new SqlCommand();
+            cmdViewUsers.Connection = Lab1DBConnection;
+            cmdViewUsers.Connection.ConnectionString = Lab1DBConnString;
+            cmdViewUsers.CommandText = UserSelectString;
+
+            Lab1DBConnection.Open();
+
+            SqlDataReader tempReader = cmdViewUsers.ExecuteReader();
+
+            return tempReader;
+        }
+
         public static SqlDataReader ViewUserMessages(int UserID)
         {
             string MessageSelectString = "SELECT Content FROM Message WHERE senderID = @UserID;";
@@ -515,6 +530,24 @@ namespace Lab1.Pages.DB
             cmdGrantUpdate.Connection.Open();
             cmdGrantUpdate.ExecuteNonQuery();
         }
+
+        public static void UpdateUserPermissions(int userID, int accessLevel)
+        {
+            //Updated for JMU Care DB
+            string sqlQuery = @"UPDATE [Users] SET AccessLevel = @AccessLevel WHERE UserID = @UserID";
+
+            SqlCommand cmdUpdateUser = new SqlCommand();
+            cmdUpdateUser.Connection = Lab1DBConnection;
+            cmdUpdateUser.Connection.ConnectionString = Lab1DBConnString;
+            cmdUpdateUser.CommandText = sqlQuery;
+
+            cmdUpdateUser.Parameters.AddWithValue("@AccessLevel", accessLevel);
+            cmdUpdateUser.Parameters.AddWithValue("@UserID", userID);
+
+            cmdUpdateUser.Connection.Open();
+            cmdUpdateUser.ExecuteNonQuery();
+        }
+
 
         public static SqlDataReader SingleGrantReader(int GrantID) // Ready for JMU Care DB
         {
