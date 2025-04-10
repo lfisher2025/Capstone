@@ -13,10 +13,10 @@ namespace Lab1.Pages.Faculty.GrantWork
 
         public IActionResult OnGet()
         {
-            string Username = HttpContext.Session.GetString("username");
+            string UserID = HttpContext.Session.GetString("UserID");
             string UserType = HttpContext.Session.GetString("UserType");
 
-            if (string.IsNullOrEmpty(Username))
+            if (string.IsNullOrEmpty(UserID))
             {
                 return RedirectToPage("/HashedLogin/HashedLogin"); // Redirect if not logged in
             }

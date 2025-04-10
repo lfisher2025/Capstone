@@ -117,7 +117,7 @@
             background-color: white;
             padding: 0px 10px;
             margin-left: 200px;
-            width: 100%;
+            width: 90%;
         }
 
         .project-window {
@@ -241,6 +241,21 @@
     </style>
 </head>
 
+<div class="sidebar">
+    <img src="/images/JMUCare.png" alt="jmucarelogo" class="logo img-fluid w-100" style="vertical-align: top;">
+    <div class="row">
+        <a asp-page="/Faculty/FacultyHome"><i class="bi bi-house-door-fill me-2"></i>Home</a>
+        <a href="/Employee/EmployeeViewProject"><i class="bi bi-kanban-fill me-2"></i>Projects</a>
+        <a href="/Task"><i class="bi bi-list-check me-2"></i>Tasks</a>
+        <a href="/Faculty/ViewGrant" class="active"><i class="bi bi-cash-coin me-2"></i>Grants</a>
+        <a href="team.html"><i class="bi bi-people-fill me-2"></i>People</a>
+        <a href="/Calendar/Calendar"><i class="bi bi-calendar-event-fill me-2"></i>Calendar</a>
+        <a href="/Settings"><i class="bi bi-gear-fill me-2"></i>Settings</a>
+
+    </div>
+</div>
+
+<div class="main-content">
 <h2>Grants</h2>
 <a asp-page="/Faculty/AddGrant" class="btn btn-primary">Add Grant</a>
 
@@ -342,3 +357,4 @@
 
 <a asp-page="/Faculty/AddGrant" class="btn btn-primary">Add Grant</a>
 <a asp-page="/Faculty/GrantSearch" class="btn btn-secondary">Search Archived Grants</a>
+</div>
