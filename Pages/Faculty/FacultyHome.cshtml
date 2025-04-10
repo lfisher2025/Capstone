@@ -1,11 +1,8 @@
-﻿
-@page
+﻿@page
 @model Lab1.Pages.Faculty.FacultyHomeModel
 @{
 }
 
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -25,22 +22,31 @@
         .container {
         display: flex;
         height: 100%;
+        width: 100%;
         }
 
+        @*
         .container-fluid {
         display: flex;
         min-height: 100%;
-        }
+        }*@
 
         .column {
         justify-content: center;
         align-items: center;
         border: 1px solid #aaa;
         height: 100%;
+        width: 100%;
         }
 
         .sidebar {
-            flex: .351;
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            overflow-x: hidden;
             background: #450084;
             color: white;
             min-height: 170vh;
@@ -107,7 +113,9 @@
         .main-content {
         flex: 1.5;
         background-color: white;
-        padding: 20px;
+        padding: 0px 10px;
+        margin-left: 200px;
+        width: 100%;
         }
 
         .project-window {
@@ -234,7 +242,7 @@
 
 <body>
 
-    <div class="container-fluid">
+    <div>
         <div class="row">
             <div class="column sidebar">
                 <img src="/images/JMUCare.png" alt="jmucarelogo" class="logo img-fluid w-100" style="vertical-align: top;"/>
@@ -243,14 +251,14 @@
                     <a href="/Employee/EmployeeViewProject"><i class="bi bi-kanban-fill me-2"></i>Projects</a>
                     <a href="/Task"><i class="bi bi-list-check me-2"></i>Tasks</a>
                     <a href="/Faculty/ViewGrant"><i class="bi bi-cash-coin me-2"></i>Grants</a>
-                    <a href="team.html"><i class="bi bi-people-fill me-2"></i>Your Team</a>
+                    <a href="/People"><i class="bi bi-cash-coin me-2"></i>People</a>
                     <a href="/Calendar/Calendar"><i class="bi bi-calendar-event-fill me-2"></i>Calendar</a>
                     <a href="/Settings"><i class="bi bi-gear-fill me-2"></i>Settings</a>
                 </div>
             </div>
 
             <!-- Main Content -->
-            <div class="col-md-10 main-content">
+            <div class="main-content">
                 <div class="header-container">
                     <div class="profile-section">
                         <img src="/images/persona2.jpg" alt="Profile Picture" class="profile-img">

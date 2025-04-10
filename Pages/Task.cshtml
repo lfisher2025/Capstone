@@ -3,6 +3,259 @@
 @{
 }
 
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="JMU CARE" />
+    <title>JMU CARE Calendar</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- LOAD BOOTSTRAP CSS - DO NOT DELETE -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="styles.css" rel="stylesheet">
+    <!-- END LOADING BOOTSTRAP CSS -->
+    <style>
+        html, body {
+            min-height: 100%;
+            min-width: 100%
+        }
+
+        .container {
+            display: flex;
+            height: 100%;
+            width: 100%;
+        }
+
+        @*
+        .container-fluid {
+        display: flex;
+        min-height: 100%;
+        }*@
+
+        .column {
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #aaa;
+            height: 100%;
+            width: 100%;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            overflow-x: hidden;
+            background: #450084;
+            color: white;
+            min-height: 170vh;
+            padding: 1rem;
+        }
+
+            .sidebar a {
+                position: relative;
+                color: white;
+                display: block;
+                padding: 10px;
+                text-decoration: none;
+                margin-bottom: 10px;
+                transition: color 0.3s;
+            }
+
+                .sidebar a.active {
+                    background-color: white;
+                    color: #450084;
+                    font-weight: bold;
+                }
+
+                .sidebar a:hover {
+                    color: black;
+                }
+
+                .sidebar a::after {
+                    content: "";
+                    position: absolute;
+                    bottom: 4px;
+                    left: 10px;
+                    width: 0%;
+                    height: 2px;
+                    background-color: white;
+                    transition: width 0.3s ease-in-out;
+                }
+
+        .logo {
+            position: relative;
+            vertical-align: t;
+            background-color: white;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 20px 20px 20px 20px;
+        }
+
+        .tabs button {
+            position: absolute;
+            width: 40%;
+            padding: 10px;
+            background-color: #450084;
+            color: white;
+            border-radius: 20px; /* Rounded button */
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+            .tabs button:hover {
+                background-color: #B599CE;
+            }
+
+        .main-content {
+            flex: 1.5;
+            background-color: white;
+            padding: 0px 10px;
+            margin-left: 200px;
+            width: 100%;
+        }
+
+        .project-window {
+            background-color: #eee;
+            padding: 100px;
+            width: 500px;
+            box-shadow: 0 4px 8px rgba(181, 153, 206, 0.815);
+            border-radius: 50px;
+            text-align: left;
+        }
+
+        .calendar-container .day {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 2px;
+            cursor: pointer;
+            background-color: lightgrey;
+        }
+
+            .calendar-container .day.selected {
+                background-color: #450084;
+                color: white;
+            }
+
+        .profile-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 5px;
+            background-color: white; /* Adjust as needed */
+        }
+
+        .profile-img {
+            width: 50px; /* Adjust size as needed */
+            height: 50px;
+            border-radius: 50%; /* Makes it a circle */
+            object-fit: cover; /* Ensures the image fills the space */
+        }
+
+        .header-container {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between; /* Space items evenly */
+            align-items: center;
+            background-color: white;
+            border-bottom: 2px solid #ddd; /* Optional divider */
+            flex-direction: row-reverse; /* Switches the order */
+        }
+
+        .right-panel {
+            background-color: #DACCE6;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            .right-section
+
+        {
+            flex: 0.8;
+        }
+
+        .project-summary {
+            background-color: #F4EFE1;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .stats-box {
+            background-color: #F4EFE1;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .calendar-container {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .day {
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .form-check-input:not(:checked):focus {
+            border-color: black;
+            box-shadow: none;
+        }
+
+        .day.selected {
+            background-color: #450084;
+        }
+
+        .right-panel,
+        .project-summary,
+        .stats-box,
+        .calendar-container,
+        .todays-task {
+            background-color: #F4EFE1;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .clickable-card:hover {
+            box-shadow: 0 4px 12px rgba(69, 0, 132, 0.2);
+            color: #450084;
+        }
+
+    </style>
+    </head>
+
+<div class="sidebar">
+    <img src="/images/JMUCare.png" alt="jmucarelogo" class="logo img-fluid w-100" style="vertical-align: top;">
+    <div class="row">
+        <a asp-page="/Faculty/FacultyHome"><i class="bi bi-house-door-fill me-2"></i>Home</a>
+        <a href="/Employee/EmployeeViewProject"><i class="bi bi-kanban-fill me-2"></i>Projects</a>
+        <a href="/Task" class="active"><i class="bi bi-list-check me-2"></i>Tasks</a>
+        <a href="/Faculty/ViewGrant"><i class="bi bi-cash-coin me-2"></i>Grants</a>
+        <a href="/People"><i class="bi bi-people-fill me-2"></i>People</a>
+        <a href="/Calendar/Calendar"><i class="bi bi-calendar-event-fill me-2"></i>Calendar</a>
+        <a href="/Settings"><i class="bi bi-gear-fill me-2"></i>Settings</a>
+
+    </div>
+</div>
+
+<div class="main-content">
+
 <h2>Tasks</h2>
 
 <div class="card" style="width: 20rem;">
@@ -18,3 +271,5 @@
         <h5 class="card-title">To Do</h5>
     </div>
 </div>
+
+        </div>
