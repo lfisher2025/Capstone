@@ -13,6 +13,7 @@ namespace Lab1.Pages.Data_Classes
         public int ProjectLead { get; set; }
         public int UserID { get; set; }
         public int GrantID { get; set; }
+        public decimal FundingAmount { get; set; }
 
     }
 }

@@ -187,7 +187,7 @@ namespace Lab1.Pages.DB
 
         public static SqlDataReader ViewAllProjects()
         {
-            string ViewAdminProjectsString = "SELECT Project.name, Grants.amount , Project.dueDate " +
+            string ViewAdminProjectsString = "SELECT Project.ProjectName, Grants.FundingAmount , Project.EndDate, Project.ProjectStatus " +
                 "FROM Project JOIN Grants ON Project.grantID = Grants.grantID ;";
 
 
