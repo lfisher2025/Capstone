@@ -1,0 +1,66 @@
+﻿@page
+@model Lab1.Pages.Faculty.PeopleModel
+@{
+    ViewData["Title"] = "People Search";
+}
+
+<h2>Search People or Projects</h2>
+
+<!-- Search Bar / Clear Button-->
+<form method="get">
+    <input type="text" name="SearchString" value="@Model.SearchString" class="form-control" placeholder="Enter name..." />
+    <button type="submit" class="btn btn-primary mt-2">Search</button>
+    <a href="/Faculty/People" class="btn btn-secondary mt-2">Clear</a>
+</form>
+
+<!-- Search Results -->
+@if (Model.SearchResults.Any())
+{
+    <h4 class="mt-4">Results</h4>
+    <table class="table table-bordered mt-2">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Person or Project</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SearchResults)
+            {
+                <tr>
+                    <td>
+                        <a asp-page="/Faculty/People" asp-route-id="@item.ID" asp-route-type="@item.Type" asp-route-SearchString="@Model.SearchString">
+                            @item.Name
+                        </a>
+                    </td>
+                    <td>@item.Type</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<!-- Selected User Info -->
+@if (Model.SelectedUser != null)
+{
+    <h4 class="mt-4">User Info</h4>
+    <p><strong>Name:</strong> @Model.SelectedUser.FirstName @Model.SelectedUser.LastName</p>
+    <p><strong>Email:</strong> @Model.SelectedUser.Email</p>
+    <p><strong>Department:</strong> @Model.SelectedUser.Department</p>
+}
+
+<!-- Project User List -->
+@if (Model.ProjectUsers.Any())
+{
+    <h4 class="mt-4">Users on Project</h4>
+    <ul class="list-group">
+        @foreach (var user in Model.ProjectUsers.OrderBy(u => u.LastName))
+        {
+            <li class="list-group-item">
+                <a asp-page="/Faculty/People" asp-route-id="@user.UserID" asp-route-type="User" asp-route-SearchString="@Model.SearchString">
+                    @user.FirstName @user.LastName
+                </a>
+            </li>
+        }
+    </ul>
+}

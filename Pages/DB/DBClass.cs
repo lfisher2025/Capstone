@@ -488,15 +488,14 @@ namespace Lab1.Pages.DB
         public static void EditGrant(Grant grant) //Updated for JMU Care DB
         {
             string sqlQuery = @"
-    UPDATE Grant SET
+    UPDATE [Grants] SET
         GrantName = @GrantName,
         FundingAgency = @FundingAgency,
-        SubmissionDate = @SubmissionDate,
         Deadline = @Deadline,
         ProposalID = @ProposalID,
         FundingAmount = @FundingAmount,
         Type = @Type,
-        GrantDescription = @GrantDescription,
+        GrantDescription = @GrantDescription
     WHERE GrantID = @GrantID";
 
             SqlCommand cmdGrantUpdate = new SqlCommand();
@@ -723,7 +722,7 @@ namespace Lab1.Pages.DB
         }
 
         public static void AddEventUsers(int newEventID, int UserID)
-        { 
+        {
             SqlCommand cmdAddEventUsers = new SqlCommand();
             cmdAddEventUsers.Connection = Lab1DBConnection;
             cmdAddEventUsers.Connection.ConnectionString = Lab1DBConnString;
@@ -755,6 +754,58 @@ namespace Lab1.Pages.DB
             return tempreader;
         }
 
+
+
+
+        // Returns Users and Projects by Name
+        public static SqlDataReader SearchPeopleAndProjects(string searchTerm)
+        {
+            string query = @"
+        SELECT UserID AS ID, FirstName + ' ' + LastName AS Name, 'User' AS Type
+        FROM Users
+        WHERE FirstName LIKE '%' + @search + '%' OR LastName LIKE '%' + @search + '%'
+        UNION
+        SELECT ProjectID AS ID, ProjectName AS Name, 'Project' AS Type
+        FROM Project
+        WHERE ProjectName LIKE '%' + @search + '%'";
+
+            SqlCommand cmd = new SqlCommand(query, Lab1DBConnection);
+            cmd.Connection.ConnectionString = Lab1DBConnString;
+            cmd.Parameters.AddWithValue("@search", searchTerm);
+            Lab1DBConnection.Open();
+            return cmd.ExecuteReader();
+        }
+
+        // Returns Contact Info from Users
+        public static SqlDataReader GetUserByID(int userID)
+        {
+            string query = "SELECT FirstName, LastName, Email, Department FROM Users WHERE UserID = @UserID";
+            SqlCommand cmd = new SqlCommand(query, Lab1DBConnection);
+            cmd.Connection.ConnectionString = Lab1DBConnString;
+            cmd.Parameters.AddWithValue("@UserID", userID);
+            Lab1DBConnection.Open();
+            return cmd.ExecuteReader();
+        }
+
+        // Returns Users from assigned project  
+        public static SqlDataReader GetUsersByProjectID(int projectId)
+        {
+            string query = @"
+        SELECT U.UserID, U.FirstName, U.LastName, U.Email
+        FROM ProjectUsers PU
+        JOIN Users U ON PU.UserID = U.UserID
+        WHERE PU.ProjectID = @ProjectID
+        ORDER BY U.FirstName, U.LastName";
+
+            SqlCommand cmd = new SqlCommand(query, Lab1DBConnection);
+            cmd.Connection.ConnectionString = Lab1DBConnString;
+            cmd.Parameters.AddWithValue("@ProjectID", projectId);
+            Lab1DBConnection.Open();
+            return cmd.ExecuteReader();
+        }
     }
+    
+
+
 
 }

@@ -10,7 +10,7 @@ namespace Lab1.Pages.Faculty
     public class EditGrantModel : PageModel
     {
         [BindProperty]
-        public Grant GrantToUpdate { get; set; }
+        public Grant GrantToUpdate { get; set; } = new Grant();
         public EditGrantModel()
         {
             GrantToUpdate = new Grant();
@@ -34,6 +34,7 @@ namespace Lab1.Pages.Faculty
             {
                 GrantToUpdate = new Grant
                 {
+                    GrantID = grantid,
                     GrantName = singleGrant["GrantName"] != DBNull.Value ? singleGrant["GrantName"].ToString() : string.Empty,
                     FundingAgency = singleGrant["FundingAgency"] != DBNull.Value ? singleGrant["FundingAgency"].ToString() : string.Empty,
                     Deadline = singleGrant["Deadline"] != DBNull.Value ? Convert.ToDateTime(singleGrant["Deadline"]) : DateTime.MinValue,

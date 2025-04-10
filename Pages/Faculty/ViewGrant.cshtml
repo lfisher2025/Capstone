@@ -80,12 +80,11 @@
         <tr>
             <th>Grant Name</th>
             <th>Funding Agency</th>
-            <th>Submission Date</th>
             <th>Deadline</th>
             <th>Funding Amount</th>
             <th>Type</th>
             <th>Description</th>
-            <th></th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -98,7 +97,7 @@
                 <td>@grant.FundingAmount.ToString("C")</td>
                 <td>@grant.Type</td>
                 <td>@grant.GrantDescription</td>
-                <td><a asp-page="/Faculty/EditGrant" class="btn btn-primary">Edit</a></td>
+                <td><a asp-page="/Faculty/EditGrant" asp-route-grantid="@grant.GrantID" class="btn btn-primary">Edit</a></td>
             </tr>
         }
     </tbody>
