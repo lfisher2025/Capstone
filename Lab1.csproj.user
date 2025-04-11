@@ -4,7 +4,7 @@
     <ActiveDebugProfile>http</ActiveDebugProfile>
     <RazorPage_SelectedScaffolderID>RazorPageScaffolder</RazorPage_SelectedScaffolderID>
     <RazorPage_SelectedScaffolderCategoryPath>root/Common/RazorPage</RazorPage_SelectedScaffolderCategoryPath>
-    <NameOfLastUsedPublishProfile>C:\Users\labpatron\source\repos\lfisher2025\Capstone\Properties\PublishProfiles\CapstoneTest - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>C:\Users\labpatron\source\repos\lfisher2025\Capstone\Properties\PublishProfiles\DukesDevCapstone - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>

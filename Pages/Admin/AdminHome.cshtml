@@ -38,11 +38,17 @@
         }
 
         .sidebar {
-        flex: .35;
-        background: #450084;
-        color: white;
-        min-height: 170vh;
-        padding: 1rem;
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            overflow-x: hidden;
+            background: #450084;
+            color: white;
+            min-height: 170vh;
+            padding: 1rem;
         }
 
         .sidebar a {
@@ -103,11 +109,12 @@
         }
 
         .main-content {
-        flex: 1.5;
-        background-color: white;
-        padding: 20px;
+            flex: 1.5;
+            background-color: white;
+            padding: 0px 10px;
+            margin-left: 200px;
+            width: 100%;
         }
-
         .project-window {
         background-color: #eee;
         padding: 100px;
@@ -263,8 +270,6 @@
 </head>
 
 <body>
-
-    <div class="container-fluid">
         <div class="row">
             <div class="column sidebar">
                 <img src="~/images/JMUCare.png" alt="Logo" class="logo" style="max-width: 250px;" />
@@ -281,7 +286,7 @@
             </div>
             <!---navigation ending --->
             <!-- Main Content -->
-            <div class="col-md-10 main-content">
+            <div class="main-content">
                 <div class="header-container">
                     <h2 class="welcome-text">Welcome Back!</h2>
                     <div class="profile-section d-flex align-items-center">
@@ -312,20 +317,6 @@
                         </div>
 
 
-                        <div class="card mb-3" data-bs-toggle="modal" data-bs-target="#GrantCardModal">
-                            <h5>Total Grants Awarded</h5>
-                            <p>@Model.GrantCount</p>
-                        </div>
-
-                        <div class="card mb-3" data-bs-toggle="modal" data-bs-target="#ProjectModal">
-                            <h5>Current Projects</h5>
-                            <p>@Model.inProgressCount In Progress</p>
-                        </div>
-
-                        <div class="card" data-bs-toggle="modal" data-bs-target="#PartModal">
-                            <h5>Active Partnerships</h5>
-                            <p>@Model.ActiveCount</p>
-                        </div>
 
                     </div>
                 </div>
@@ -497,6 +488,8 @@
                     </div>
                 </div>
             </div>
+        </div>
+        
 
 
             <script>
