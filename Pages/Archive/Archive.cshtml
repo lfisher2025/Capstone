@@ -2,10 +2,47 @@
 @model ArchiveModel
 @{
 }
-<!--<form method="post">
-	<input type="text" asp-for="GrantName"/>
-	<input type="text" asp-for="ProjectName"/>
-	<button type="submit">Archive Data</button>
+<form method="post">
+    <div class="form-group">
+        <label asp-for="tempArchive.GrantName"></label>
+        <input type="text" class="form-control" asp-for="tempArchive.GrantName" placeholder="Enter Grant Name" />
+    </div>
 
+    <div class="form-group">
+        <label asp-for="tempArchive.ProjectName"></label>
+        <input type="text" class="form-control" asp-for="tempArchive.ProjectName" placeholder="Enter Project Name" />
+    </div>
 
-</form>-->
+    @*<div class="form-group">
+        <label asp-for="tempGrant.SubmissionDate"></label>
+        <input type="date" class="form-control" asp-for="tempGrant.SubmissionDate" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="tempGrant.Deadline"></label>
+        <input type="date" class="form-control" asp-for="tempGrant.Deadline" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="tempGrant.ProposalID"></label>
+        <input type="number" class="form-control" asp-for="tempGrant.ProposalID" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="tempGrant.FundingAmount"></label>
+        <input type="number" step="0.01" class="form-control" asp-for="tempGrant.FundingAmount" placeholder="Enter Funding Amount" />
+    </div>
+    *@
+    @*
+    <div class="form-group">
+        <label asp-for="tempGrant.GrantDescription"></label>
+        <textarea class="form-control" asp-for="tempGrant.GrantDescription" placeholder="Enter Grant Description"></textarea>
+    </div>*@
+    @* 
+    <div class="form-group">
+        <!-- Ideally a dropdown of User Names -->
+        <label asp-for="tempGrant.UserID"></label>
+        <input type="number" class="form-control" asp-for="tempGrant.UserID" />
+    </div> *@
+    <button type="submit" class="btn btn-primary mt-2">Search</button>
+</form>
