@@ -158,8 +158,22 @@
             <div class="main-content">
                 <div class="header-container">
                     <div class="profile-section">
-                        <img src="/images/persona2.jpg" alt="Profile Picture" class="profile-img">
-                        <span class="profile-name">Anna Smith</span>
+            @if (Model.UserType == "1")
+            {
+                <a asp-page="/Admin/AdminHome" class="btn me-2" style="background-color: #6A0DAD; border-color: #6f42c1; color: white;">
+                    Admin Dashboard
+                </a>
+                <img src="/images/persona1.png" alt="Profile Picture" class="profile-img">
+                <span class="profile-name">Anna Smith</span>
+            }
+            @if (Model.UserType == "2")
+            {
+                <a asp-page="/Admin/AdminHome" class="btn me-2" style="background-color: #6A0DAD; border-color: #6f42c1; color: white;">
+                    Admin Dashboard
+                </a>
+                <img src="/images/persona2.jpg" alt="Profile Picture" class="profile-img">
+                <span class="profile-name">Anna Smith</span>
+            }
                     </div>
                     <h4 class="calendar-title">Projects</h4>
                 </div>

@@ -11,7 +11,8 @@ namespace Lab1.Pages.Employee
         public List<Dictionary<string, object>> TableData { get; set; } = new();
         public string UserID { get; set; }
         public List<Project> Projects { get; set; }
-
+        [BindProperty]
+        public string UserType { get; set; }
         public EmployeeViewProjectModel()
         {
             Projects = new List<Project>();

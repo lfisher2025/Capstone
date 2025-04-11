@@ -161,14 +161,12 @@
         }
 
         .header-container {
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        display: flex;
-        justify-content: space-between; /* Space items evenly */
-        align-items: center;
-        background-color: white;
-        border-bottom: 2px solid #ddd; /* Optional divider */
-        flex-direction: row-reverse; /* Switches the order */
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            flex-wrap: wrap;
         }
 
         .right-panel {
@@ -212,7 +210,7 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            margin: 5px 0;
+            margin-top: 5px;
             cursor: pointer;
         }
 
@@ -278,9 +276,9 @@
                             <a asp-page="/Admin/AdminHome" class="btn me-2" style="background-color: #6A0DAD; border-color: #6f42c1; color: white;">
                                 Admin Dashboard
                             </a>
+                            <img src="/images/persona1.png" alt="Profile Picture" class="profile-img">
+                            <span class="profile-name">Emily Blake</span>
                         }
-                        <img src="/images/persona2.jpg" alt="Profile Picture" class="profile-img">
-                        <span class="profile-name">Anna Smith</span>
                     </div>
                     <h4 class="calendar-title">Welcome Back!</h4>
                 </div>
@@ -499,8 +497,12 @@
                 date.setDate(startOfWeek.getDate() + i);
 
                 const wrapper = document.createElement("div");
-                wrapper.style.textAlign = "center";
-                wrapper.style.margin = "0 8px";
+                wrapper.style.display = "flex";
+                wrapper.style.flexDirection = "column";
+                wrapper.style.alignItems = "center";
+                wrapper.style.width = "14%";
+                wrapper.style.minWidth = "40px";
+
 
                 const label = document.createElement("div");
                 label.textContent = date.toLocaleDateString("en-US", { weekday: 'short' }).charAt(0);

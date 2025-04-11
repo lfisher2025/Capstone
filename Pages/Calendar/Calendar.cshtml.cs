@@ -28,6 +28,8 @@ namespace Lab1.Pages.Calendar
 
         public int CurrentMonth { get; set; }
         public int CurrentYear { get; set; }
+        [BindProperty]
+        public string UserType { get; set; }
 
         public void OnGet()
         {
