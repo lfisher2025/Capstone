@@ -92,5 +92,9 @@ namespace Lab1.Pages.Faculty
             DBClass.Lab1DBConnection.Close();
             return Page();
         }
+        public void OnPostArchive()
+        {
+            DBClass.InsertArchive();
+        }
     }
 }
