@@ -652,6 +652,19 @@ namespace Lab1.Pages.DB
 
         }
 
+        public static SqlDataReader TaskReader()
+        {
+            SqlCommand cmdProductRead = new SqlCommand();
+            cmdProductRead.Connection = Lab1DBConnection;
+            cmdProductRead.Connection.ConnectionString = Lab1DBConnString;
+            cmdProductRead.CommandText = "SELECT * FROM Task";
+            cmdProductRead.Connection.Open();
+
+            SqlDataReader tempReader = cmdProductRead.ExecuteReader();
+
+            return tempReader;
+        }
+
         public static SqlDataReader GetUserTasks(int UserID)
         {
             SqlCommand cmdUserTasks = new SqlCommand();

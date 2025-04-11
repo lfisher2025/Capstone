@@ -261,6 +261,31 @@
 <div class="card" style="width: 20rem;">
     <div class="card-body">
         <h5 class="card-title">Today's Tasks</h5>
+            <table class="table table-bordered table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <th>Task Name:</th>
+                        <th>Task Description:</th>
+                        <th>Deadline:</th>
+                        <th>Status:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var task in Model.TaskInfo)
+                        {
+                            <tr>
+                                <td class="text-danger">@task.TaskName</td>
+                                <td>@task.TaskDescription</td>
+                                <td>@task.Deadline</td>
+                                <td>@task.Status</td>
+
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
     </div>
 </div>
 
