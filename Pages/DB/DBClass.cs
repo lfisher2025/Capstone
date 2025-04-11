@@ -23,10 +23,10 @@ namespace Lab1.Pages.DB
 
         // Connection String - How to find and connect to DB
         private static readonly String? Lab1DBConnString =
-            "Server=localhost;Database=JMUCare;Trusted_Connection=True";
+            "Server=capstonetest.database.windows.net, 1433;Database=JMUCare;User Id=dukesdev; Password=P@5sword; Encrypt=True; TrustServerCertificate=True";
 
         private static readonly String? AuthConnString =
-            "Server=Localhost;Database=AUTH;Trusted_Connection=True";
+            "Server=capstonetest.database.windows.net, 1433;Database=AUTH;User Id=dukesdev; Password=P@5sword; Encrypt=True; TrustServerCertificate=True";
 
 
 
