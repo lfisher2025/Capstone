@@ -799,7 +799,7 @@ namespace Lab1.Pages.DB
 
             return tempreader;
         }
-        public void OnPostArchive()
+        public static void InsertArchive()
         {
             SqlCommand cmdArchive = new SqlCommand();
             cmdArchive.Connection = Lab1DBConnection;
