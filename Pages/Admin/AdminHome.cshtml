@@ -3,11 +3,13 @@
 @{
 }
 
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="JMU CARE" />
-    <title>JMU CARE Calendar</title>
+    <meta name="author" content="Ace Houston and Emma Foy" />
+    <title>JMU CARE Director View</title>
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- LOAD BOOTSTRAP CSS - DO NOT DELETE -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -15,209 +17,198 @@
     <!-- END LOADING BOOTSTRAP CSS -->
     <style>
         html, body {
-            min-height: 100%;
-            min-width: 100%
+        min-height: 100%;
         }
 
         .container {
-            display: flex;
-            height: 100%;
-            width: 100%;
+        display: flex;
+        height: 100%;
         }
 
-        @*
         .container-fluid {
         display: flex;
         min-height: 100%;
-        }*@
+        }
 
         .column {
-            justify-content: center;
-            align-items: center;
-            border: 1px solid #aaa;
-            height: 100%;
-            width: 100%;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #aaa;
+        height: 100%;
         }
 
         .sidebar {
-            height: 100%;
-            width: 250px;
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            overflow-x: hidden;
-            background: #450084;
-            color: white;
-            min-height: 170vh;
-            padding: 1rem;
+        flex: .35;
+        background: #450084;
+        color: white;
+        min-height: 170vh;
+        padding: 1rem;
         }
 
-            .sidebar a {
-                position: relative;
-                color: white;
-                display: block;
-                padding: 10px;
-                text-decoration: none;
-                margin-bottom: 10px;
-                transition: color 0.3s;
-            }
+        .sidebar a {
+        position: relative;
+        color: white;
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        margin-bottom: 10px;
+        transition: color 0.3s;
+        }
 
-                .sidebar a.active {
-                    background-color: white;
-                    color: #450084;
-                    font-weight: bold;
-                }
+        .sidebar a.active {
+        background-color: white;
+        color: #450084;
+        font-weight: bold;
+        }
 
-                .sidebar a:hover {
-                    color: black;
-                }
+        .sidebar a:hover {
+        color: black;
+        }
 
-                .sidebar a::after {
-                    content: "";
-                    position: absolute;
-                    bottom: 4px;
-                    left: 10px;
-                    width: 0%;
-                    height: 2px;
-                    background-color: white;
-                    transition: width 0.3s ease-in-out;
-                }
+        .sidebar a::after {
+        content: "";
+        position: absolute;
+        bottom: 4px;
+        left: 10px;
+        width: 0%;
+        height: 2px;
+        background-color: white;
+        transition: width 0.3s ease-in-out;
+        }
 
         .logo {
-            position: relative;
-            vertical-align: t;
-            background-color: white;
-            margin-bottom: 20px;
+        position: relative;
+        vertical-align: top;
+        background-color: white;
+        margin-bottom: 20px;
         }
 
         .tab {
-            padding: 20px 20px 20px 20px;
+        padding: 20px 20px 20px 20px;
         }
 
         .tabs button {
-            position: absolute;
-            width: 40%;
-            padding: 10px;
-            background-color: #450084;
-            color: white;
-            border-radius: 20px; /* Rounded button */
-            cursor: pointer;
-            transition: 0.3s ease;
+        position: absolute;
+        width: 40%;
+        padding: 10px;
+        background-color: #450084;
+        color: white;
+        border-radius: 20px; /* Rounded button */
+        cursor: pointer;
+        transition: 0.3s ease;
         }
 
-            .tabs button:hover {
-                background-color: #B599CE;
-            }
+        .tabs button:hover {
+        background-color: #B599CE;
+        }
 
         .main-content {
-            flex: 1.5;
-            background-color: white;
-            padding: 0px 10px;
-            margin-left: 200px;
-            width: 100%;
+        flex: 1.5;
+        background-color: white;
+        padding: 20px;
         }
 
         .project-window {
-            background-color: #eee;
-            padding: 100px;
-            width: 500px;
-            box-shadow: 0 4px 8px rgba(181, 153, 206, 0.815);
-            border-radius: 50px;
-            text-align: left;
+        background-color: #eee;
+        padding: 100px;
+        width: 500px;
+        box-shadow: 0 4px 8px rgba(181, 153, 206, 0.815);
+        border-radius: 50px;
+        text-align: left;
         }
 
         .calendar-container .day {
-            width: 38px;
-            height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            margin: 2px;
-            cursor: pointer;
-            background-color: lightgrey;
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin: 2px;
+        cursor: pointer;
+        background-color: lightgrey;
         }
 
-            .calendar-container .day.selected {
-                background-color: #450084;
-                color: white;
-            }
+        .calendar-container .day.selected {
+        background-color: #450084;
+        color: white;
+        }
+
+
+        .header-container {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        display: flex;
+        justify-content: space-between; /* Space items evenly */
+        align-items: center;
+        background-color: white;
+        border-bottom: 2px solid #ddd; /* Optional divider */
+        /* Switches the order */
+        }
 
         .profile-header {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 5px;
-            background-color: white; /* Adjust as needed */
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 5px;
+        background-color: white; /* Adjust as needed */
         }
 
         .profile-img {
-            width: 50px; /* Adjust size as needed */
-            height: 50px;
-            border-radius: 50%; /* Makes it a circle */
-            object-fit: cover; /* Ensures the image fills the space */
-        }
-
-        .header-container {
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            display: flex;
-            justify-content: space-between; /* Space items evenly */
-            align-items: center;
-            background-color: white;
-            border-bottom: 2px solid #ddd; /* Optional divider */
-            flex-direction: row-reverse; /* Switches the order */
+        width: 50px; /* Adjust size as needed */
+        height: 50px;
+        border-radius: 50%; /* Makes it a circle */
+        object-fit: cover; /* Ensures the image fills the space */
         }
 
         .right-panel {
-            background-color: #DACCE6;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            .right-section
+        background-color: #DACCE6;
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        margin-bottom: 30px;
+        .right-section
 
         {
-            flex: 0.8;
+        flex: 0.8;
         }
 
         .project-summary {
-            background-color: #F4EFE1;
-            padding: 15px;
-            border-radius: 10px;
+        background-color: #F4EFE1;
+        padding: 15px;
+        border-radius: 10px;
         }
 
         .stats-box {
-            background-color: #F4EFE1;
-            padding: 15px;
-            border-radius: 10px;
+        background-color: #F4EFE1;
+        padding: 15px;
+        border-radius: 10px;
         }
 
         .calendar-container {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
         }
 
         .day {
-            width: 40px;
-            height: 40px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin: 5px;
-            cursor: pointer;
-            border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 50%;
         }
 
         .form-check-input:not(:checked):focus {
-            border-color: black;
-            box-shadow: none;
+        border-color: black;
+        box-shadow: none;
         }
 
         .day.selected {
-            background-color: #450084;
+        background-color: #450084;
         }
 
         .right-panel,
@@ -225,133 +216,527 @@
         .stats-box,
         .calendar-container,
         .todays-task {
-            background-color: #F4EFE1;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
+        background-color: #F4EFE1;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
         }
 
         .clickable-card:hover {
-            box-shadow: 0 4px 12px rgba(69, 0, 132, 0.2);
-            color: #450084;
+        box-shadow: 0 4px 12px rgba(69, 0, 132, 0.2);
+        color: #450084;
+        }
+
+
+        .dashboard-layout {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 40px;
+        margin-top: 20px;
+        }
+
+        .left-content {
+        flex: 2;
+        padding-right: 20px;
+        }
+
+        .right-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        }
+
+        .right-content .calendar-container,
+        .right-content .card {
+        background-color: #F4EFE1;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
         }
 
     </style>
-    </head>
-<h1>Welcome @HttpContext.Session.GetString("username")!</h1>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
 
-<nav class="sub-menu">
-    <ul>
-        <li><a asp-page="/Admin/NewProject">Add Project</a></li>
-        <li><a asp-page="/Admin/AddUser">Add New User</a></li>
-        <li><a asp-page="/Admin/AddBusinessPartner">Add Business Partner</a></li>
-        <li><a asp-page="/Admin/ManageBusinessPartners">Manage Business Partner</a></li>
-        <li><a asp-page="/Admin/Meetings">Meetings</a></li>
-    </ul>
-</nav>
+<body>
 
-<h2>Current Projects</h2>
-<table class="table table-bordered table-hover">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Amount</th>
-            <th>Due Date</th>
-            <th>View</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var row in Model.TableData)
-        {
-            <tr>
-                @foreach (var cell in row.Values)
-                {
-                    <td>@cell</td>
-                }
-                <td>
-                    <div class="btn">
-                        <a asp-page="/Admin/AdminViewProject" class="btn btn-primary">View</a>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="column sidebar">
+                <img src="~/images/JMUCare.png" alt="Logo" class="logo" style="max-width: 250px;" />
+                <div class="row">
+                    <a href="/Faculty/FacultyHome" class="active"><i class="bi bi-house-door-fill me-2"></i>Home</a>
+                    <a href="/Employee/EmployeeViewProject"><i class="bi bi-kanban-fill me-2"></i>Projects</a>
+                    <a href="/Task"><i class="bi bi-list-check me-2"></i>Tasks</a>
+                    <a href="/Faculty/ViewGrant"><i class="bi bi-cash-coin me-2"></i>Grants</a>
+                    <a href="team.html"><i class="bi bi-people-fill me-2"></i>Your Team</a>
+                    <a href="/Calendar/Calendar"><i class="bi bi-calendar-event-fill me-2"></i>Calendar</a>
+                    <a href="/Settings"><i class="bi bi-gear-fill me-2"></i>Settings</a>
+
+                </div>
+            </div>
+            <!---navigation ending --->
+            <!-- Main Content -->
+            <div class="col-md-10 main-content">
+                <div class="header-container">
+                    <h2 class="welcome-text">Welcome Back!</h2>
+                    <div class="profile-section d-flex align-items-center">
+                        <img src="~/images/persona1.png" alt="Profile Picture" class="profile-img me-2">
+                        <span class="profile-name">@Model.UserName</span>
                     </div>
-                </td>
-            </tr>
-        }
-        <tr>
+                </div>
+                <hr class="my-2">
 
-        </tr>
+                <div class="row mb-4">
+                    <!-- Project Completion Chart -->
+                    <div class="col-md-6">
+                        <div class="p-3" style="background-color: #DACCE6; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); cursor: pointer;">
+                            <h5>Project Completion Metrics</h5>
+                            <canvas id="projectCompletionChart"></canvas>
+                        </div>
+                    </div>
 
-    </tbody>
+                    <!-- Calendar beside Project Chart -->
+                    <div class="col-md-6">
+                        <div class="calendar-container mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <button class="btn btn-sm"><i class="bi bi-chevron-left"></i></button>
+                                <h6 class="mb-0">July 2024</h6>
+                                <button class="btn btn-sm"><i class="bi bi-chevron-right"></i></button>
+                            </div>
+                            <div class="d-flex justify-content-center text-muted small mb-2">
+                                <div class="mx-1">S</div>
+                                <div class="mx-1">M</div>
+                                <div class="mx-1">T</div>
+                                <div class="mx-1">W</div>
+                                <div class="mx-1">T</div>
+                                <div class="mx-1">F</div>
+                                <div class="mx-1">S</div>
+                            </div>
+                            <div class="d-flex flex-wrap justify-content-center">
+                                <div class="day">10</div>
+                                <div class="day">11</div>
+                                <div class="day">12</div>
+                                <div class="day">13</div>
+                                <div class="day selected">14</div>
+                                <div class="day">15</div>
+                                <div class="day">16</div>
+                            </div>
+                        </div>
+
+
+                        <div class="card mb-3" data-bs-toggle="modal" data-bs-target="#GrantCardModal">
+                            <h5>Total Grants Awarded</h5>
+                            <p>@Model.GrantCount</p>
+                        </div>
+
+                        <div class="card mb-3" data-bs-toggle="modal" data-bs-target="#ProjectModal">
+                            <h5>Current Projects</h5>
+                            <p>@Model.inProgressCount In Progress</p>
+                        </div>
+
+                        <div class="card" data-bs-toggle="modal" data-bs-target="#PartModal">
+                            <h5>Active Partnerships</h5>
+                            <p>@Model.ActiveCount</p>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Row 2: Research Funding & Partnerships -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="p-3" style="background-color: #DACCE6; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
+                            <h5>Research Funding Allocation</h5>
+                            <canvas id="fundingAllocationChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="p-3" style="background-color: #DACCE6; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
+                            <h5>Partnership Development Stages</h5>
+                            <canvas id="partnershipStagesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--total grants modal-->
+            <div class="modal fade" id="GrantCardModal" tabindex="-1" aria-labelledby="GrantModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="GrantModalLabel">Grant Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            @foreach (var grant in Model.GrantInfo)
+                            {
+                                <p>@grant.GrantName - $@grant.FundingAmount.ToString("N2")</p>
+                            }
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--current projects modal-->
+            <div class="modal fade" id="ProjectModal" tabindex="-1" aria-labelledby="ProjectModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ProjectModalLabel">Active Project Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            @foreach (var project in Model.Projects)
+                            {
+                                if (project.ProjectStatus == "In Progress") {
+                                    <p>@project.ProjectName - @project.EndDate.ToString("yyyy-MM-dd")</p>
+                                }
+                            }
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Active PartnerShips modal-->
+            <div class="modal fade" id="PartModal" tabindex="-1" aria-labelledby="PartModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="PartModalLabel">Active Partners</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            @foreach (var partner in Model.businessPartners)
+                            {
+                                if (partner.Status == "Active")
+                                {
+                                    <p>@partner.PartnerName</p>
+                                }
+                            }
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Project Status Modal-->
+            <div class="modal fade" id="projectStatusModal" tabindex="-1" aria-labelledby="projectStatusModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="projectStatusModalLabel">Project Status</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h6 id="modalStatusTitle" class="fw-bold"></h6>
+                            <ul class="list-group" id="modalStatusList">
+                                <div class="mb-4">
+                                    <h6 class="text-success">Completed</h6>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Project A</li>
+                                        <li class="list-group-item">Project B</li>
+                                        <li class="list-group-item">Project C</li>
+                                    </ul>
+                                </div>
+
+                                <!-- In Progress Projects -->
+                                <div class="mb-4">
+                                    <h6 class="text-warning">In Progress</h6>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Project D</li>
+                                        <li class="list-group-item">Project E</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Not Started Projects -->
+                                <div class="mb-4">
+                                    <h6 class="text-danger">Not Started</h6>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Project F</li>
+                                    </ul>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Research Funding Modal -->
+            <div class="modal fade" id="fundingModal" tabindex="-1" aria-labelledby="fundingModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="fundingModalLabel">Funding Source Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h6 id="fundingSourceTitle" class="fw-bold mb-3"></h6>
+                            <ul class="list-group" id="fundingSourceList"></ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Partnership Development Modal -->
+            <div class="modal fade" id="partnershipModal" tabindex="-1" aria-labelledby="partnershipModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="partnershipModalLabel">Partnership Stage Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h6 id="partnershipStageTitle" class="fw-bold mb-3"></h6>
+                            <ul class="list-group" id="partnershipStageList"></ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <script>
+                // Match doughnut chart slice colors
+                const statusColors = {
+                "Completed": "rgb(158, 119, 203)",     // Purple
+                "In Progress": "rgb(119, 203, 161)",   // Green
+                "Not Started": "rgb(203, 119, 138)"    // Red/Pink
+                };
+
+                // Project data by status
+                const projectStatusData =  @Html.Raw(Json.Serialize(Model.ProjectStatusData));
+               
+
+                const modalStatusTitle = document.getElementById("modalStatusTitle");
+                const modalStatusList = document.getElementById("modalStatusList");
+
+                // Chart click logic
+                document.getElementById('projectCompletionChart').onclick = function(evt) {
+                const activePoints = projectCompletionChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+
+                if (activePoints.length) {
+                const index = activePoints[0].index;
+                const label = projectCompletionChart.data.labels[index];
+                const projects = projectStatusData[label] || [];
+                const color = statusColors[label] || '#000';
+
+                // Set modal title and color
+                modalStatusTitle.textContent = label;
+                modalStatusTitle.style.color = color;
+
+                // Clear list and add new items
+                modalStatusList.innerHTML = "";
+                projects.forEach(project => {
+                const listItem = document.createElement("li");
+                listItem.className = "list-group-item";
+                listItem.textContent = project;
+                listItem.style.color = color;
+                modalStatusList.appendChild(listItem);
+                });
+
+                // Show modal
+                const modal = new bootstrap.Modal(document.getElementById('projectStatusModal'));
+                modal.show();
+                }
+                };
+            </script>
+
+            <script>
+                const fundingSourceData = @Html.Raw(Json.Serialize(Model.GrantStatusData));
+
+                const fundingColors = {
+                "Federal Grants": "rgb(203, 182, 119)",
+                "State Grants": "rgb(203, 119, 138)",
+                "Internal Funding": "rgb(158, 119, 203)",
+                "Private Foundations": "rgb(119, 203, 161)"
+                };
+
+                const fundingSourceTitle = document.getElementById("fundingSourceTitle");
+                const fundingSourceList = document.getElementById("fundingSourceList");
+
+                document.getElementById('fundingAllocationChart').onclick = function(evt) {
+                const activePoints = fundingAllocationChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+
+                if (activePoints.length) {
+                const index = activePoints[0].index;
+                const label = fundingAllocationChart.data.labels[index];
+                const items = fundingSourceData[label] || [];
+                const color = fundingColors[label] || '#000';
+
+                fundingSourceTitle.textContent = label;
+                fundingSourceTitle.style.color = color;
+
+                fundingSourceList.innerHTML = "";
+                items.forEach(item => {
+                const listItem = document.createElement("li");
+                listItem.className = "list-group-item";
+                listItem.textContent = item;
+                listItem.style.color = color;
+                fundingSourceList.appendChild(listItem);
+                });
+
+                const modal = new bootstrap.Modal(document.getElementById('fundingModal'));
+                modal.show();
+                }
+                };
+            </script>
+
+
+            <script>
+                @{
+                    var grantCounts = ViewData["GrantFundingCounts"] as Dictionary<string, int>;
+                }
+                const fundingAllocationChart = new Chart(document.getElementById('fundingAllocationChart'), {
+                type: 'pie',
+                data: {
+                labels: ['Federal Grants', 'State Grants', 'Internal Funding', 'Private Foundations'],
+                datasets: [{
+                label: 'Funding Sources',
+                data: [
+                @(grantCounts != null && grantCounts.ContainsKey("Federal Grants") ? grantCounts["Federal Grants"] : 0),
+                @(grantCounts != null && grantCounts.ContainsKey("State Grants") ? grantCounts["State Grants"] : 0),
+                @(grantCounts != null && grantCounts.ContainsKey("Internal Funding") ? grantCounts["Internal Funding"] : 0),
+                @(grantCounts != null && grantCounts.ContainsKey("Private Foundations") ? grantCounts["Private Foundations"] : 0)
+                ],
+                backgroundColor: [
+                'rgb(203, 182, 119)',  // Federal
+                'rgb(203, 119, 138)',  // State
+                'rgb(158, 119, 203)',  // Internal
+                'rgb(119, 203, 161)'   // Private
+                ]
+                }]
+                },
+                options: {
+                responsive: true
+                }
+                });
+
+                //PartnershipChart
+                @{
+                    var partnerStages = ViewData["PartnerStageCounts"] as Dictionary<string, int>;
+                }
+                        const partnershipStagesChart = new Chart(document.getElementById('partnershipStagesChart'), {
+                  type: 'bar',
+                  data: {
+                    labels: ['Prospect', 'Initial Contact', 'Negotiation', 'Active', 'Completed'],
+                    datasets: [{
+                      label: 'Number of Partnerships',
+                      data: [
+                      @(partnerStages != null && partnerStages.ContainsKey("Prospect") ? partnerStages["Prospect"] : 0),
+                      @(partnerStages != null && partnerStages.ContainsKey("Initial Contact") ? partnerStages["Initial Contact"] : 0),
+                      @(partnerStages != null && partnerStages.ContainsKey("Negotiation") ? partnerStages["Negotiation"] : 0),
+                      @(partnerStages != null && partnerStages.ContainsKey("Active") ? partnerStages["Active"] : 0),
+                      @(partnerStages != null && partnerStages.ContainsKey("Completed") ? partnerStages["Completed"] : 0)
+                      ],
+                      backgroundColor: [
+                        '#b19cd9',    // Prospect
+                        '#f4c542',    // Initial Contact
+                        '#f28b82',    // Negotiation
+                        '#81c995',    // Active
+                        '#a0aec0'     // Completed
+                      ]
+                    }]
+                  },
+                  options: {
+                    responsive: true,
+                    scales: {
+                      x: { beginAtZero: true },
+                      y: { beginAtZero: true }
+                    }
+                  }
+                });
+
+
+
+                        // Project Completion Metrics (Progress Bar)
+                        @{var counts = ViewData["ProjectStatusCounts"] as Dictionary<string, int>;}
+                        const projectCompletionChart = new Chart(document.getElementById('projectCompletionChart'), {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Completed', 'In Progress', 'Not Started'],
+                                datasets: [{
+                                    label: 'Project Status',
+                                    data: [
+                                    @(counts != null && counts.ContainsKey("Completed") ? counts["Completed"] : 0),
+                                    @(counts != null && counts.ContainsKey("In Progress") ? counts["In Progress"] : 0),
+                                    @(counts != null && counts.ContainsKey("Not Started") ? counts["Not Started"] : 0)
+                                    ],
+                                    backgroundColor: ['rgb(158, 119, 203)', 'rgb(119, 203, 161)', 'rgb(203, 119, 138)'],
+                                }]
+                            },
+                            options: {
+                                responsive: true
+                            }
+                        });
+            </script>
+            <script>
+                const partnershipStageData =  @Html.Raw(Json.Serialize(Model.PartnerStatusData));
+
+                const partnershipColors = {
+                  "Prospect": "#b19cd9", // light purple
+                  "Initial Contact": "#f4c542", // yellow
+                  "Negotiation": "#f28b82", // soft red
+                  "Active": "#81c995", // soft green
+                  "Completed": "#a0aec0" // gray-blue
+                };
+
+                const partnershipStageTitle = document.getElementById("partnershipStageTitle");
+                const partnershipStageList = document.getElementById("partnershipStageList");
+
+                document.getElementById('partnershipStagesChart').onclick = function(evt) {
+                  const activePoints = partnershipStagesChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+
+                  if (activePoints.length) {
+                    const index = activePoints[0].index;
+                    const label = partnershipStagesChart.data.labels[index];
+                    const items = partnershipStageData[label] || [];
+                    const color = partnershipColors[label] || '#000';
+
+                    partnershipStageTitle.textContent = label;
+                    partnershipStageTitle.style.color = color;
+
+                    partnershipStageList.innerHTML = "";
+                    items.forEach(item => {
+                      const listItem = document.createElement("li");
+                      listItem.className = "list-group-item";
+                      listItem.textContent = item;
+                      listItem.style.color = color;
+                      partnershipStageList.appendChild(listItem);
+                    });
+
+                    const modal = new bootstrap.Modal(document.getElementById('partnershipModal'));
+                    modal.show();
+                  }
+                };
+            </script>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 
 
 
 
 
-</table>
 
-<h2>Current Grants</h2>
-<table class="table table-bordered table-responsive table-hover">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>View</th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            foreach(var grant in Model.GrantInfo)
-            {
-                <tr>
-                <td>@grant.GrantName</td>
-                <td><a asp-page="/Faculty/ViewGrant" class="btn btn-primary">View</a></td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
-
-<style>
-    .sub-menu {
-        background-color: #333;
-        padding: 5px;
-        border-radius: 5px;
-    }
-
-    .sub-menu ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        gap: 10px; /* Space between items */
-    }
-
-    .sub-menu li {
-        display: inline;
-    }
-
-    .sub-menu a {
-        text-decoration: none;
-        color: white;
-        padding: 5px 10px;
-        background-color: #444;
-        border-radius: 3px;
-        font-size: 14px;
-    }
-
-    .sub-menu a:hover {
-        background-color: #666;
-    }
-</style>
-
-<div class="sidenav">
-    <img src="images/JMUCare.png" alt="jmucarelogo" class="logo img-fluid w-100" style="vertical-align: top;">
-    <div class="row">
-        <a asp-page="/Faculty/FacultyHome"><i class="bi bi-house-door-fill me-2"></i>Home</a>
-        <a href="/Employee/EmployeeViewProject"><i class="bi bi-kanban-fill me-2"></i>Projects</a>
-        <a href="/Task"><i class="bi bi-list-check me-2"></i>Tasks</a>
-        <a href="/Faculty/ViewGrant"><i class="bi bi-cash-coin me-2"></i>Grants</a>
-        <a href="/People"><i class="bi bi-people-fill me-2"></i>People</a>
-        <a href="/Calendar/Calendar"><i class="bi bi-calendar-event-fill me-2"></i>Calendar</a>
-        <a href="/Settings" class="active"><i class="bi bi-gear-fill me-2"></i>Settings</a>
-
-    </div>
-</div>

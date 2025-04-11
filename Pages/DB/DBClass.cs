@@ -23,10 +23,10 @@ namespace Lab1.Pages.DB
 
         // Connection String - How to find and connect to DB
         private static readonly String? Lab1DBConnString =
-            "Server=localhost;Database=JMUCare;Trusted_Connection=True";
+            "Server=capstonetest.database.windows.net, 1433;Database=JMUCare;User Id=dukesdev; Password=P@5sword; Encrypt=True; TrustServerCertificate=True";
 
         private static readonly String? AuthConnString =
-            "Server=Localhost;Database=AUTH;Trusted_Connection=True";
+            "Server=capstonetest.database.windows.net, 1433;Database=AUTH;User Id=dukesdev; Password=P@5sword; Encrypt=True; TrustServerCertificate=True";
 
 
 
@@ -202,7 +202,7 @@ namespace Lab1.Pages.DB
 
         public static SqlDataReader ViewAllProjects()
         {
-            string ViewAdminProjectsString = "SELECT Project.name, Grants.amount , Project.dueDate " +
+            string ViewAdminProjectsString = "SELECT Project.ProjectName, Grants.FundingAmount , Project.EndDate, Project.ProjectStatus " +
                 "FROM Project JOIN Grants ON Project.grantID = Grants.grantID ;";
 
 
@@ -726,7 +726,7 @@ namespace Lab1.Pages.DB
             {
                 String FirstName = tempreader.GetString(0);
                 String LastName = tempreader.GetString(1);
-                FullName = FirstName + LastName;
+                FullName = FirstName + ' ' + LastName;
             }
             Lab1DBConnection.Close();
             return FullName;
@@ -856,6 +856,19 @@ namespace Lab1.Pages.DB
             cmd.Parameters.AddWithValue("@ProjectID", projectId);
             Lab1DBConnection.Open();
             return cmd.ExecuteReader();
+        }
+        public static SqlDataReader GetPartners()
+        {
+            SqlCommand cmdGetPartners = new SqlCommand();
+            cmdGetPartners.Connection = Lab1DBConnection;
+            cmdGetPartners.Connection.ConnectionString = Lab1DBConnString;
+            cmdGetPartners.CommandText = "SELECT * FROM Partnership";
+
+            cmdGetPartners.Connection.Open();
+
+            SqlDataReader tempreader = cmdGetPartners.ExecuteReader();
+
+            return tempreader;
         }
     }
     

@@ -16,6 +16,8 @@ namespace Lab1.Pages.Faculty
         public String MultiSelectMessage { get; set; }
         public String UserID { get; set; }
         public int SelectedProject { get; set; }
+        [BindProperty]
+        public string UserType { get; set; }
        
         public Dictionary<int, string> ProjectLeadNames { get; set; } = new Dictionary<int, string>();
 
@@ -25,7 +27,7 @@ namespace Lab1.Pages.Faculty
             
 
             string UserID = HttpContext.Session.GetString("UserID");
-            string UserType = HttpContext.Session.GetString("UserType");
+             UserType = HttpContext.Session.GetString("UserType");
 
 
             if (string.IsNullOrEmpty(UserID))
