@@ -11,7 +11,7 @@ namespace Lab1.Pages.Data_Classes
         public string PartnerType { get; set; }
         public string Sector { get; set; }
         public string Status { get; set; }
-        public DateTime LastInteractionDate { get; set; }
+        public DateTime? LastInteractionDate { get; set; }
         public int GrantID { get; set; }
         public int RepresentativeID { get; set; }
     }

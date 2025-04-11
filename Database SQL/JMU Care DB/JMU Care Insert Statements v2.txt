@@ -11,7 +11,7 @@ INSERT INTO UserType (typeID, name) VALUES
 (3, 'Employee'),
 (4, 'Representative');
 
--- Insert User (already correct)
+-- Insert Faculty User 
 INSERT INTO [Users] (FirstName, LastName, Email, UserTypeID, Department, DateJoined, AccessLevel)
 VALUES ('Anna', 'Smith', 'anna.smith@example.com', 2, 'Research & Development', '2022-08-15', 3);
 
@@ -19,13 +19,24 @@ VALUES ('Anna', 'Smith', 'anna.smith@example.com', 2, 'Research & Development', 
 DECLARE @AnnaID INT;
 SET @AnnaID = SCOPE_IDENTITY();
 
+--Insert Admin User
+INSERT INTO [Users] (FirstName, LastName, Email, UserTypeID, Department, DateJoined, AccessLevel)
+VALUES ('Emily', 'Blake', 'emily.blake@example.com', 1, 'JMU Care', '2022-08-15', 3);
+
+-- Get Emily's UserID
+DECLARE @EmilyID INT;
+SET @EmilyID = SCOPE_IDENTITY();
+
 -- Insert Grant (REMOVE: SubmissionDate, REMOVE: UserID)
 INSERT INTO Grants (GrantID, GrantName, FundingAgency, Deadline, ProposalID, FundingAmount, Type, GrantDescription)
-VALUES (1, 'Child Development Study', 'National Science Foundation', '2023-04-01', 1001, 50000.00, 'Research', 'Study on early childhood development patterns.');
+VALUES (1, 'Child Development Study', 'National Science Foundation', '2023-04-01', 1001, 50000.00, 'Federal', 'Study on early childhood development patterns.'),
+(2, 'Robotic Teaching Grant', 'National Science Foundation', '2023-04-01', 1002, 100000.00, 'State', 'Study on robitics learning.');
+
 
 -- Insert Project (REMOVE: UserID)
 INSERT INTO Project (ProjectID, ProjectName, StartDate, EndDate, ProjectStatus, ProgressStatus, ProjectLead, GrantID)
-VALUES (1, 'Early Learning Initiative', '2023-05-01', '2024-05-01', 'Active', 'On Track', @AnnaID, 1);
+VALUES (1, 'Early Learning Initiative', '2023-05-01', '2024-05-01', 'Completed', 'On Track', @AnnaID, 1),
+(2, 'Robotics Project', '2024-05-01', '2025-03-02', 'In Progress', 'On Track', @AnnaID, 2);
 
 INSERT INTO Task (TaskID, TaskName, TaskDescription, Deadline, Status, AssignedTo, ProjectID, GrantApplicationID)
 VALUES 
@@ -55,7 +66,8 @@ VALUES (1, 10000.00, 'Allocated', 'Used for initial participant recruitment.', 1
 
 -- Insert Partnership
 INSERT INTO Partnership (PartnerID, PartnerName, PartnerOrg, PartnerContact, PartnerType, Sector, Status, LastInteractionDate, GrantID, RepresentativeID)
-VALUES (1, 'John Doe', 'Early Learning Org', 'john.doe@elo.org', 'Community Partner', 'Education', 'Active', '2024-01-10', 1, @AnnaID);
+VALUES (1, 'Harrisonburg Middle', 'Early Learning Org', 'john.doe@elo.org', 'Community Partner', 'Education', 'Active', '2024-01-10', 1, @AnnaID),
+(2, 'Harrisonburg High', 'Early Learning Org', 'john.doe@elo.org', 'Community Partner', 'Education', 'Active', '2024-01-10', 2, @AnnaID);
 
 -- Insert Memo of Understanding (FileID is NULL for now)
 INSERT INTO MemoOfUnderstanding (MouID, MouStartDate, MouEndDate, FileID, PartnerID)
