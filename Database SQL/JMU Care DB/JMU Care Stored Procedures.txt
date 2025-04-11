@@ -16,3 +16,19 @@ BEGIN
 
     SET @NewUserID = SCOPE_IDENTITY();
 END;
+
+--Procedure for archive functionality for JMU Care DB
+CREATE PROCEDURE ArchiveAndDeleteCompletedProjects
+AS
+BEGIN
+    -- Insert records from Grants and completed Projects into Archive with ArchiveDate
+    INSERT INTO Archive (GrantID, GrantName, FundingAgency,  Deadline, ProposalID, FundingAmount, Type, GrantDescription, ProjectID, ProjectName, StartDate, EndDate, ProjectStatus, ProjectLead, ArchiveDate)
+    SELECT g.GrantID, g.GrantName, g.FundingAgency, g.Deadline, g.ProposalID, g.FundingAmount, g.Type, g.GrantDescription, p.ProjectID, p.ProjectName, p.StartDate, p.EndDate, p.ProjectStatus, p.ProjectLead, GETDATE()
+    FROM Grants g
+    JOIN Project p ON g.GrantID = p.GrantID
+    WHERE p.ProjectStatus = 'complete';
+
+    -- Delete records from Grants and completed Projects
+    DELETE FROM Grants WHERE GrantID IN (SELECT GrantID FROM Archive WHERE ArchiveDate = GETDATE());
+    DELETE FROM Project WHERE ProjectID IN (SELECT ProjectID FROM Archive WHERE ArchiveDate = GETDATE());
+END;

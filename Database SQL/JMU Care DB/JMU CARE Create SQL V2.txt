@@ -263,5 +263,22 @@ PRIMARY KEY (EventID, UserID),
 	ON DELETE CASCADE
 ); 
 	
-
+CREATE TABLE Archive (
+    ArchiveID INT IDENTITY(1,1) PRIMARY KEY,
+    GrantID INT,
+    GrantName VARCHAR(100),
+    FundingAgency VARCHAR(100),
+    Deadline DATE,
+    ProposalID INT,
+    FundingAmount DECIMAL(18, 2),
+    Type VARCHAR(50),
+    GrantDescription VARCHAR(MAX),
+    ProjectID INT,
+    ProjectName VARCHAR(100),
+    StartDate DATE,
+    EndDate DATE,
+    ProjectStatus VARCHAR(50),
+    ProjectLead VARCHAR(100),
+    ArchiveDate DATE
+);
 	

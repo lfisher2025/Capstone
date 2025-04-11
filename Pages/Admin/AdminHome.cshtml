@@ -303,29 +303,12 @@
                     <!-- Calendar beside Project Chart -->
                     <div class="col-md-6">
                         <div class="calendar-container mb-4">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <button class="btn btn-sm"><i class="bi bi-chevron-left"></i></button>
-                                <h6 class="mb-0">July 2024</h6>
-                                <button class="btn btn-sm"><i class="bi bi-chevron-right"></i></button>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <button class="btn btn-sm" id="prevWeek"><i class="bi bi-chevron-left"></i></button>
+                                <h6 class="mb-0" id="calendarMonth"></h6>
+                                <button class="btn btn-sm" id="nextWeek"><i class="bi bi-chevron-right"></i></button>
                             </div>
-                            <div class="d-flex justify-content-center text-muted small mb-2">
-                                <div class="mx-1">S</div>
-                                <div class="mx-1">M</div>
-                                <div class="mx-1">T</div>
-                                <div class="mx-1">W</div>
-                                <div class="mx-1">T</div>
-                                <div class="mx-1">F</div>
-                                <div class="mx-1">S</div>
-                            </div>
-                            <div class="d-flex flex-wrap justify-content-center">
-                                <div class="day">10</div>
-                                <div class="day">11</div>
-                                <div class="day">12</div>
-                                <div class="day">13</div>
-                                <div class="day selected">14</div>
-                                <div class="day">15</div>
-                                <div class="day">16</div>
-                            </div>
+                            <div class="d-flex justify-content-center gap-2" id="calendarDays" style="margin-top: 1rem;"></div>
                         </div>
 
 
@@ -730,9 +713,65 @@
                   }
                 };
             </script>
+          
+
+
+            <script>
+                let currentDate = new Date(); // today
+
+                function renderCalendar() {
+                    const calendarDays = document.getElementById("calendarDays");
+                    const calendarMonth = document.getElementById("calendarMonth");
+                    calendarDays.innerHTML = "";
+
+                    const startOfWeek = new Date(currentDate);
+                    startOfWeek.setDate(currentDate.getDate() - currentDate.getDay()); // Start on Sunday
+
+                    const options = { month: "long", year: "numeric" }; //Month and Year
+                    calendarMonth.textContent = currentDate.toLocaleDateString("en-US", options);
+
+                    const today = new Date().toDateString();
+
+                    for (let i = 0; i < 7; i++) { //Used AI to help create calendar
+                        const date = new Date(startOfWeek);
+                        date.setDate(startOfWeek.getDate() + i);
+
+                        const wrapper = document.createElement("div");
+                        wrapper.style.textAlign = "center";
+                        wrapper.style.margin = "0 8px";
+
+                        const label = document.createElement("div");
+                        label.textContent = date.toLocaleDateString("en-US", { weekday: 'short' }).charAt(0);
+
+                        const day = document.createElement("div");
+                        day.textContent = date.getDate();
+                        day.className = "day";
+                        if (date.toDateString() === today) {
+                            day.classList.add("selected");
+                        }
+
+                        wrapper.appendChild(label);
+                        wrapper.appendChild(day);
+                        calendarDays.appendChild(wrapper);
+                    }
+                }
+
+                document.getElementById("prevWeek").onclick = () => { //Arrow functionality
+                    currentDate.setDate(currentDate.getDate() - 7);
+                    renderCalendar();
+                };
+
+                document.getElementById("nextWeek").onclick = () => {
+                    currentDate.setDate(currentDate.getDate() + 7);
+                    renderCalendar();
+                };
+
+                renderCalendar();
+            </script>
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 

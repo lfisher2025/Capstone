@@ -22,12 +22,19 @@ namespace Lab1.Pages.DB
         public static SqlConnection Lab1DBConnection = new SqlConnection();
 
         // Connection String - How to find and connect to DB
+        //private static readonly String? Lab1DBConnString =
+        //    "Server=capstonetest.database.windows.net, 1433;Database=JMUCare;User Id=dukesdev; Password=P@5sword; Encrypt=True; TrustServerCertificate=True";
+
+        // Local connection string for testing
         private static readonly String? Lab1DBConnString =
-            "Server=capstonetest.database.windows.net, 1433;Database=JMUCare;User Id=dukesdev; Password=P@5sword; Encrypt=True; TrustServerCertificate=True";
+          "Server=localhost;Database=JMUCare;Trusted_Connection=True";
 
+        //private static readonly String? AuthConnString =
+        //    "Server=capstonetest.database.windows.net, 1433;Database=AUTH;User Id=dukesdev; Password=P@5sword; Encrypt=True; TrustServerCertificate=True";
+
+        //Local connection string for testing
         private static readonly String? AuthConnString =
-            "Server=capstonetest.database.windows.net, 1433;Database=AUTH;User Id=dukesdev; Password=P@5sword; Encrypt=True; TrustServerCertificate=True";
-
+    "Server=Localhost;Database=AUTH;Trusted_Connection=True";
 
 
 

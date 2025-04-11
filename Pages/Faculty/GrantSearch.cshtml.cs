@@ -33,7 +33,7 @@ namespace Lab1.Pages.Faculty
 
         public IActionResult OnGet()
         {
-            string UserID = HttpContext.Session.GetString("username");
+            string UserID = HttpContext.Session.GetString("UserID");
             string UserType = HttpContext.Session.GetString("UserType");
 
             if (string.IsNullOrEmpty(UserID))
