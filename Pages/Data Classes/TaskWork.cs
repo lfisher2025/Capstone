@@ -8,8 +8,8 @@
         public DateTime Deadline { get; set; }
         public string Status { get; set; }
         public int AssignedTo { get; set; } // UserID of the user assigned to the task
-        public int ProjectId { get; set; } // ProjectID of the project the task belongs to
-        public int GrantApplicationID { get; set; } // GrantApplicationID of the grant application the task is related to
+        public int? ProjectId { get; set; } // ProjectID of the project the task belongs to
+        public int? GrantApplicationID { get; set; } // GrantApplicationID of the grant application the task is related to
 
     }
 }

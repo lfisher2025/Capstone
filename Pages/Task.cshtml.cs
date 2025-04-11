@@ -26,8 +26,8 @@ namespace Lab1.Pages
                     Deadline = taskReader.GetDateTime(3),
                     Status = taskReader.GetString(4),
                     AssignedTo = taskReader.GetInt32(5),
-                    ProjectId = taskReader.GetInt32(6),
-                    GrantApplicationID = taskReader.GetInt32(7)
+                    ProjectId = taskReader.IsDBNull(6) ? (int?)null : taskReader.GetInt32(6),
+                    GrantApplicationID = taskReader.IsDBNull(7) ? (int?)null : taskReader.GetInt32(7)
                 };
                 TaskInfo.Add(task);
             }
