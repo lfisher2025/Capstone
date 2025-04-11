@@ -694,7 +694,7 @@ namespace Lab1.Pages.DB
             {
                 String FirstName = tempreader.GetString(0);
                 String LastName = tempreader.GetString(1);
-                FullName = FirstName + LastName;
+                FullName = FirstName + ' ' + LastName;
             }
             Lab1DBConnection.Close();
             return FullName;
@@ -755,6 +755,19 @@ namespace Lab1.Pages.DB
             return tempreader;
         }
 
+        public static SqlDataReader GetPartners()
+        {
+            SqlCommand cmdGetPartners = new SqlCommand();
+            cmdGetPartners.Connection = Lab1DBConnection;
+            cmdGetPartners.Connection.ConnectionString = Lab1DBConnString;
+            cmdGetPartners.CommandText = "SELECT * FROM Partnership";
+
+            cmdGetPartners.Connection.Open();
+
+            SqlDataReader tempreader = cmdGetPartners.ExecuteReader();
+
+            return tempreader;
+        }
     }
 
 }

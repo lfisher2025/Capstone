@@ -28,7 +28,8 @@
                 <td>@partner.PartnerType</td>
                 <td>@partner.Sector</td>
                 <td>@partner.Status</td>
-                <td>@partner.LastInteractionDate.ToString("yyyy-MM-dd")</td>
+                <td>@(partner.LastInteractionDate?.ToString("yyyy-MM-dd") ?? "")</td>
+
                 <td>@partner.GrantID</td>
             </tr>
         }

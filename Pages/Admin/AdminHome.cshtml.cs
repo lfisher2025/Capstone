@@ -11,13 +11,21 @@ namespace Lab1.Pages.Admin
     public class AdminHomeModel : PageModel
     {
         
-        public List<Dictionary<string, object>> TableData { get; set; } = new();
         public Dictionary<string, List<string>> ProjectStatusData { get; set; } = new();
+        public Dictionary<string, List<string>> GrantStatusData { get; set; } = new();
+        public Dictionary<string, List<string>> PartnerStatusData { get; set; } = new();
         public List<Project> Projects { get; set; } = new();
+        public List<BusinessPartner> businessPartners { get; set; } = new();
         public string UserID { get; set; }
         public List<Grant> GrantInfo { get; set; } = new();
         [BindProperty]
         public String UserName { get; set; }
+        [BindProperty]
+        public int inProgressCount { get; set; } = 0;
+        [BindProperty]
+        public int GrantCount { get; set; } = 0;
+        [BindProperty]
+        public int ActiveCount { get; set; } = 0;
 
         public IActionResult OnGet()
         {
@@ -63,14 +71,28 @@ namespace Lab1.Pages.Admin
 
             DBClass.Lab1DBConnection.Close();
 
-            //Scrape comppletion status for each project and make a dictionary for JSON object for view
+            foreach(var project in Projects)
+            {
+                if (project.ProjectStatus == "In Progress")
+                {
+                   inProgressCount++;
+                }
+            }
+
+            //Scrape comppletion status for each project and make a dictionary for JSON object in view
             ProjectStatusData = Projects
             .GroupBy(p => p.ProjectStatus)
             .ToDictionary(
              grp => grp.Key,
              grp => grp.Select(p => p.ProjectName).ToList()
-       );
+                         );
 
+            ViewData["ProjectStatusCounts"] = new Dictionary<string, int>
+                {
+                    { "Not Started", ProjectStatusData.ContainsKey("Not Started") ? ProjectStatusData["Not Started"].Count : 0 },
+                    { "In Progress", ProjectStatusData.ContainsKey("In Progress") ? ProjectStatusData["In Progress"].Count : 0 },
+                    { "Completed", ProjectStatusData.ContainsKey("Completed") ? ProjectStatusData["Completed"].Count : 0 }
+                };
         }
 
         public void GetGrants()
@@ -91,11 +113,77 @@ namespace Lab1.Pages.Admin
                 });
             }
             DBClass.Lab1DBConnection.Close();
+
+            foreach(var grant in GrantInfo)
+                            {
+                              GrantCount++;
+                            }
+
+            //Scrape grant type from grants for chart
+            GrantStatusData = GrantInfo
+                .GroupBy(g => g.Type)
+                .ToDictionary(
+                 grp => grp.Key,
+                 grp => grp.Select(g => g.GrantName).ToList()
+                 );
+
+            ViewData["GrantFundingCounts"] = new Dictionary<string, int>
+                {
+                    { "Federal Grants", GrantStatusData.ContainsKey("Federal") ? GrantStatusData["Federal"].Count : 0 },
+                    { "State Grants", GrantStatusData.ContainsKey("State") ? GrantStatusData["State"].Count : 0 },
+                    { "Internal Funding", GrantStatusData.ContainsKey("Internal") ? GrantStatusData["Internal"].Count : 0 },
+                    { "Private Foundations", GrantStatusData.ContainsKey("Private") ? GrantStatusData["Private"].Count : 0 }
+                };
         }
 
         public void GetPartners()
         {
+            //Call DB to get partners and read them into a list
+            SqlDataReader partnerReader = DBClass.GetPartners();
 
+            while (partnerReader.Read())
+            {
+                businessPartners.Add(new BusinessPartner
+                {
+                    PartnerID = partnerReader.GetInt32(partnerReader.GetOrdinal("PartnerID")),
+                    PartnerName = partnerReader.GetString(partnerReader.GetOrdinal("PartnerName")),
+                    PartnerOrg = partnerReader.GetString(partnerReader.GetOrdinal("PartnerOrg")),
+                    PartnerContact = partnerReader.GetString(partnerReader.GetOrdinal("PartnerContact")),
+                    PartnerType = partnerReader.GetString(partnerReader.GetOrdinal("PartnerType")),
+                    Sector = partnerReader.GetString(partnerReader.GetOrdinal("Sector")),
+                    Status = partnerReader.GetString(partnerReader.GetOrdinal("Status")),
+                    LastInteractionDate = partnerReader.IsDBNull(partnerReader.GetOrdinal("LastInteractionDate"))
+                              ? null
+                              : partnerReader.GetDateTime(partnerReader.GetOrdinal("LastInteractionDate")),
+                    GrantID = partnerReader.GetInt32(partnerReader.GetOrdinal("GrantID")),
+                    RepresentativeID = partnerReader.GetInt32(partnerReader.GetOrdinal("RepresentativeID"))
+                });
+            }
+            DBClass.Lab1DBConnection.Close();
+
+            foreach (var partner in businessPartners)
+            {
+                if (partner.Status == "Active")
+                {
+                    ActiveCount++;
+                }
+            }
+
+            //Scrape partner status for chart
+            PartnerStatusData = businessPartners
+                .GroupBy(p => p.Status)
+                .ToDictionary(
+                grp => grp.Key,
+                grp => grp.Select(p => p.PartnerName).ToList()
+                );
+            ViewData["PartnerStageCounts"] = new Dictionary<string, int>
+                {
+                    { "Prospect", PartnerStatusData.ContainsKey("Prospect") ? PartnerStatusData["Prospect"].Count : 0 },
+                    { "Initial Contact", PartnerStatusData.ContainsKey("Initial Contact") ? PartnerStatusData["Initial Contact"].Count : 0 },
+                    { "Negotiation", PartnerStatusData.ContainsKey("Negotiation") ? PartnerStatusData["Negotiation"].Count : 0 },
+                    { "Active", PartnerStatusData.ContainsKey("Active") ? PartnerStatusData["Active"].Count : 0 },
+                    { "Completed", PartnerStatusData.ContainsKey("Completed") ? PartnerStatusData["Completed"].Count : 0 }
+                };
         }
 
 
