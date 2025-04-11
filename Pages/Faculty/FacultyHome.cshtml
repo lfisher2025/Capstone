@@ -393,6 +393,19 @@
                             <a asp-page="/Faculty/ViewGrant" class="btn btn-secondary">Go to Grants</a>
                         </div>
                         <!--grant tracking-->
+                    </div>
+
+                    <!-- Right Panel -->
+                    <div class="col-md-6">
+                        <!-- Mini Calendar -->
+                        <div class="calendar-container mb-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <button class="btn btn-sm" id="prevWeek"><i class="bi bi-chevron-left"></i></button>
+                                <h6 class="mb-0" id="calendarMonth"></h6>
+                                <button class="btn btn-sm" id="nextWeek"><i class="bi bi-chevron-right"></i></button>
+                            </div>
+                            <div class="d-flex justify-content-center gap-2" id="calendarDays" style="margin-top: 1rem;"></div>
+                        </div>
                         <!-- Project Summary -->
                         <div class="project-summary">
                             <h5>Project Summary</h5>
@@ -456,106 +469,7 @@
                             </table>
                             <a asp-page="/Employee/EmployeeViewProject" class="btn btn-primary">Go to Projects</a>
                         </div>
-                    </div>
-
-                    <!-- Right Panel -->
-                    <div class="col-md-6">
-                        <!-- Mini Calendar -->
-                        <div class="calendar-container mb-4">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <button class="btn btn-sm" id="prevWeek"><i class="bi bi-chevron-left"></i></button>
-                                <h6 class="mb-0" id="calendarMonth"></h6>
-                                <button class="btn btn-sm" id="nextWeek"><i class="bi bi-chevron-right"></i></button>
-                            </div>
-                            <div class="d-flex justify-content-center gap-2" id="calendarDays" style="margin-top: 1rem;"></div>
-                        </div>
-
-                        <!-- Stats -->
-                        <div class="right-panel clickable-card" data-bs-toggle="modal" data-bs-target="#weeklyActivityModal" style="cursor: pointer;">
-                            <p class="fw-bold">Weekly Activity</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span>80%</span>
-                                <i class="bi bi-bar-chart fs-4"></i>
-                            </div>
-                        </div>
-                        <div class="right-panel clickable-card" data-bs-toggle="modal" data-bs-target="#total" style="cursor: pointer;">
-                            <p class="fw-bold">Total Tasks Completed</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span>40</span>
-                                <i class="bi bi-clock-history fs-4"></i>
-                            </div>
-                        </div>
-                        <div class="right-panel clickable-card" data-bs-toggle="modal" data-bs-target="#projectsfin" style="cursor: pointer;">
-                            <p class="fw-bold">Projects Finished</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span>4</span>
-                                <i class="bi bi-folder2-open fs-4"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Weekly Activity Modal -->
-                    <div class="modal fade" id="weeklyActivityModal" tabindex="-1" aria-labelledby="weeklyActivityModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="background-color: #F4EFE1;">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="weeklyActivityModalLabel">Weekly Activity Overview</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p><strong>Tasks Completed:</strong> 40</p>
-                                    <p><strong>Hours Worked:</strong> 32 hrs</p>
-                                    <p><strong>Projects Engaged:</strong> 5</p>
-                                    <p><strong>Most Active Day:</strong> Wednesday</p>
-                                    <p><strong>Top Project:</strong> Fintech App UI</p>
-                                    <hr>
-                                    <h6>Graph coming soon!</h6>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Modal for Total Tasks-->
-                    <div class="modal fade" id="total" tabindex="-1" aria-labelledby="totalTasksModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="background-color: #F4EFE1;">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="totalTasksModalLabel">Total Tasks Completed</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <ul>
-                                        <li>User flow design for app interface - ✅</li>
-                                        <li>Fintech project landing page - ✅</li>
-                                        <li>Marketing visuals for campaign - ✅</li>
-                                        <li>Accessibility review report - ✅</li>
-                                    </ul>
-                                    <p><strong>Total:</strong> 40 tasks completed</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Modal for Projects Finished-->
-                    <div class="modal fade" id="projectsfin" tabindex="-1" aria-labelledby="projectsFinishedModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content" style="background-color: #F4EFE1;">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="projectsFinishedModalLabel">Projects Finished</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <ul>
-                                        <li>Fintech App UI Design</li>
-                                        <li>SMAD Capstone Website</li>
-                                        <li>Burn Boot Camp App Audit</li>
-                                        <li>FridgeBuddy App UX Case Study</li>
-                                    </ul>
-                                    <p><strong>Total:</strong> 4 projects completed</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                     </div>
                 </div>
             </div>
         </div>
