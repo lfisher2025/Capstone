@@ -8,6 +8,6 @@ Password nvarchar(MAX),
 
 
 -- Insert Statement for users (all user passwords are "password")
-INSERT INTO HashedCredentials (UserID, Email, Password) VALUES (2, 'maryam.sharifian@example.com', '1000:Y7kDp4JdZM3GE6Kw4dFzahnQWcL7VpLp:x7pv8+QiM3x2Jprsi+upefKj8fs=');
+INSERT INTO HashedCredentials (UserID, Email, Password) VALUES (2, 'emily.blake@example.com', '1000:Y7kDp4JdZM3GE6Kw4dFzahnQWcL7VpLp:x7pv8+QiM3x2Jprsi+upefKj8fs=');
 INSERT INTO HashedCredentials (UserID, Email, Password) VALUES (1, 'anna.smith@example.com', '1000:Y7kDp4JdZM3GE6Kw4dFzahnQWcL7VpLp:x7pv8+QiM3x2Jprsi+upefKj8fs=');
 
