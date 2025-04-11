@@ -1,229 +1,7 @@
 ﻿
 
 
-    @*
-<h2>@ViewData["Title"]</h2>
 
-<!-- ChatGPT was used to help create the table of the Calendar <!--
-<!-- https://stackoverflow.com/questions/51015825/c-sharp-razor-dynamic-calendar-using-html-table-in-asp-net I used this repository to help get explain how to create a calendar<!--
-
-<!-- Calendar Navigation -->
-<div class="calendar-navigation d-flex justify-content-between align-items-center">
-    <button class="btn btn-secondary" onclick="changeMonth(-1)">Previous Month</button>
-    <span id="currentMonth" class="mx-3 fw-bold fs-4"></span>
-    <button class="btn btn-secondary" onclick="changeMonth(1)">Next Month</button>
-
-</div>
-
-
-<!-- Calendar Table -->
-<div class="calendar">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Sun</th>
-                <th>Mon</th>
-                <th>Tue</th>
-                <th>Wed</th>
-                <th>Thu</th>
-                <th>Fri</th>
-                <th>Sat</th>
-            </tr>
-        </thead>
-        <tbody id="calendar-body">
-        </tbody>
-    </table>
-</div>
-
-<!-- Add Event Popup -->
-<div id="eventForm" class="event-popup" style="display:none;">
-    <h3>Add Event</h3>
-
-    <label for="eventTitle">Event Title:</label>
-    <input type="text" id="eventTitle" class="form-control" placeholder="Event Title" />
-
-    <label for="eventDate">Event Date:</label>
-    <input type="date" id="eventDate" class="form-control" />
-
-    <label for="eventTime">Event Time:</label>
-    <input type="time" id="eventTime" class="form-control" />
-
-    <label for="eventColor">Event Color:</label>
-    <select id="eventColor" class="form-control">
-        <option value="red">Red</option> <!-- I just added 3 Colors for now. We could possibly add custom colors in the future -->
-        <option value="green">Green</option>
-        <option value="blue">Blue</option>
-    </select>
-
-    <button class="btn btn-success mt-2" onclick="saveEvent()">Submit</button>
-    <button class="btn btn-danger mt-2" onclick="closeEventForm()">Cancel</button>
-</div>
-
-<!-- Edit Event Popup -->
-<div id="editEventForm" class="event-popup" style="display:none;">
-    <h3>Edit Event</h3>
-
-    <label for="editEventTitle">Event Title:</label>
-    <input type="text" id="editEventTitle" class="form-control" />
-
-    <label for="editEventTime">Event Time:</label>
-    <input type="time" id="editEventTime" class="form-control" />
-
-    <label for="editEventColor">Event Color:</label>
-    <select id="editEventColor" class="form-control">
-        <option value="red">Red</option>
-        <option value="green">Green</option>
-        <option value="blue">Blue</option>
-    </select>
-
-    <button class="btn btn-primary mt-2" onclick="updateEvent()">Save</button>
-    <button class="btn btn-danger mt-2" onclick="deleteEvent()">Delete</button>
-    <button class="btn btn-secondary mt-2" onclick="closeEditForm()">Cancel</button>
-</div>
-
-<!-- Add Event Button -->
-<!-- Used AI to help with setting AM and PM -->
-
-<button class="btn btn-primary" onclick="showEventForm()">Add Event</button>
-
-<script>
-    let currentMonth = new Date();
-    let events = [];
-
-    function updateMonthDisplay() {
-        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        document.getElementById('currentMonth').textContent = `${monthNames[currentMonth.getMonth()]} ${currentMonth.getFullYear()}`;
-    }
-
-    // This changed the month
-    function changeMonth(offset) {
-        currentMonth.setMonth(currentMonth.getMonth() + offset);
-        renderCalendar();
-    }
-
-    // this sets the time using AM and PM 
-    function formatTime(time) {
-        const [hours, minutes] = time.split(':');
-        let formattedHours = parseInt(hours, 10);
-        const ampm = formattedHours >= 12 ? 'PM' : 'AM';
-        formattedHours = formattedHours % 12 || 12;
-        return `${formattedHours}:${minutes} ${ampm}`;
-    }
-// Used ChatGPT to help complete the rendering of the calendar 
-
-    function renderCalendar() {
-        const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
-        const lastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
-        const calendarBody = document.getElementById('calendar-body');
-        calendarBody.innerHTML = '';
-
-        let row = document.createElement('tr');
-        for (let i = 0; i < firstDay.getDay(); i++) {
-            row.appendChild(document.createElement('td'));
-        }
-
-        for (let day = 1; day <= lastDay.getDate(); day++) {
-            if (row.children.length === 7) {
-                calendarBody.appendChild(row);
-                row = document.createElement('tr');
-            }
-
-            const cell = document.createElement('td');
-            cell.classList.add('calendar-day');
-            cell.textContent = day;
-            cell.setAttribute('data-day', day);
-
-            const today = new Date();
-            if (today.getDate() === day && today.getMonth() === currentMonth.getMonth() && today.getFullYear() === currentMonth.getFullYear()) {
-                cell.style.backgroundColor = "#ffff99";
-            }
-
-
-            // Used ChatGPT to help account for the year for an event
-         const dayEvents = events
-    .filter(event => {
-        let eventDate = new Date(event.date);
-        return (
-            eventDate.getDate() === day &&
-            eventDate.getMonth() === currentMonth.getMonth() &&
-            eventDate.getFullYear() === currentMonth.getFullYear()
-        );
-    })
-    .sort((a, b) => a.time.localeCompare(b.time)); // Sorts events by time in ascending order
-
-
-
-
-            dayEvents.forEach(event => {
-                let eventElement = document.createElement('div');
-                eventElement.innerText = `${event.title} at ${formatTime(event.time)}`;
-                eventElement.style.backgroundColor = event.color;
-                eventElement.classList.add('event');
-                eventElement.onclick = () => showEditForm(event);
-                cell.appendChild(eventElement);
-            });
-
-            row.appendChild(cell);
-        }
-        calendarBody.appendChild(row);
-        updateMonthDisplay();
-    }
-
-    function showEventForm() {
-        document.getElementById('eventForm').style.display = 'block';
-    }
-
-    function closeEventForm() {
-        document.getElementById('eventForm').style.display = 'none';
-    }
-
-    function saveEvent() {
-        const title = document.getElementById('eventTitle').value;
-        const date = new Date(document.getElementById('eventDate').value + "T00:00:00");
-        const time = document.getElementById('eventTime').value;
-        const color = document.getElementById('eventColor').value;
-
-        if (!title || !date || !time) {
-            alert('Please enter title, date, and time');
-            return;
-        }
-
-        const event = { title, date, time, color };
-        events.push(event);
-        closeEventForm();
-        renderCalendar();
-    }
-
-    function showEditForm(event) {
-        document.getElementById('editEventTitle').value = event.title;
-        document.getElementById('editEventTime').value = event.time;
-        document.getElementById('editEventColor').value = event.color;
-        document.getElementById('editEventForm').dataset.index = events.indexOf(event);
-        document.getElementById('editEventForm').style.display = 'block';
-    }
-
-    function closeEditForm() {
-        document.getElementById('editEventForm').style.display = 'none';
-    }
-
-    function updateEvent() {
-        const index = document.getElementById('editEventForm').dataset.index;
-        events[index].title = document.getElementById('editEventTitle').value;
-        events[index].time = document.getElementById('editEventTime').value;
-        events[index].color = document.getElementById('editEventColor').value;
-        closeEditForm();
-        renderCalendar();
-    }
-
-    function deleteEvent() {
-        const index = document.getElementById('editEventForm').dataset.index;
-        events.splice(index, 1);
-        closeEditForm();
-        renderCalendar();
-    }
-
-    renderCalendar();
-</script>*@
 
 
 
@@ -233,9 +11,7 @@
     ViewData["Title"] = "Calendar";
 }
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/calendar.css" />
-}
+
 
 
 <head>
@@ -247,6 +23,7 @@
     <!-- LOAD BOOTSTRAP CSS - DO NOT DELETE -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/calendar.css" asp-append-version="true" />
     <!-- END LOADING BOOTSTRAP CSS -->
     <style>
         html, body {
@@ -362,22 +139,7 @@
             text-align: left;
         }
 
-        .calendar-container .day {
-            width: 38px;
-            height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            margin: 2px;
-            cursor: pointer;
-            background-color: lightgrey;
-        }
 
-            .calendar-container .day.selected {
-                background-color: #450084;
-                color: white;
-            }
 
         .profile-header {
             display: flex;
@@ -429,31 +191,15 @@
             border-radius: 10px;
         }
 
-        .calendar-container {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-        }
 
-        .day {
-            width: 40px;
-            height: 40px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin: 5px;
-            cursor: pointer;
-            border-radius: 50%;
-        }
+
 
         .form-check-input:not(:checked):focus {
             border-color: black;
             box-shadow: none;
         }
 
-        .day.selected {
-            background-color: #450084;
-        }
+
 
         .right-panel,
         .project-summary,
